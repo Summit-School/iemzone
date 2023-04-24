@@ -4,7 +4,11 @@ import Head from "next/head";
 
 // ====================================================================
 
-const SEO = ({ title, description, sitename = "Bazaar Next.js Ecommerce" }) => {
+const SEO = ({
+  title,
+  description,
+  sitename = "Iemzone - Multi-vendor Ecommerce Platform",
+}) => {
   return (
     <Head>
       <title>{`${title} | ${sitename}`}</title>
