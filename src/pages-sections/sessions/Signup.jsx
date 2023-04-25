@@ -8,22 +8,62 @@ import BazaarImage from "components/BazaarImage";
 import BazaarTextField from "components/BazaarTextField";
 import { FlexBox, FlexRowCenter } from "components/flex-box";
 import { Wrapper } from "./Login";
-import SocialButtons from "./SocialButtons";
+// import SocialButtons from "./SocialButtons";
 import EyeToggleButton from "./EyeToggleButton";
+import { useDispatch } from "react-redux";
+import { useRouter } from "next/router";
+import { useSnackbar } from "notistack";
+import { register } from "../../../redux/reducers/authentication";
+
 const Signup = () => {
+  const [loading, setLoading] = useState(false);
   const [passwordVisibility, setPasswordVisibility] = useState(false);
   const togglePasswordVisibility = useCallback(() => {
     setPasswordVisibility((visible) => !visible);
   }, []);
-  const handleFormSubmit = async (values) => {
-    console.log(values);
+
+  const dispatch = useDispatch();
+  const navigate = useRouter();
+  const { enqueueSnackbar } = useSnackbar();
+
+  const handleFormSubmit = async () => {
+    let data = {
+      firstName: values.firstName,
+      lastName: values.lastName,
+      email: values.email,
+      phone: values.number,
+      password: values.password,
+    };
+    dispatch(register(data), setLoading(true))
+      .then((res) => {
+        console.log("response", res);
+        if (res.meta.requestStatus === "fulfilled") {
+          enqueueSnackbar(res.payload, {
+            variant: "success",
+          });
+          setLoading(false);
+          navigate.push("/");
+        }
+        if (res.meta.requestStatus === "rejected") {
+          setLoading(false);
+          enqueueSnackbar(res.payload, {
+            variant: "error",
+          });
+        }
+      })
+      .catch((err) => {
+        console.error(err);
+        setLoading(false);
+      });
   };
+
   const { values, errors, touched, handleBlur, handleChange, handleSubmit } =
     useFormik({
       initialValues,
       onSubmit: handleFormSubmit,
       validationSchema: formSchema,
     });
+
   return (
     <Wrapper elevation={3} passwordVisibility={passwordVisibility}>
       <form onSubmit={handleSubmit}>
@@ -41,16 +81,47 @@ const Signup = () => {
         <BazaarTextField
           mb={1.5}
           fullWidth
-          name="name"
+          name="firstName"
           size="small"
-          label="Full Name"
+          label="Fist Name"
           variant="outlined"
           onBlur={handleBlur}
-          value={values.name}
+          value={values.firstName}
           onChange={handleChange}
-          placeholder="Ralph Awards"
-          error={!!touched.name && !!errors.name}
-          helperText={touched.name && errors.name}
+          placeholder="Ralph"
+          error={!!touched.firstName && !!errors.firstName}
+          helperText={touched.firstName && errors.firstName}
+        />
+
+        <BazaarTextField
+          mb={1.5}
+          fullWidth
+          name="lastName"
+          size="small"
+          label="Last Name"
+          variant="outlined"
+          onBlur={handleBlur}
+          value={values.lastName}
+          onChange={handleChange}
+          placeholder="Awards"
+          error={!!touched.lastName && !!errors.lastName}
+          helperText={touched.lastName && errors.lastName}
+        />
+
+        <BazaarTextField
+          mb={1.5}
+          fullWidth
+          name="number"
+          size="small"
+          type="number"
+          variant="outlined"
+          onBlur={handleBlur}
+          value={values.number}
+          onChange={handleChange}
+          label="Phone Number"
+          placeholder="+237 672 491 296"
+          error={!!touched.number && !!errors.number}
+          helperText={touched.number && errors.number}
         />
 
         <BazaarTextField
@@ -153,12 +224,13 @@ const Signup = () => {
           sx={{
             height: 44,
           }}
+          onClick={handleFormSubmit}
         >
-          Create Account
+          {loading ? "Loading..." : "Create Account"}
         </Button>
       </form>
 
-      <SocialButtons />
+      {/* <SocialButtons /> */}
       <FlexRowCenter mt="1.25rem">
         <Box>Already have an account?</Box>
         <Link href="/login">
@@ -171,14 +243,18 @@ const Signup = () => {
   );
 };
 const initialValues = {
-  name: "",
+  firstName: "",
+  lastName: "",
+  number: "",
   email: "",
   password: "",
   re_password: "",
   agreement: false,
 };
 const formSchema = yup.object().shape({
-  name: yup.string().required("Name is required"),
+  firstName: yup.string().required("Frst name is required"),
+  lastName: yup.string().required("Last name is required"),
+  number: yup.string().required("Phone number is required"),
   email: yup.string().email("invalid email").required("Email is required"),
   password: yup.string().required("Password is required"),
   re_password: yup

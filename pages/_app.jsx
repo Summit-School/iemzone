@@ -13,6 +13,9 @@ import createEmotionCache from "createEmotionCache";
 import "nprogress/nprogress.css";
 import "simplebar-react/dist/simplebar.min.css";
 import "../src/__server__";
+// redux imports
+import { store } from "../redux/store";
+import { Provider } from "react-redux";
 
 //Binding events.
 Router.events.on("routeChangeStart", () => nProgress.start());
@@ -46,7 +49,9 @@ const App = (props) => {
         <AppProvider>
           <MuiTheme>
             <SnackbarProvider>
-              <RTL>{getLayout(<Component {...pageProps} />)}</RTL>
+              <Provider store={store}>
+                <RTL>{getLayout(<Component {...pageProps} />)}</RTL>
+              </Provider>
             </SnackbarProvider>
           </MuiTheme>
         </AppProvider>

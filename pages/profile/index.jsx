@@ -19,16 +19,43 @@ import CustomerDashboardNavigation from "components/layouts/customer-dashboard/N
 import { currency } from "lib";
 import api from "utils/__api__/users";
 // ============================================================
+import { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { useSnackbar } from "notistack";
+import { fetchUserData } from "../../redux/reducers/authentication";
+import userId from "utils/userId";
 
-const Profile = ({ user }) => {
+const Profile = () => {
   const downMd = useMediaQuery((theme) => theme.breakpoints.down("md"));
+
+  const user = useSelector((state) => state.authentication.userData);
+  console.log(user);
+
+  const dispatch = useDispatch();
+  const { enqueueSnackbar } = useSnackbar();
+
+  useEffect(() => {
+    const id = userId();
+
+    dispatch(fetchUserData(id))
+      .then((res) => {
+        if (res.meta.requestStatus === "rejected") {
+          enqueueSnackbar(res.payload, {
+            variant: "error",
+          });
+        }
+      })
+      .catch((err) => {
+        toast.error(err);
+      });
+  }, []);
 
   // SECTION TITLE HEADER LINK
   const HEADER_LINK = (
     <Button
       color="primary"
       LinkComponent={Link}
-      href={`/profile/${user.id}`}
+      href={`/profile/${user?.id}`}
       sx={{
         px: 4,
         bgcolor: "primary.light",
@@ -78,7 +105,7 @@ const Profile = ({ user }) => {
               }}
             >
               <Avatar
-                src={user.avatar}
+                src={user?.avatar}
                 sx={{
                   height: 64,
                   width: 64,
@@ -88,7 +115,7 @@ const Profile = ({ user }) => {
               <Box ml={1.5} flex="1 1 0">
                 <FlexBetween flexWrap="wrap">
                   <div>
-                    <H5 my="0px">{`${user.name.firstName} ${user.name.lastName}`}</H5>
+                    <H5 my="0px">{`${user?.name.firstName} ${user?.name.lastName}`}</H5>
                     <FlexBox alignItems="center">
                       <Typography color="grey.600">Balance:</Typography>
                       <Typography ml={0.5} color="primary.main">
@@ -144,14 +171,14 @@ const Profile = ({ user }) => {
           }),
         }}
       >
-        <TableRowItem title="First Name" value={user.name.firstName} />
-        <TableRowItem title="Last Name" value={user.name.lastName} />
-        <TableRowItem title="Email" value={user.email} />
-        <TableRowItem title="Phone" value={user.phone} />
-        <TableRowItem
+        <TableRowItem title="First Name" value={user?.name.firstName} />
+        <TableRowItem title="Last Name" value={user?.name.lastName} />
+        <TableRowItem title="Email" value={user?.email} />
+        <TableRowItem title="Phone" value={user?.phone} />
+        {/* <TableRowItem
           title="Birth date"
-          value={format(new Date(user.dateOfBirth), "dd MMM, yyyy")}
-        />
+          value={format(new Date(user?.dateOfBirth), "dd MMM, yyyy")}
+        /> */}
       </TableRow>
     </CustomerDashboardLayout>
   );

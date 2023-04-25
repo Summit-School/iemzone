@@ -6,9 +6,14 @@ import { useFormik } from "formik";
 import { H1, H6 } from "components/Typography";
 import BazaarImage from "components/BazaarImage";
 import BazaarTextField from "components/BazaarTextField";
-import SocialButtons from "./SocialButtons";
+// import SocialButtons from "./SocialButtons";
 import EyeToggleButton from "./EyeToggleButton";
 import { FlexBox, FlexRowCenter } from "components/flex-box";
+import { useDispatch } from "react-redux";
+import { useRouter } from "next/router";
+import { useSnackbar } from "notistack";
+import { login } from "../../../redux/reducers/authentication";
+
 const fbStyle = {
   background: "#3B5998",
   color: "white",
@@ -17,6 +22,7 @@ const googleStyle = {
   background: "#4285F4",
   color: "white",
 };
+
 export const Wrapper = styled(({ children, passwordVisibility, ...rest }) => (
   <Card {...rest}>{children}</Card>
 ))(({ theme, passwordVisibility }) => ({
@@ -44,20 +50,51 @@ export const Wrapper = styled(({ children, passwordVisibility, ...rest }) => (
     marginBottom: 24,
   },
 }));
+
 const Login = () => {
+  const [loading, setLoading] = useState(false);
   const [passwordVisibility, setPasswordVisibility] = useState(false);
   const togglePasswordVisibility = useCallback(() => {
     setPasswordVisibility((visible) => !visible);
   }, []);
-  const handleFormSubmit = async (values) => {
-    console.log(values);
+
+  const dispatch = useDispatch();
+  const navigate = useRouter();
+  const { enqueueSnackbar } = useSnackbar();
+
+  const handleFormSubmit = async () => {
+    let data = {
+      phone: values.phone,
+      password: values.password,
+    };
+    dispatch(login(data), setLoading(true))
+      .then((res) => {
+        if (res.meta.requestStatus === "fulfilled") {
+          enqueueSnackbar(res.payload, {
+            variant: "success",
+          });
+          setLoading(false);
+        }
+        if (res.meta.requestStatus === "rejected") {
+          setLoading(false);
+          enqueueSnackbar(res.payload, {
+            variant: "error",
+          });
+        }
+      })
+      .catch((err) => {
+        console.error(err);
+        setLoading(false);
+      });
   };
+
   const { values, errors, touched, handleBlur, handleChange, handleSubmit } =
     useFormik({
       initialValues,
       onSubmit: handleFormSubmit,
       validationSchema: formSchema,
     });
+
   return (
     <Wrapper elevation={3} passwordVisibility={passwordVisibility}>
       <form onSubmit={handleSubmit}>
@@ -75,17 +112,17 @@ const Login = () => {
         <BazaarTextField
           mb={1.5}
           fullWidth
-          name="email"
+          name="phone"
           size="small"
-          type="email"
+          type="number"
           variant="outlined"
           onBlur={handleBlur}
-          value={values.email}
+          value={values.phone}
           onChange={handleChange}
-          label="Email or Phone Number"
-          placeholder="exmple@mail.com"
-          error={!!touched.email && !!errors.email}
-          helperText={touched.email && errors.email}
+          label="Phone Number"
+          placeholder="+237672491296"
+          error={!!touched.phone && !!errors.phone}
+          helperText={touched.phone && errors.phone}
         />
 
         <BazaarTextField
@@ -121,12 +158,13 @@ const Login = () => {
           sx={{
             height: 44,
           }}
+          onClick={handleFormSubmit}
         >
-          Login
+          {loading ? "Loading..." : "Login"}
         </Button>
       </form>
 
-      <SocialButtons />
+      {/* <SocialButtons /> */}
 
       <FlexRowCenter mt="1.25rem">
         <Box>Don&apos;t have account?</Box>
@@ -155,11 +193,11 @@ const Login = () => {
   );
 };
 const initialValues = {
-  email: "",
+  phone: "",
   password: "",
 };
 const formSchema = yup.object().shape({
   password: yup.string().required("Password is required"),
-  email: yup.string().email("invalid email").required("Email is required"),
+  phone: yup.string().required("Phone number is required"),
 });
 export default Login;
