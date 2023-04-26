@@ -9,7 +9,8 @@ const user =
 
 // user state
 const initialState = {
-  user: user ? user : null
+  user: user ? user : null,
+  userData:{}
 }
 
 // register user function
@@ -50,10 +51,28 @@ export const login = createAsyncThunk(
 )
 
 export const fetchUserData = createAsyncThunk(
-  "profileReducer/read",
+  "authentication/read",
   async (userId, thunkAPI) => {
     try {
       return await authenticationServices.fetchUserData(userId);
+    } catch (error) {
+      const message =
+        (error.response &&
+          error.response.data &&
+          error.response.data.message) ||
+        error.message ||
+        error.toString();
+
+      return thunkAPI.rejectWithValue(message);
+    }
+  }
+)
+
+export const updateUser = createAsyncThunk(
+  "authentication/update",
+  async (data, thunkAPI) => {
+    try {
+      return await authenticationServices.updateUser(data);
     } catch (error) {
       const message =
         (error.response &&
@@ -80,6 +99,13 @@ export const authenticationSlice = createSlice({
       })
       .addCase(register.rejected, (state, action) => {
         state.user = null
+      })
+      .addCase(fetchUserData.fulfilled, (state, action) => {
+        state.userData = action.payload.user
+      })
+      .addCase(updateUser.fulfilled, (state, action)=>{
+        console.log(action.payload)
+        state.user = action.payload.user
       })
   }
 })

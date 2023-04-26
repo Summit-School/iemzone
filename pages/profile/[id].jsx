@@ -16,14 +16,22 @@ import CustomerDashboardLayout from "components/layouts/customer-dashboard";
 import CustomerDashboardNavigation from "components/layouts/customer-dashboard/Navigations";
 import api from "utils/__api__/users";
 // ===========================================================
+import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { useSnackbar } from "notistack";
+import { fetchUserData, updateUser } from "../../redux/reducers/authentication";
+import userId from "utils/userId";
 
-const ProfileEditor = ({ user }) => {
+const ProfileEditor = () => {
   const router = useRouter();
+  const [loading, setLoading] = useState(false);
+  const user = useSelector((state) => state.authentication.userData);
+
   const INITIAL_VALUES = {
     email: user.email || "",
     contact: user.phone || "",
-    last_name: user.name.lastName || "",
-    first_name: user.name.firstName || "",
+    last_name: user.name?.lastName || "",
+    first_name: user.name?.firstName || "",
     birth_date: user.dateOfBirth || new Date(),
   };
   const checkoutSchema = yup.object().shape({
@@ -33,8 +41,55 @@ const ProfileEditor = ({ user }) => {
     contact: yup.string().required("required"),
     birth_date: yup.date().required("invalid date"),
   });
+
+  const { enqueueSnackbar } = useSnackbar();
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    const id = userId();
+    dispatch(fetchUserData(id))
+      .then((res) => {
+        if (res.meta.requestStatus === "rejected") {
+          enqueueSnackbar(res.payload, {
+            variant: "error",
+          });
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }, []);
+
   const handleFormSubmit = async (values) => {
-    console.log(values);
+    const id = userId();
+    let data = {
+      userId: id,
+      firstName: values.first_name,
+      lastName: values.last_name,
+      email: values.email,
+      phone: values.number,
+      dateOfBirth: values.birth_date,
+    };
+    dispatch(updateUser(data), setLoading(true))
+      .then((res) => {
+        if (res.meta.requestStatus === "fulfilled") {
+          enqueueSnackbar(res.payload, {
+            variant: "Success",
+          });
+          dispatch(fetchUserData(id));
+          setLoading(false);
+        }
+        if (res.meta.requestStatus === "rejected") {
+          setLoading(false);
+          enqueueSnackbar(res.payload, {
+            variant: "error",
+          });
+        }
+      })
+      .catch((err) => {
+        console.error(err);
+        setLoading(false);
+      });
   };
 
   // SECTION TITLE HEADER LINK
@@ -206,8 +261,13 @@ const ProfileEditor = ({ user }) => {
                 </Grid>
               </Box>
 
-              <Button type="submit" variant="contained" color="primary">
-                Save Changes
+              <Button
+                type="submit"
+                variant="contained"
+                color="primary"
+                onClick={handleFormSubmit}
+              >
+                {loading ? "Loading..." : " Save Changes"}
               </Button>
             </form>
           )}

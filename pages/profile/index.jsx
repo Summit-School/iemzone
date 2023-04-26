@@ -29,14 +29,11 @@ const Profile = () => {
   const downMd = useMediaQuery((theme) => theme.breakpoints.down("md"));
 
   const user = useSelector((state) => state.authentication.userData);
-  console.log(user);
-
-  const dispatch = useDispatch();
   const { enqueueSnackbar } = useSnackbar();
+  const dispatch = useDispatch();
 
   useEffect(() => {
     const id = userId();
-
     dispatch(fetchUserData(id))
       .then((res) => {
         if (res.meta.requestStatus === "rejected") {
@@ -46,7 +43,7 @@ const Profile = () => {
         }
       })
       .catch((err) => {
-        toast.error(err);
+        console.log(err);
       });
   }, []);
 
@@ -55,7 +52,7 @@ const Profile = () => {
     <Button
       color="primary"
       LinkComponent={Link}
-      href={`/profile/${user?.id}`}
+      href={`/profile/${user?._id}`}
       sx={{
         px: 4,
         bgcolor: "primary.light",
@@ -115,7 +112,7 @@ const Profile = () => {
               <Box ml={1.5} flex="1 1 0">
                 <FlexBetween flexWrap="wrap">
                   <div>
-                    <H5 my="0px">{`${user?.name.firstName} ${user?.name.lastName}`}</H5>
+                    <H5 my="0px">{`${user?.name?.firstName} ${user?.name?.lastName}`}</H5>
                     <FlexBox alignItems="center">
                       <Typography color="grey.600">Balance:</Typography>
                       <Typography ml={0.5} color="primary.main">
@@ -171,8 +168,8 @@ const Profile = () => {
           }),
         }}
       >
-        <TableRowItem title="First Name" value={user?.name.firstName} />
-        <TableRowItem title="Last Name" value={user?.name.lastName} />
+        <TableRowItem title="First Name" value={user?.name?.firstName} />
+        <TableRowItem title="Last Name" value={user?.name?.lastName} />
         <TableRowItem title="Email" value={user?.email} />
         <TableRowItem title="Phone" value={user?.phone} />
         {/* <TableRowItem

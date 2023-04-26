@@ -30,10 +30,20 @@ const fetchUserData = async (userId) => {
   return response.data;
 };
 
+const updateUser = async (data) => {
+  const response = await axios.put(`${URL}/update-user/${data.userId}`, data,{
+    headers: {
+      'Content-Type': 'application/json'
+    }
+  });
+  return response.data;
+};
+
 const authenticationServices = {
   register,
   login,
-  fetchUserData
+  fetchUserData,
+  updateUser
 }
 
 export default authenticationServices
