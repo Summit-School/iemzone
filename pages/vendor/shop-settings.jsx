@@ -222,7 +222,7 @@ export default function ShopSettings() {
                   title="Shop profile picture (360 x 360) *"
                   imageSize="We had to limit height to maintian consistancy. Some device both side of the banner might cropped for height limitation."
                 />
-                <img src={profilePicture[0].name} alt="" />
+                <span>{profilePicture && profilePicture[0].name}</span>
 
                 <DropZone
                   onChange={(files) => setCoverPicture(files)}
@@ -230,7 +230,7 @@ export default function ShopSettings() {
                   imageSize="We had
                    to limit height to maintian consistancy. Some device both side of the banner might cropped for height limitation."
                 />
-                <img src={coverPicture} alt="" />
+                <span>{coverPicture && coverPicture[0].name}</span>
 
                 {/* <TextField
             select
