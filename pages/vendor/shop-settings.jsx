@@ -17,20 +17,22 @@ import { FlexBox } from "components/flex-box";
 import { H3, Paragraph } from "components/Typography";
 import VendorDashboardLayout from "components/layouts/vendor-dashboard";
 const INITIAL_VALUES = {
-  order: 10,
-  category: "fashion",
   shopName: "The Icon Style",
+  shopSlug: "The number one Icon",
   shopPhone: "+123 4567 8910",
+  shopEmail: "shop@example.com",
   shopAddress: "4990 Hide A Way Road Santa Clara, CA 95050.",
-  description: `There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour, or randomised words which don't look even slightly believable.`,
+  shopFacebookLink: "https://www.facebook.com/",
+  shopTwitterLink: "https://twitter.com/",
+  shopYoutubeLink: "https://www.youtube.com/",
+  shopInstagramLink: "https://www.instagram.com/",
 };
 const validationSchema = Yup.object().shape({
   shopName: Yup.string().required("Shop Name is required!"),
+  shopSlug: Yup.string().required("Shop Slug is required!"),
+  shopEmail: Yup.string().required("Shop Email is required!"),
   shopPhone: Yup.string().required("Shop Phone is required!"),
-  category: Yup.string().required("Category is required!"),
-  description: Yup.string().required("Description is required!"),
   shopAddress: Yup.string().required("Shop Address is required!"),
-  order: Yup.number().required("Orders is required!"),
 });
 
 // =============================================================================
@@ -40,25 +42,31 @@ ShopSettings.getLayout = function getLayout(page) {
 // =============================================================================
 
 export default function ShopSettings() {
-  const [links, setLinks] = useState([
-    {
-      id: 1,
-      name: "Links",
-      value: "https://www.productbanner.com",
-    },
-  ]);
-  const handleAddLink = () => {
-    const newLink = {
-      id: Date.now(),
-      name: "Links",
-      value: "https://www.google.com",
-    };
-    setLinks((state) => [...state, newLink]);
+  // const [links, setLinks] = useState([
+  //   {
+  //     id: 1,
+  //     name: "Links",
+  //     value: "https://www.productbanner.com",
+  //   },
+  // ]);
+  // const handleAddLink = () => {
+  //   const newLink = {
+  //     id: Date.now(),
+  //     name: "Links",
+  //     value: "https://www.google.com",
+  //   };
+  //   setLinks((state) => [...state, newLink]);
+  // };
+  // const handleDeleteLink = (id) => () => {
+  //   setLinks((state) => state.filter((item) => item.id !== id));
+  // };
+  const [profilePicture, setProfilePicture] = useState(null);
+  const [coverPicture, setCoverPicture] = useState(null);
+
+  const handleFormSubmit = (values) => {
+    console.log("form data", values, profilePicture, coverPicture);
   };
-  const handleDeleteLink = (id) => () => {
-    setLinks((state) => state.filter((item) => item.id !== id));
-  };
-  const handleFormSubmit = (values) => {};
+
   return (
     <Box py={4} maxWidth={740} margin="auto">
       <H3 mb={2}>Shop Settings</H3>
@@ -102,6 +110,18 @@ export default function ShopSettings() {
                 <TextField
                   color="info"
                   size="medium"
+                  name="shopSlug"
+                  label="Slug *"
+                  onBlur={handleBlur}
+                  value={values.shopSlug}
+                  onChange={handleChange}
+                  error={Boolean(errors.shopSlug && touched.shopSlug)}
+                  helperText={touched.shopSlug && errors.shopSlug}
+                />
+
+                <TextField
+                  color="info"
+                  size="medium"
                   name="shopPhone"
                   label="Shop Phone"
                   onBlur={handleBlur}
@@ -112,6 +132,30 @@ export default function ShopSettings() {
                 />
 
                 <TextField
+                  color="info"
+                  size="medium"
+                  name="shopEmail"
+                  label="Email"
+                  onBlur={handleBlur}
+                  onChange={handleChange}
+                  value={values.shopEmail}
+                  error={Boolean(errors.shopEmail && touched.shopEmail)}
+                  helperText={touched.shopEmail && errors.shopEmail}
+                />
+
+                <TextField
+                  color="info"
+                  size="medium"
+                  name="shopAddress"
+                  label="Shop Address"
+                  onBlur={handleBlur}
+                  onChange={handleChange}
+                  value={values.shopAddress}
+                  error={Boolean(errors.shopAddress && touched.shopAddress)}
+                  helperText={touched.shopAddress && errors.shopAddress}
+                />
+
+                {/* <TextField
                   select
                   fullWidth
                   color="info"
@@ -127,9 +171,9 @@ export default function ShopSettings() {
                 >
                   <MenuItem value="electronics">Electronics</MenuItem>
                   <MenuItem value="fashion">Fashion</MenuItem>
-                </TextField>
+                </TextField> */}
 
-                <TextField
+                {/* <TextField
                   rows={6}
                   multiline
                   fullWidth
@@ -142,21 +186,9 @@ export default function ShopSettings() {
                   label="Description (optional)"
                   error={Boolean(errors.description && touched.description)}
                   helperText={touched.description && errors.description}
-                />
+                /> */}
 
-                <TextField
-                  color="info"
-                  size="medium"
-                  name="shopAddress"
-                  label="Shop Address"
-                  onBlur={handleBlur}
-                  onChange={handleChange}
-                  value={values.shopAddress}
-                  error={Boolean(errors.shopAddress && touched.shopAddress)}
-                  helperText={touched.shopAddress && errors.shopAddress}
-                />
-
-                <TextField
+                {/* <TextField
                   name="order"
                   color="info"
                   size="medium"
@@ -167,34 +199,40 @@ export default function ShopSettings() {
                   onChange={handleChange}
                   error={Boolean(errors.order && touched.order)}
                   helperText={touched.order && errors.order}
-                />
+                /> */}
               </Stack>
 
-              <Button type="submit" color="info" variant="contained">
+              {/* <Button type="submit" color="info" variant="contained">
                 Save Changes
-              </Button>
-            </form>
-          )}
-        </Formik>
+              </Button> */}
 
-        <Divider
-          sx={{
-            my: 4,
-          }}
-        />
+              <Divider
+                sx={{
+                  my: 4,
+                }}
+              />
 
-        <Paragraph fontWeight={700} mb={2}>
-          Shop Page Settings
-        </Paragraph>
+              <Paragraph fontWeight={700} mb={2}>
+                Shop Page Settings
+              </Paragraph>
 
-        <Stack spacing={3} mb={3}>
-          <DropZone
-            onChange={(files) => console.log(files)}
-            title="Main Banner (1920 x 360) *"
-            imageSize="We had to limit height to maintian consistancy. Some device both side of the banner might cropped for height limitation."
-          />
+              <Stack spacing={3} mb={3}>
+                <DropZone
+                  onChange={(files) => setProfilePicture(files)}
+                  title="Shop profile picture (360 x 360) *"
+                  imageSize="We had to limit height to maintian consistancy. Some device both side of the banner might cropped for height limitation."
+                />
+                <img src={profilePicture[0].name} alt="" />
 
-          <TextField
+                <DropZone
+                  onChange={(files) => setCoverPicture(files)}
+                  title="Shop page banner * (Recommended size 1025x120)"
+                  imageSize="We had
+                   to limit height to maintian consistancy. Some device both side of the banner might cropped for height limitation."
+                />
+                <img src={coverPicture} alt="" />
+
+                {/* <TextField
             select
             fullWidth
             color="info"
@@ -206,16 +244,10 @@ export default function ShopSettings() {
           >
             <MenuItem value="electronics">Electronics</MenuItem>
             <MenuItem value="fashion">Fashion</MenuItem>
-          </TextField>
+          </TextField> */}
+              </Stack>
 
-          <DropZone
-            onChange={(files) => console.log(files)}
-            title="All products page banner * (Recommended size 1025x120)"
-            imageSize="We had to limit height to maintian consistancy. Some device both side of the banner might cropped for height limitation."
-          />
-        </Stack>
-
-        <Box mb={4}>
+              {/* <Box mb={4}>
           {links.map((item) => (
             <FlexBox gap={2} alignItems="center" mb={2} key={item.id}>
               <TextField
@@ -241,11 +273,74 @@ export default function ShopSettings() {
           <Button color="info" variant="outlined" onClick={handleAddLink}>
             Add Link
           </Button>
-        </Box>
+        </Box> */}
 
-        <Button color="info" variant="contained">
-          Save Changes
-        </Button>
+              <Divider
+                sx={{
+                  my: 4,
+                }}
+              />
+
+              <Paragraph fontWeight={700} mb={2}>
+                Social Links
+              </Paragraph>
+
+              <Paragraph fontWeight={700} mb={4}>
+                <TextField
+                  fullWidth
+                  color="info"
+                  size="medium"
+                  label="Facebook"
+                  defaultValue={values.shopFacebookLink}
+                  onBlur={handleBlur}
+                  onChange={handleChange}
+                />
+              </Paragraph>
+              <Paragraph fontWeight={700} mb={4}>
+                <TextField
+                  fullWidth
+                  color="info"
+                  size="medium"
+                  label="Twitter"
+                  defaultValue={values.shopTwitterLink}
+                  onBlur={handleBlur}
+                  onChange={handleChange}
+                />
+              </Paragraph>
+              <Paragraph fontWeight={700} mb={4}>
+                <TextField
+                  fullWidth
+                  color="info"
+                  size="medium"
+                  label="Youtube"
+                  defaultValue={values.shopYoutubeLink}
+                  onBlur={handleBlur}
+                  onChange={handleChange}
+                />
+              </Paragraph>
+              <Paragraph fontWeight={700} mb={4}>
+                <TextField
+                  fullWidth
+                  color="info"
+                  size="medium"
+                  label="Instagram"
+                  defaultValue={values.shopInstagramLink}
+                  onBlur={handleBlur}
+                  onChange={handleChange}
+                />
+              </Paragraph>
+
+              <Button
+                color="info"
+                variant="contained"
+                type="submit"
+                onClick={handleFormSubmit}
+              >
+                Save Changes
+              </Button>
+            </form>
+          )}
+        </Formik>
       </Card>
     </Box>
   );

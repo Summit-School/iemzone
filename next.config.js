@@ -8,6 +8,9 @@ module.exports = {
     theme: "DEFAULT",
     currency: "USD",
   },
+  images: {
+    unoptimized: true
+  },
 };
 
 // const withBundleAnalyzer = require("@next/bundle-analyzer")({

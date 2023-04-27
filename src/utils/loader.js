@@ -4,3 +4,4 @@ import { lazy, Suspense } from "react";
 //   suspense: true,
 // });
 export const MyContext = lazy(() => import("../contexts/ThemeContext"));
+
