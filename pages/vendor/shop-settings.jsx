@@ -16,16 +16,22 @@ import DropZone from "components/DropZone";
 import { FlexBox } from "components/flex-box";
 import { H3, Paragraph } from "components/Typography";
 import VendorDashboardLayout from "components/layouts/vendor-dashboard";
+// ####################################################################
+import userId from "../../src/utils/userId";
+import { useDispatch } from "react-redux";
+import { useSnackbar } from "notistack";
+import { createShop } from "../../redux/reducers/shop";
+
 const INITIAL_VALUES = {
-  shopName: "The Icon Style",
-  shopSlug: "The number one Icon",
-  shopPhone: "+123 4567 8910",
-  shopEmail: "shop@example.com",
-  shopAddress: "4990 Hide A Way Road Santa Clara, CA 95050.",
-  shopFacebookLink: "https://www.facebook.com/",
-  shopTwitterLink: "https://twitter.com/",
-  shopYoutubeLink: "https://www.youtube.com/",
-  shopInstagramLink: "https://www.instagram.com/",
+  shopName: "",
+  shopSlug: "",
+  shopPhone: "",
+  shopEmail: "",
+  shopAddress: "",
+  shopFacebookLink: "",
+  shopTwitterLink: "",
+  shopYoutubeLink: "",
+  shopInstagramLink: "",
 };
 const validationSchema = Yup.object().shape({
   shopName: Yup.string().required("Shop Name is required!"),
@@ -60,11 +66,49 @@ export default function ShopSettings() {
   // const handleDeleteLink = (id) => () => {
   //   setLinks((state) => state.filter((item) => item.id !== id));
   // };
+  const [loading, setLoading] = useState(false);
   const [profilePicture, setProfilePicture] = useState(null);
   const [coverPicture, setCoverPicture] = useState(null);
+  const id = userId();
+
+  const dispatch = useDispatch();
+  const { enqueueSnackbar } = useSnackbar();
 
   const handleFormSubmit = (values) => {
-    console.log("form data", values, profilePicture, coverPicture);
+    let data = {
+      userId: id,
+      name: values.shopName,
+      slug: values.shopSlug,
+      phone: values.shopPhone,
+      email: values.shopEmail,
+      address: values.shopAddress,
+      facebook: values.shopFacebookLink,
+      twitter: values.shopTwitterLink,
+      youtube: values.shopYoutubeLink,
+      instagram: values.shopInstagramLink,
+      profilePicture: profilePicture,
+      coverPicture: coverPicture,
+    };
+    dispatch(createShop(data), setLoading(true))
+      .then((res) => {
+        console.log("response", res);
+        if (res.meta.requestStatus === "fulfilled") {
+          enqueueSnackbar(res.payload, {
+            variant: "success",
+          });
+          setLoading(false);
+        }
+        if (res.meta.requestStatus === "rejected") {
+          setLoading(false);
+          enqueueSnackbar(res.payload, {
+            variant: "error",
+          });
+        }
+      })
+      .catch((err) => {
+        console.error(err);
+        setLoading(false);
+      });
   };
 
   return (
@@ -222,7 +266,9 @@ export default function ShopSettings() {
                   title="Shop profile picture (360 x 360) *"
                   imageSize="We had to limit height to maintian consistancy. Some device both side of the banner might cropped for height limitation."
                 />
-                <span>{profilePicture && profilePicture[0].name}</span>
+                <Paragraph fontWeight={700}>
+                  {profilePicture && profilePicture[0].name}
+                </Paragraph>
 
                 <DropZone
                   onChange={(files) => setCoverPicture(files)}
@@ -230,7 +276,9 @@ export default function ShopSettings() {
                   imageSize="We had
                    to limit height to maintian consistancy. Some device both side of the banner might cropped for height limitation."
                 />
-                <span>{coverPicture && coverPicture[0].name}</span>
+                <Paragraph fontWeight={700}>
+                  {coverPicture && coverPicture[0].name}
+                </Paragraph>
 
                 {/* <TextField
             select
@@ -292,6 +340,7 @@ export default function ShopSettings() {
                   size="medium"
                   label="Facebook"
                   defaultValue={values.shopFacebookLink}
+                  placeholder="https://www.facebook.com"
                   onBlur={handleBlur}
                   onChange={handleChange}
                 />
@@ -303,6 +352,7 @@ export default function ShopSettings() {
                   size="medium"
                   label="Twitter"
                   defaultValue={values.shopTwitterLink}
+                  placeholder="https://www.twitter.com"
                   onBlur={handleBlur}
                   onChange={handleChange}
                 />
@@ -314,6 +364,7 @@ export default function ShopSettings() {
                   size="medium"
                   label="Youtube"
                   defaultValue={values.shopYoutubeLink}
+                  placeholder="https://www.youtube.com"
                   onBlur={handleBlur}
                   onChange={handleChange}
                 />
@@ -325,6 +376,7 @@ export default function ShopSettings() {
                   size="medium"
                   label="Instagram"
                   defaultValue={values.shopInstagramLink}
+                  placeholder="https://www.instagram.com"
                   onBlur={handleBlur}
                   onChange={handleChange}
                 />
@@ -336,7 +388,7 @@ export default function ShopSettings() {
                 type="submit"
                 onClick={handleFormSubmit}
               >
-                Save Changes
+                {loading ? "Loading..." : "Save Changes"}
               </Button>
             </form>
           )}
