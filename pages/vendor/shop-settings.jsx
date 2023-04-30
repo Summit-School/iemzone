@@ -47,6 +47,8 @@ ShopSettings.getLayout = function getLayout(page) {
 };
 // =============================================================================
 
+const validFileTypes = ["image/jpg", "image/png", "image/jpeg"];
+
 export default function ShopSettings() {
   // const [links, setLinks] = useState([
   //   {
@@ -75,40 +77,50 @@ export default function ShopSettings() {
   const { enqueueSnackbar } = useSnackbar();
 
   const handleFormSubmit = (values) => {
-    let data = {
-      userId: id,
-      name: values.shopName,
-      slug: values.shopSlug,
-      phone: values.shopPhone,
-      email: values.shopEmail,
-      address: values.shopAddress,
-      facebook: values.shopFacebookLink,
-      twitter: values.shopTwitterLink,
-      youtube: values.shopYoutubeLink,
-      instagram: values.shopInstagramLink,
-      profilePicture: profilePicture,
-      coverPicture: coverPicture,
-    };
-    dispatch(createShop(data), setLoading(true))
-      .then((res) => {
-        console.log("response", res);
-        if (res.meta.requestStatus === "fulfilled") {
-          enqueueSnackbar(res.payload, {
-            variant: "success",
-          });
-          setLoading(false);
-        }
-        if (res.meta.requestStatus === "rejected") {
-          setLoading(false);
-          enqueueSnackbar(res.payload, {
-            variant: "error",
-          });
-        }
-      })
-      .catch((err) => {
-        console.error(err);
-        setLoading(false);
+    if (
+      !validFileTypes.find(
+        (type) => type === profilePicture.type && coverPicture.type
+      )
+    ) {
+      return enqueueSnackbar(res.payload, {
+        variant: "File must be JPG/PNG format",
       });
+    } else {
+      let form = new FormData();
+      form.append("userId", id);
+      form.append("name", values.shopName);
+      form.append("slug", values.shopSlug);
+      form.append("phone", values.shopPhone);
+      form.append("email", values.shopEmail);
+      form.append("address", values.shopAddress);
+      form.append("facebook", values.shopFacebookLink);
+      form.append("twitter", values.shopTwitterLink);
+      form.append("youtube", values.shopYoutubeLink);
+      form.append("instagram", values.shopInstagramLink);
+      form.append("profilePicture", profilePicture);
+      form.append("coverPicture", coverPicture);
+
+      dispatch(createShop(form), setLoading(true))
+        .then((res) => {
+          console.log("response", res);
+          if (res.meta.requestStatus === "fulfilled") {
+            enqueueSnackbar(res.payload, {
+              variant: "success",
+            });
+            setLoading(false);
+          }
+          if (res.meta.requestStatus === "rejected") {
+            setLoading(false);
+            enqueueSnackbar(res.payload, {
+              variant: "error",
+            });
+          }
+        })
+        .catch((err) => {
+          console.error(err);
+          setLoading(false);
+        });
+    }
   };
 
   return (
@@ -167,7 +179,7 @@ export default function ShopSettings() {
                   color="info"
                   size="medium"
                   name="shopPhone"
-                  label="Shop Phone"
+                  label="Shop Phone *"
                   onBlur={handleBlur}
                   onChange={handleChange}
                   value={values.shopPhone}
@@ -179,7 +191,7 @@ export default function ShopSettings() {
                   color="info"
                   size="medium"
                   name="shopEmail"
-                  label="Email"
+                  label="Email *"
                   onBlur={handleBlur}
                   onChange={handleChange}
                   value={values.shopEmail}
@@ -191,7 +203,7 @@ export default function ShopSettings() {
                   color="info"
                   size="medium"
                   name="shopAddress"
-                  label="Shop Address"
+                  label="Shop Address *"
                   onBlur={handleBlur}
                   onChange={handleChange}
                   value={values.shopAddress}
@@ -244,40 +256,34 @@ export default function ShopSettings() {
                   error={Boolean(errors.order && touched.order)}
                   helperText={touched.order && errors.order}
                 /> */}
-              </Stack>
 
-              {/* <Button type="submit" color="info" variant="contained">
-                Save Changes
-              </Button> */}
+                <Divider
+                  sx={{
+                    my: 4,
+                  }}
+                />
 
-              <Divider
-                sx={{
-                  my: 4,
-                }}
-              />
+                <Paragraph fontWeight={700} mb={2}>
+                  Shop Page Settings
+                </Paragraph>
 
-              <Paragraph fontWeight={700} mb={2}>
-                Shop Page Settings
-              </Paragraph>
-
-              <Stack spacing={3} mb={3}>
                 <DropZone
-                  onChange={(files) => setProfilePicture(files)}
+                  onChange={(files) => setProfilePicture(files[0])}
                   title="Shop profile picture (360 x 360) *"
                   imageSize="We had to limit height to maintian consistancy. Some device both side of the banner might cropped for height limitation."
                 />
                 <Paragraph fontWeight={700}>
-                  {profilePicture && profilePicture[0].name}
+                  {profilePicture && profilePicture.name}
                 </Paragraph>
 
                 <DropZone
-                  onChange={(files) => setCoverPicture(files)}
+                  onChange={(files) => setCoverPicture(files[0])}
                   title="Shop page banner * (Recommended size 1025x120)"
                   imageSize="We had
                    to limit height to maintian consistancy. Some device both side of the banner might cropped for height limitation."
                 />
                 <Paragraph fontWeight={700}>
-                  {coverPicture && coverPicture[0].name}
+                  {coverPicture && coverPicture.name}
                 </Paragraph>
 
                 {/* <TextField
@@ -293,9 +299,8 @@ export default function ShopSettings() {
             <MenuItem value="electronics">Electronics</MenuItem>
             <MenuItem value="fashion">Fashion</MenuItem>
           </TextField> */}
-              </Stack>
 
-              {/* <Box mb={4}>
+                {/* <Box mb={4}>
           {links.map((item) => (
             <FlexBox gap={2} alignItems="center" mb={2} key={item.id}>
               <TextField
@@ -323,73 +328,65 @@ export default function ShopSettings() {
           </Button>
         </Box> */}
 
-              <Divider
-                sx={{
-                  my: 4,
-                }}
-              />
+                <Divider
+                  sx={{
+                    my: 4,
+                  }}
+                />
 
-              <Paragraph fontWeight={700} mb={2}>
-                Social Links
-              </Paragraph>
+                <Paragraph fontWeight={700} mb={2}>
+                  Social Links
+                </Paragraph>
 
-              <Paragraph fontWeight={700} mb={4}>
-                <TextField
-                  fullWidth
-                  color="info"
-                  size="medium"
-                  label="Facebook"
-                  defaultValue={values.shopFacebookLink}
-                  placeholder="https://www.facebook.com"
-                  onBlur={handleBlur}
-                  onChange={handleChange}
-                />
-              </Paragraph>
-              <Paragraph fontWeight={700} mb={4}>
-                <TextField
-                  fullWidth
-                  color="info"
-                  size="medium"
-                  label="Twitter"
-                  defaultValue={values.shopTwitterLink}
-                  placeholder="https://www.twitter.com"
-                  onBlur={handleBlur}
-                  onChange={handleChange}
-                />
-              </Paragraph>
-              <Paragraph fontWeight={700} mb={4}>
-                <TextField
-                  fullWidth
-                  color="info"
-                  size="medium"
-                  label="Youtube"
-                  defaultValue={values.shopYoutubeLink}
-                  placeholder="https://www.youtube.com"
-                  onBlur={handleBlur}
-                  onChange={handleChange}
-                />
-              </Paragraph>
-              <Paragraph fontWeight={700} mb={4}>
-                <TextField
-                  fullWidth
-                  color="info"
-                  size="medium"
-                  label="Instagram"
-                  defaultValue={values.shopInstagramLink}
-                  placeholder="https://www.instagram.com"
-                  onBlur={handleBlur}
-                  onChange={handleChange}
-                />
-              </Paragraph>
+                <Paragraph fontWeight={700} mb={4}>
+                  <TextField
+                    fullWidth
+                    color="info"
+                    size="medium"
+                    label="Facebook"
+                    onBlur={handleBlur}
+                    onChange={handleChange}
+                    placeholder="https://www.facebook.com"
+                  />
+                </Paragraph>
+                <Paragraph fontWeight={700} mb={4}>
+                  <TextField
+                    fullWidth
+                    color="info"
+                    size="medium"
+                    label="Twitter"
+                    onBlur={handleBlur}
+                    onChange={handleChange}
+                    placeholder="https://www.twitter.com"
+                  />
+                </Paragraph>
+                <Paragraph fontWeight={700} mb={4}>
+                  <TextField
+                    fullWidth
+                    color="info"
+                    size="medium"
+                    label="Youtube"
+                    onBlur={handleBlur}
+                    onChange={handleChange}
+                    placeholder="https://www.youtube.com"
+                  />
+                </Paragraph>
+                <Paragraph fontWeight={700} mb={4}>
+                  <TextField
+                    fullWidth
+                    color="info"
+                    size="medium"
+                    label="Instagram"
+                    onBlur={handleBlur}
+                    onChange={handleChange}
+                    placeholder="https://www.instagram.com"
+                  />
+                </Paragraph>
 
-              <Button
-                color="info"
-                variant="contained"
-                type="submit"
-                onClick={handleFormSubmit}
-              >
-                {loading ? "Loading..." : "Save Changes"}
-              </Button>
+                <Button color="info" variant="contained" type="submit">
+                  {loading ? "Loading..." : "Save Changes"}
+                </Button>
+              </Stack>
             </form>
           )}
         </Formik>
