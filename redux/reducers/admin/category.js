@@ -23,6 +23,24 @@ export const createCategory = createAsyncThunk(
   }
 )
 
+export const userCategories = createAsyncThunk(
+  'categories/userCategories',
+  async (userId, thunkAPI) => {
+    try {
+      return await categoryServices.userCategories(userId)
+    } catch (error) {
+      const message =
+        (error.response &&
+          error.response.data &&
+          error.response.data.message) ||
+        error.message ||
+        error.toString()
+
+      return thunkAPI.rejectWithValue(message)
+    }
+  }
+)
+
 export const categorySlice = createSlice({
   name: 'categories',
   initialState,
@@ -31,7 +49,7 @@ export const categorySlice = createSlice({
   },
   extraReducers: builder => {
     builder
-      .addCase(createCategory.fulfilled, (state, action) => {
+      .addCase(userCategories.fulfilled, (state, action) => {
         state.categories = action.payload
       })
   }

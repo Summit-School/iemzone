@@ -15,14 +15,14 @@ import { useRouter } from "next/router";
 // ========================================================================
 
 const CategoryRow = ({ item, selected }) => {
-  const { image, name, level, featured, id, slug } = item;
+  const { image, name, description, featured, id, slug, parent } = item;
   const router = useRouter();
   const [featuredCategory, setFeaturedCategory] = useState(featured);
   const isItemSelected = selected.indexOf(name) !== -1;
   const handleNavigate = () => router.push(`/admin/categories/${slug}`);
   return (
     <StyledTableRow tabIndex={-1} role="checkbox" selected={isItemSelected}>
-      <StyledTableCell align="left">#{id.split("-")[0]}</StyledTableCell>
+      <StyledTableCell align="left">#{id}</StyledTableCell>
 
       <StyledTableCell align="left">
         <CategoryWrapper>{name}</CategoryWrapper>
@@ -30,14 +30,16 @@ const CategoryRow = ({ item, selected }) => {
 
       <StyledTableCell align="left">
         <Avatar
-          src={image}
+          src={`${process.env.NEXT_PUBLIC_ENDPOINT}/${image}`}
           sx={{
             borderRadius: "8px",
           }}
         />
       </StyledTableCell>
 
-      <StyledTableCell align="left">{level}</StyledTableCell>
+      <StyledTableCell align="left">{description}</StyledTableCell>
+
+      <StyledTableCell align="left">{parent}</StyledTableCell>
 
       <StyledTableCell align="left">
         <BazaarSwitch

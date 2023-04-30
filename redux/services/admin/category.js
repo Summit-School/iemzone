@@ -12,8 +12,14 @@ const createCategory = async (data) => {
   return response.data;
 };
 
+const userCategories = async (userId) => {
+  const response = await axios.get(`${URL}/user-categories/${userId}`);
+  return response.data;
+};
+
 const categoryServices = {
   createCategory,
+  userCategories
 };
 
 export default categoryServices;

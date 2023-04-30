@@ -10,6 +10,12 @@ import useMuiTable from "hooks/useMuiTable";
 import Scrollbar from "components/Scrollbar";
 import { CategoryRow } from "pages-sections/admin";
 import api from "utils/__api__/dashboard";
+// ============================================================================
+import { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { useSnackbar } from "notistack";
+import { userCategories } from "../../../redux/reducers/admin/category";
+import userId from "utils/userId";
 
 // TABLE HEADING DATA LIST
 const tableHeading = [
@@ -29,8 +35,13 @@ const tableHeading = [
     align: "left",
   },
   {
-    id: "level",
-    label: "Level",
+    id: "description",
+    label: "Description",
+    align: "left",
+  },
+  {
+    id: "parent-category",
+    label: "Parent Category",
     align: "left",
   },
   {
@@ -54,16 +65,38 @@ CategoryList.getLayout = function getLayout(page) {
 // =============================================================================
 
 export default function CategoryList(props) {
-  const { categories } = props;
+  // const { categories } = props;
+  const userCats = useSelector((state) => state.categories.categories);
+  console.log("cats", userCats);
+  const { enqueueSnackbar } = useSnackbar();
+  const dispatch = useDispatch();
+
+  const categories = userCats.categories;
+
+  useEffect(() => {
+    const id = userId();
+    dispatch(userCategories(id))
+      .then((res) => {
+        if (res.meta.requestStatus === "rejected") {
+          enqueueSnackbar(res.payload, {
+            variant: "error",
+          });
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }, []);
 
   // RESHAPE THE PRODUCT LIST BASED TABLE HEAD CELL ID
-  const filteredCategories = categories.map((item) => ({
-    id: item.id,
+  const filteredCategories = categories?.map((item) => ({
+    id: item._id,
     name: item.name,
     slug: item.slug,
     image: item.image,
     featured: item.featured,
-    level: Math.ceil(Math.random() * 1),
+    description: item.description,
+    parent: item.parent[0],
   }));
   const {
     order,

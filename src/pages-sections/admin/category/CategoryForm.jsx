@@ -15,7 +15,7 @@ import BazaarImage from "components/BazaarImage";
 import { UploadImageBox, StyledClear } from "../StyledComponents";
 
 // ================================================================
-import userId from "../../../../src/utils/userId";
+import userId from "utils/userId";
 import { useDispatch } from "react-redux";
 import { useSnackbar } from "notistack";
 import { createCategory } from "../../../../redux/reducers/admin/category";
@@ -42,7 +42,6 @@ const CategoryForm = (props) => {
   };
 
   const handleFormSubmit = (values) => {
-    console.log("category test", values);
     if (files.length === 0) {
       return enqueueSnackbar("Image is required", {
         variant: "error",
@@ -50,6 +49,7 @@ const CategoryForm = (props) => {
     } else {
       const image = files[0];
       let form = new FormData();
+      form.append("userId", id);
       form.append("name", values.name);
       form.append("slug", values.slug);
       form.append("image", image);
