@@ -82,8 +82,8 @@ export default function ShopSettings() {
         (type) => type === profilePicture.type && coverPicture.type
       )
     ) {
-      return enqueueSnackbar(res.payload, {
-        variant: "File must be JPG/PNG format",
+      return enqueueSnackbar("File must be JPG/PNG format", {
+        variant: "error",
       });
     } else {
       let form = new FormData();
@@ -102,7 +102,6 @@ export default function ShopSettings() {
 
       dispatch(createShop(form), setLoading(true))
         .then((res) => {
-          console.log("response", res);
           if (res.meta.requestStatus === "fulfilled") {
             enqueueSnackbar(res.payload, {
               variant: "success",

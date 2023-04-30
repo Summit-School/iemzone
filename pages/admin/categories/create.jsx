@@ -14,6 +14,8 @@ CreateCategory.getLayout = function getLayout(page) {
 export default function CreateCategory() {
   const INITIAL_VALUES = {
     name: "",
+    slug: "",
+    description: "",
     parent: [],
     featured: false,
   };
@@ -21,8 +23,10 @@ export default function CreateCategory() {
   // form field validation schema
   const validationSchema = yup.object().shape({
     name: yup.string().required("required"),
+    slug: yup.string().required("required"),
+    description: yup.string().required("required"),
   });
-  const handleFormSubmit = () => {};
+
   return (
     <Box py={4}>
       <H3 mb={2}>Create Category</H3>
@@ -30,7 +34,6 @@ export default function CreateCategory() {
       <CategoryForm
         initialValues={INITIAL_VALUES}
         validationSchema={validationSchema}
-        handleFormSubmit={handleFormSubmit}
       />
     </Box>
   );

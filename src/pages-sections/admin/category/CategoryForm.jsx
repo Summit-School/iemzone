@@ -15,12 +15,21 @@ import BazaarImage from "components/BazaarImage";
 import { UploadImageBox, StyledClear } from "../StyledComponents";
 
 // ================================================================
+import userId from "../../../../src/utils/userId";
+import { useDispatch } from "react-redux";
+import { useSnackbar } from "notistack";
+import { createCategory } from "../../../../redux/reducers/admin/category";
 
 // ================================================================
 
 const CategoryForm = (props) => {
-  const { initialValues, validationSchema, handleFormSubmit } = props;
+  const { initialValues, validationSchema } = props;
+  const [loading, setLoading] = useState(false);
   const [files, setFiles] = useState([]);
+  const id = userId();
+
+  const dispatch = useDispatch();
+  const { enqueueSnackbar } = useSnackbar();
 
   // HANDLE UPDATE NEW IMAGE VIA DROP ZONE
   const handleChangeDropZone = (files) => {
@@ -32,10 +41,49 @@ const CategoryForm = (props) => {
     setFiles(files);
   };
 
+  const handleFormSubmit = (values) => {
+    console.log("category test", values);
+    if (files.length === 0) {
+      return enqueueSnackbar("Image is required", {
+        variant: "error",
+      });
+    } else {
+      const image = files[0];
+      let form = new FormData();
+      form.append("name", values.name);
+      form.append("slug", values.slug);
+      form.append("image", image);
+      form.append("featured", values.featured);
+      form.append("description", values.description);
+      form.append("parent", values.parent);
+
+      dispatch(createCategory(form), setLoading(true))
+        .then((res) => {
+          if (res.meta.requestStatus === "fulfilled") {
+            enqueueSnackbar(res.payload, {
+              variant: "success",
+            });
+            setLoading(false);
+          }
+          if (res.meta.requestStatus === "rejected") {
+            setLoading(false);
+            enqueueSnackbar(res.payload, {
+              variant: "error",
+            });
+          }
+        })
+        .catch((err) => {
+          console.error(err);
+          setLoading(false);
+        });
+    }
+  };
+
   // HANDLE DELETE UPLOAD IMAGE
   const handleFileDelete = (file) => () => {
     setFiles((files) => files.filter((item) => item.name !== file.name));
   };
+
   return (
     <Card
       sx={{
@@ -75,6 +123,22 @@ const CategoryForm = (props) => {
 
               <Grid item sm={6} xs={12}>
                 <TextField
+                  fullWidth
+                  name="slug"
+                  label="Slug"
+                  color="info"
+                  size="medium"
+                  placeholder="Slug"
+                  value={values.slug}
+                  onBlur={handleBlur}
+                  onChange={handleChange}
+                  error={!!touched.slug && !!errors.slug}
+                  helperText={touched.slug && errors.slug}
+                />
+              </Grid>
+
+              <Grid item sm={6} xs={12}>
+                <TextField
                   select
                   fullWidth
                   color="info"
@@ -94,9 +158,25 @@ const CategoryForm = (props) => {
                 </TextField>
               </Grid>
 
+              <Grid item sm={6} xs={12}>
+                <TextField
+                  fullWidth
+                  name="description"
+                  label="Description"
+                  color="info"
+                  size="medium"
+                  placeholder="Brief Description"
+                  value={values.description}
+                  onBlur={handleBlur}
+                  onChange={handleChange}
+                  error={!!touched.description && !!errors.description}
+                  helperText={touched.description && errors.description}
+                />
+              </Grid>
+
               <Grid item xs={12}>
                 <DropZone
-                  title="Drop & drag category image"
+                  title="Drop & drag category image *"
                   onChange={(files) => handleChangeDropZone(files)}
                 />
 
@@ -145,8 +225,8 @@ const CategoryForm = (props) => {
                </Grid> */}
 
               <Grid item xs={12}>
-                <Button variant="contained" color="info" type="submit">
-                  Save category
+                <Button variant="contained" color="info" type="Submit">
+                  {loading ? "Loading..." : "Save Category"}
                 </Button>
               </Grid>
             </Grid>

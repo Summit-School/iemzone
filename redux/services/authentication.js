@@ -3,7 +3,6 @@ import axios from 'axios'
 const URL = `${process.env.NEXT_PUBLIC_ENDPOINT}/api/${process.env.NEXT_PUBLIC_API_VERSION}/auth`
 
 const register = async data => {
-  console.log(URL)
   const response = await axios.post(`${URL}/register`, data, {
     headers: {
       'Content-Type': 'application/json'
