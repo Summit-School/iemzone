@@ -11,6 +11,13 @@ import {
 import { useRouter } from "next/router";
 
 // ========================================================================
+import userId from "utils/userId";
+import { useDispatch } from "react-redux";
+import { useSnackbar } from "notistack";
+import {
+  deleteCategory,
+  userCategories,
+} from "../../../../redux/reducers/admin/category";
 
 // ========================================================================
 
@@ -19,7 +26,39 @@ const CategoryRow = ({ item, selected }) => {
   const router = useRouter();
   const [featuredCategory, setFeaturedCategory] = useState(featured);
   const isItemSelected = selected.indexOf(name) !== -1;
-  const handleNavigate = () => router.push(`/admin/categories/${slug}`);
+  // const handleNavigate = () => router.push(`/admin/categories/${id}`);
+  const userID = userId();
+
+  const dispatch = useDispatch();
+  const { enqueueSnackbar } = useSnackbar();
+
+  const deleteCategoryHandler = () => {
+    const confirmation = window.confirm(
+      "Are you sure you want to delete this category?"
+    );
+    if (confirmation) {
+      dispatch(deleteCategory(id))
+        .then((res) => {
+          if (res.meta.requestStatus === "fulfilled") {
+            dispatch(userCategories(userID));
+            enqueueSnackbar(res.payload, {
+              variant: "success",
+            });
+          }
+          if (res.meta.requestStatus === "rejected") {
+            enqueueSnackbar(res.payload, {
+              variant: "error",
+            });
+          }
+        })
+        .catch((err) => {
+          console.error(err);
+        });
+    } else {
+      return;
+    }
+  };
+
   return (
     <StyledTableRow tabIndex={-1} role="checkbox" selected={isItemSelected}>
       <StyledTableCell align="left">#{id}</StyledTableCell>
@@ -50,16 +89,16 @@ const CategoryRow = ({ item, selected }) => {
       </StyledTableCell>
 
       <StyledTableCell align="center">
-        <StyledIconButton onClick={handleNavigate}>
+        {/* <StyledIconButton onClick={handleNavigate}>
           <Edit />
         </StyledIconButton>
 
         <StyledIconButton onClick={handleNavigate}>
           <RemoveRedEye />
-        </StyledIconButton>
+        </StyledIconButton> */}
 
         <StyledIconButton>
-          <Delete />
+          <Delete onClick={deleteCategoryHandler} />
         </StyledIconButton>
       </StyledTableCell>
     </StyledTableRow>

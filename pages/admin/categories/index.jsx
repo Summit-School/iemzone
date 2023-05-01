@@ -67,11 +67,10 @@ CategoryList.getLayout = function getLayout(page) {
 export default function CategoryList(props) {
   // const { categories } = props;
   const userCats = useSelector((state) => state.categories.categories);
-  console.log("cats", userCats);
   const { enqueueSnackbar } = useSnackbar();
   const dispatch = useDispatch();
 
-  const categories = userCats.categories;
+  const categories = userCats?.categories;
 
   useEffect(() => {
     const id = userId();
@@ -133,7 +132,7 @@ export default function CategoryList(props) {
                 hideSelectBtn
                 orderBy={orderBy}
                 heading={tableHeading}
-                rowCount={categories.length}
+                rowCount={categories?.length}
                 numSelected={selected.length}
                 onRequestSort={handleRequestSort}
               />
@@ -154,7 +153,7 @@ export default function CategoryList(props) {
         <Stack alignItems="center" my={4}>
           <TablePagination
             onChange={handleChangePage}
-            count={Math.ceil(categories.length / rowsPerPage)}
+            count={Math.ceil(categories?.length / rowsPerPage)}
           />
         </Stack>
       </Card>

@@ -18,13 +18,15 @@ import { UploadImageBox, StyledClear } from "../StyledComponents";
 import userId from "utils/userId";
 import { useDispatch } from "react-redux";
 import { useSnackbar } from "notistack";
-import { createCategory } from "../../../../redux/reducers/admin/category";
+import category, {
+  updateCategory,
+} from "../../../../redux/reducers/admin/category";
+import { initial } from "lodash";
 
 // ================================================================
 
 const CategoryForm = (props) => {
   const { initialValues, validationSchema } = props;
-  console.log("initila", initialValues);
   const [loading, setLoading] = useState(false);
   const [files, setFiles] = useState([]);
   const id = userId();
@@ -58,7 +60,7 @@ const CategoryForm = (props) => {
       form.append("description", values.description);
       form.append("parent", values.parent);
 
-      dispatch(createCategory(form), setLoading(true))
+      dispatch(updateCategory({ categoryId, form }), setLoading(true))
         .then((res) => {
           if (res.meta.requestStatus === "fulfilled") {
             enqueueSnackbar(res.payload, {
@@ -140,23 +142,16 @@ const CategoryForm = (props) => {
 
               <Grid item sm={6} xs={12}>
                 <TextField
-                  select
                   fullWidth
                   color="info"
                   size="medium"
                   name="parent"
+                  value={values?.parent[0]}
                   onBlur={handleBlur}
-                  value={values?.parent}
                   onChange={handleChange}
                   placeholder="Parent Category"
                   label="Select Parent Category"
-                  SelectProps={{
-                    multiple: true,
-                  }}
-                >
-                  <MenuItem value="electronics">Electronics</MenuItem>
-                  <MenuItem value="fashion">Fashion</MenuItem>
-                </TextField>
+                />
               </Grid>
 
               <Grid item sm={6} xs={12}>

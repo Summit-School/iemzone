@@ -2,7 +2,8 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
 import categoryServices from '../../services/admin/category'
 
 const initialState = {
-  categories: null
+  categories: null,
+  category: null
 }
 
 export const createCategory = createAsyncThunk(
@@ -41,6 +42,60 @@ export const userCategories = createAsyncThunk(
   }
 )
 
+export const singleCategory = createAsyncThunk(
+  'categories/singleCategory',
+  async (slug, thunkAPI) => {
+    try {
+      return await categoryServices.singleCategory(slug)
+    } catch (error) {
+      const message =
+        (error.response &&
+          error.response.data &&
+          error.response.data.message) ||
+        error.message ||
+        error.toString()
+
+      return thunkAPI.rejectWithValue(message)
+    }
+  }
+)
+
+export const updateCategory = createAsyncThunk(
+  'categories/updateCategory',
+  async (data, thunkAPI) => {
+    try {
+      return await categoryServices.updateCategory(data)
+    } catch (error) {
+      const message =
+        (error.response &&
+          error.response.data &&
+          error.response.data.message) ||
+        error.message ||
+        error.toString()
+
+      return thunkAPI.rejectWithValue(message)
+    }
+  }
+)
+
+export const deleteCategory = createAsyncThunk(
+  'categories/deleteCategory',
+  async (catId, thunkAPI) => {
+    try {
+      return await categoryServices.deleteCategory(catId)
+    } catch (error) {
+      const message =
+        (error.response &&
+          error.response.data &&
+          error.response.data.message) ||
+        error.message ||
+        error.toString()
+
+      return thunkAPI.rejectWithValue(message)
+    }
+  }
+)
+
 export const categorySlice = createSlice({
   name: 'categories',
   initialState,
@@ -51,6 +106,10 @@ export const categorySlice = createSlice({
     builder
       .addCase(userCategories.fulfilled, (state, action) => {
         state.categories = action.payload
+      })
+
+       .addCase(singleCategory.fulfilled, (state, action) => {
+        state.category = action.payload
       })
   }
 })

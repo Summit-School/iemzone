@@ -5,6 +5,7 @@ import BrandRow from "./brand/BrandRow";
 import BrandForm from "./brand/BrandForm";
 import CategoryRow from "./category/CategoryRow";
 import CategoryForm from "./category/CategoryForm";
+import CategoryUpdate from "./category/CategoryUpdate";
 import ProductRow from "./products/ProductRow";
 import ProductForm from "./products/ProductForm";
 import OrderRow from "./orders/OrderRow";
@@ -27,6 +28,7 @@ export {
   ProductRow,
   CustomerRow,
   CategoryRow,
+  CategoryUpdate,
   ProductForm,
   CategoryForm,
   OrderDetails,

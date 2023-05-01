@@ -17,9 +17,35 @@ const userCategories = async (userId) => {
   return response.data;
 };
 
+const singleCategory = async (slug) => {
+  const response = await axios.get(`${URL}/category/${slug}`);
+  return response.data;
+};
+
+const updateCategory = async (data) => {
+  const response = await axios.put(`${URL}/update-category/${data.categoryId}`, data.form, {
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "multipart/form-data",
+    },
+  });
+  return response.data;
+};
+
+const deleteCategory = async (catId) => {
+  const response = await axios.delete(`${URL}/delete-category/${catId}`);
+  return response.data;
+};
+
 const categoryServices = {
   createCategory,
-  userCategories
+  userCategories,
+  singleCategory,
+  updateCategory,
+  deleteCategory
 };
 
 export default categoryServices;
+
+
+ 
