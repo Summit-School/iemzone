@@ -37,12 +37,18 @@ const deleteCategory = async (catId) => {
   return response.data;
 };
 
+const changeFeaturedCategory = async (catId) => {
+  const response = await axios.put(`${URL}/change-category-featured/${catId}`);
+  return response.data;
+};
+
 const categoryServices = {
   createCategory,
   userCategories,
   singleCategory,
   updateCategory,
-  deleteCategory
+  deleteCategory,
+  changeFeaturedCategory
 };
 
 export default categoryServices;

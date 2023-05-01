@@ -17,6 +17,7 @@ import { useSnackbar } from "notistack";
 import {
   deleteCategory,
   userCategories,
+  changeFeaturedCategory,
 } from "../../../../redux/reducers/admin/category";
 
 // ========================================================================
@@ -31,6 +32,26 @@ const CategoryRow = ({ item, selected }) => {
 
   const dispatch = useDispatch();
   const { enqueueSnackbar } = useSnackbar();
+
+  const setFeaturedCategoryHandler = () => {
+    dispatch(changeFeaturedCategory(id))
+      .then((res) => {
+        if (res.meta.requestStatus === "fulfilled") {
+          dispatch(userCategories(userID));
+          enqueueSnackbar(res.payload, {
+            variant: "success",
+          });
+        }
+        if (res.meta.requestStatus === "rejected") {
+          enqueueSnackbar(res.payload, {
+            variant: "error",
+          });
+        }
+      })
+      .catch((err) => {
+        console.error(err);
+      });
+  };
 
   const deleteCategoryHandler = () => {
     const confirmation = window.confirm(
@@ -80,7 +101,7 @@ const CategoryRow = ({ item, selected }) => {
 
       <StyledTableCell align="left">{parent}</StyledTableCell>
 
-      <StyledTableCell align="left">
+      <StyledTableCell align="left" onClick={setFeaturedCategoryHandler}>
         <BazaarSwitch
           color="info"
           checked={featuredCategory}

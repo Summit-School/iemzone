@@ -96,6 +96,24 @@ export const deleteCategory = createAsyncThunk(
   }
 )
 
+export const changeFeaturedCategory = createAsyncThunk(
+  'categories/changeFeaturedCategory',
+  async (catId, thunkAPI) => {
+    try {
+      return await categoryServices.changeFeaturedCategory(catId)
+    } catch (error) {
+      const message =
+        (error.response &&
+          error.response.data &&
+          error.response.data.message) ||
+        error.message ||
+        error.toString()
+
+      return thunkAPI.rejectWithValue(message)
+    }
+  }
+)
+
 export const categorySlice = createSlice({
   name: 'categories',
   initialState,
