@@ -10,6 +10,12 @@ import { H3 } from "components/Typography";
 import { BrandRow } from "pages-sections/admin";
 import useMuiTable from "hooks/useMuiTable";
 import api from "utils/__api__/dashboard";
+// ============================================================================
+import { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { useSnackbar } from "notistack";
+import { userBrands } from "../../../redux/reducers/admin/brand";
+import userId from "utils/userId";
 
 // TABLE HEADING DATA LIST
 const tableHeading = [
@@ -48,13 +54,35 @@ BrandList.getLayout = function getLayout(page) {
 
 // =============================================================================
 
-export default function BrandList({ brands }) {
+export default function BrandList(props) {
+  // const { brands } = props
+  const userBrds = useSelector((state) => state.brands.brands);
+  const { enqueueSnackbar } = useSnackbar();
+  const dispatch = useDispatch();
+
+  const brands = userBrds?.brands;
+
+  useEffect(() => {
+    const id = userId();
+    dispatch(userBrands(id))
+      .then((res) => {
+        if (res.meta.requestStatus === "rejected") {
+          enqueueSnackbar(res.payload, {
+            variant: "error",
+          });
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }, []);
+
   // RESHAPE THE PRODUCT LIST BASED TABLE HEAD CELL ID
-  const filteredBrands = brands.map((item) => ({
-    id: item.id,
+  const filteredBrands = brands?.map((item) => ({
+    id: item._id,
     slug: item.slug,
     name: item.name,
-    logo: item.image,
+    image: item.image,
     featured: item.featured,
   }));
   const {
@@ -94,7 +122,7 @@ export default function BrandList({ brands }) {
                 orderBy={orderBy}
                 heading={tableHeading}
                 numSelected={selected.length}
-                rowCount={filteredList.length}
+                rowCount={brands?.length}
                 onRequestSort={handleRequestSort}
               />
 

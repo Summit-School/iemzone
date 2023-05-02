@@ -14,7 +14,7 @@ import {
 // ========================================================================
 
 const BrandRow = ({ brand, selected }) => {
-  const { name, featured, logo, id, slug } = brand;
+  const { name, featured, image, id, slug } = brand;
   const router = useRouter();
   const [featuredCategory, setFeaturedCategory] = useState(featured);
   const isItemSelected = selected.indexOf(name) !== -1;
@@ -27,7 +27,7 @@ const BrandRow = ({ brand, selected }) => {
 
       <StyledTableCell align="center">
         <Avatar
-          src={logo}
+          src={`${process.env.NEXT_PUBLIC_ENDPOINT}/${image}`}
           sx={{
             width: 55,
             height: "auto",

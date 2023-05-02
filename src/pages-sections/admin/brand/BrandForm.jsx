@@ -14,12 +14,21 @@ import BazaarImage from "components/BazaarImage";
 import { UploadImageBox, StyledClear } from "../StyledComponents";
 
 // ================================================================
+import userId from "utils/userId";
+import { useDispatch } from "react-redux";
+import { useSnackbar } from "notistack";
+import { createBrand } from "../../../../redux/reducers/admin/brand";
 
 // ================================================================
 
 const BrandForm = (props) => {
-  const { initialValues, validationSchema, handleFormSubmit } = props;
+  const { initialValues, validationSchema } = props;
   const [files, setFiles] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const id = userId();
+
+  const dispatch = useDispatch();
+  const { enqueueSnackbar } = useSnackbar();
 
   // HANDLE UPDATE NEW IMAGE VIA DROP ZONE
   const handleChangeDropZone = (files) => {
@@ -29,6 +38,43 @@ const BrandForm = (props) => {
       })
     );
     setFiles(files);
+  };
+
+  const handleFormSubmit = (values) => {
+    if (files.length === 0) {
+      return enqueueSnackbar("Image is required", {
+        variant: "error",
+      });
+    } else {
+      const image = files[0];
+      const brandSlug = values.name.replace(/\W+/g, "-").toLowerCase();
+      let form = new FormData();
+      form.append("userId", id);
+      form.append("name", values.name);
+      form.append("slug", brandSlug);
+      form.append("image", image);
+      form.append("featured", values.featured);
+
+      dispatch(createBrand(form), setLoading(true))
+        .then((res) => {
+          if (res.meta.requestStatus === "fulfilled") {
+            enqueueSnackbar(res.payload, {
+              variant: "success",
+            });
+            setLoading(false);
+          }
+          if (res.meta.requestStatus === "rejected") {
+            setLoading(false);
+            enqueueSnackbar(res.payload, {
+              variant: "error",
+            });
+          }
+        })
+        .catch((err) => {
+          console.error(err);
+          setLoading(false);
+        });
+    }
   };
 
   // HANDLE DELETE UPLOAD IMAGE
@@ -92,7 +138,7 @@ const BrandForm = (props) => {
 
               <Grid item sm={6} xs={12}>
                 <FormControlLabel
-                  label="Featured Category"
+                  label="Featured Brand"
                   control={
                     <Checkbox
                       color="info"
@@ -107,7 +153,7 @@ const BrandForm = (props) => {
 
               <Grid item xs={12}>
                 <Button variant="contained" color="info" type="submit">
-                  Save category
+                  {loading ? "Loading..." : "Save Brand"}
                 </Button>
               </Grid>
             </Grid>

@@ -24,7 +24,6 @@ import { createCategory } from "../../../../redux/reducers/admin/category";
 
 const CategoryForm = (props) => {
   const { initialValues, validationSchema } = props;
-  console.log("initila", initialValues);
   const [loading, setLoading] = useState(false);
   const [files, setFiles] = useState([]);
   const id = userId();

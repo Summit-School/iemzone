@@ -21,7 +21,6 @@ const validationSchema = yup.object().shape({
   name: yup.string().required("required"),
 });
 export default function CreateBrand() {
-  const handleFormSubmit = () => {};
   return (
     <Box py={4}>
       <H3 mb={2}>Create New Brand</H3>
@@ -29,7 +28,6 @@ export default function CreateBrand() {
       <BrandForm
         initialValues={INITIAL_VALUES}
         validationSchema={validationSchema}
-        handleFormSubmit={handleFormSubmit}
       />
     </Box>
   );
