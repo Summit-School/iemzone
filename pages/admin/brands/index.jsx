@@ -56,10 +56,10 @@ BrandList.getLayout = function getLayout(page) {
 
 export default function BrandList(props) {
   // const { brands } = props
-  const userBrds = useSelector((state) => state.brands.brands);
   const { enqueueSnackbar } = useSnackbar();
   const dispatch = useDispatch();
 
+  const userBrds = useSelector((state) => state.brands.brands);
   const brands = userBrds?.brands;
 
   useEffect(() => {

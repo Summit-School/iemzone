@@ -24,7 +24,7 @@ import {
 
 const CategoryRow = ({ item, selected }) => {
   const { image, name, description, featured, id, slug, parent } = item;
-  const router = useRouter();
+  // const router = useRouter();
   const [featuredCategory, setFeaturedCategory] = useState(featured);
   const isItemSelected = selected.indexOf(name) !== -1;
   // const handleNavigate = () => router.push(`/admin/categories/${id}`);

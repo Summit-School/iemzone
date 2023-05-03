@@ -66,10 +66,10 @@ CategoryList.getLayout = function getLayout(page) {
 
 export default function CategoryList(props) {
   // const { categories } = props;
-  const userCats = useSelector((state) => state.categories.categories);
   const { enqueueSnackbar } = useSnackbar();
   const dispatch = useDispatch();
 
+  const userCats = useSelector((state) => state.categories.categories);
   const categories = userCats?.categories;
 
   useEffect(() => {

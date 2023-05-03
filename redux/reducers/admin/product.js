@@ -1,15 +1,16 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
-import shopServices from '../services/shop'
+import productServices from '../../services/admin/product'
 
 const initialState = {
-  shop: null
+  products: null,
+  product: null
 }
 
-export const createShop = createAsyncThunk(
-  'shop/createShop',
+export const createProduct = createAsyncThunk(
+  'products/createProduct',
   async (data, thunkAPI) => {
     try {
-      return await shopServices.createShop(data)
+      return await productServices.createProduct(data)
     } catch (error) {
       const message =
         (error.response &&
@@ -23,11 +24,11 @@ export const createShop = createAsyncThunk(
   }
 )
 
-export const getShop = createAsyncThunk(
-  'shop/getShop',
-  async (userId, thunkAPI) => {
+export const shopProducts = createAsyncThunk(
+  'products/shopProduct',
+  async (shopId, thunkAPI) => {
     try {
-      return await shopServices.getShop(userId)
+      return await productServices.shopProducts(shopId)
     } catch (error) {
       const message =
         (error.response &&
@@ -41,24 +42,24 @@ export const getShop = createAsyncThunk(
   }
 )
 
-export const shopSlice = createSlice({
-  name: 'shop',
+export const productSlice = createSlice({
+  name: 'products',
   initialState,
   reducers: {
     reset: state => {}
   },
   extraReducers: builder => {
     builder
-      .addCase(createShop.fulfilled, (state, action) => {
-        state.shop = action.payload
+      .addCase(createProduct.fulfilled, (state, action) => {
+        state.product = action.payload
       })
-      .addCase(getShop.fulfilled, (state, action) => {
-        state.shop = action.payload
+       .addCase(shopProducts.fulfilled, (state, action) => {
+        state.products = action.payload
       })
   }
 })
 
 // Action creators are generated for each case reducer function
-export const { reset } = shopSlice.actions
+export const { reset } = productSlice.actions
 
-export default shopSlice.reducer
+export default productSlice.reducer

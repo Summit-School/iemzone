@@ -12,8 +12,14 @@ const createShop = async (data) => {
   return response.data;
 };
 
+const getShop = async (userId) => {
+  const response = await axios.get(`${URL}/shop/${userId}`);
+  return response.data;
+};
+
 const shopServices = {
   createShop,
+  getShop
 };
 
 export default shopServices;

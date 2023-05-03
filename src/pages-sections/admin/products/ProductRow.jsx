@@ -14,6 +14,7 @@ import {
 } from "../StyledComponents";
 
 // ========================================================================
+import { shopProducts } from "../../../../redux/reducers/admin/product";
 
 // ========================================================================
 
@@ -26,7 +27,7 @@ const ProductRow = ({ product }) => {
       <StyledTableCell align="left">
         <FlexBox alignItems="center" gap={1.5}>
           <Avatar
-            src={image}
+            src={`${process.env.NEXT_PUBLIC_ENDPOINT}/${image}`}
             sx={{
               borderRadius: "8px",
             }}

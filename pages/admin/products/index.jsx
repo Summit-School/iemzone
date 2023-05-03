@@ -10,6 +10,14 @@ import useMuiTable from "hooks/useMuiTable";
 import Scrollbar from "components/Scrollbar";
 import { ProductRow } from "pages-sections/admin";
 import api from "utils/__api__/dashboard";
+// =============================================================================
+import { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { useSnackbar } from "notistack";
+import { shopProducts } from "../../../redux/reducers/admin/product";
+import { getShop } from "../../../redux/reducers/shop";
+import userId from "utils/userId";
+
 // TABLE HEADING DATA LIST
 const tableHeading = [
   {
@@ -53,15 +61,52 @@ ProductList.getLayout = function getLayout(page) {
 // =============================================================================
 
 export default function ProductList(props) {
-  const { products } = props;
+  // const { products } = props;
+  const { enqueueSnackbar } = useSnackbar();
+  const dispatch = useDispatch();
+
+  const shop = useSelector((state) => state.shop.shop);
+  const shopId = shop?.shop._id;
+  const shopProductsList = useSelector((state) => state.products.products);
+  const products = shopProductsList?.products;
+  console.log(products);
+
+  useEffect(() => {
+    const id = userId();
+    dispatch(getShop(id))
+      .then((res) => {
+        if (res.meta.requestStatus === "rejected") {
+          enqueueSnackbar(res.payload, {
+            variant: "error",
+          });
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }, []);
+
+  useEffect(() => {
+    dispatch(shopProducts(shopId))
+      .then((res) => {
+        if (res.meta.requestStatus === "rejected") {
+          enqueueSnackbar(res.payload, {
+            variant: "error",
+          });
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }, []);
 
   // RESHAPE THE PRODUCT LIST BASED TABLE HEAD CELL ID
-  const filteredProducts = products.map((item) => ({
-    id: item.id,
+  const filteredProducts = products?.map((item) => ({
+    id: item._id,
     slug: item.slug,
     name: item.title,
     brand: item.brand,
-    price: item.price,
+    price: item.salesPrice,
     image: item.thumbnail,
     published: item.published,
     category: item.categories[0],
@@ -101,13 +146,13 @@ export default function ProductList(props) {
                 hideSelectBtn
                 orderBy={orderBy}
                 heading={tableHeading}
-                rowCount={products.length}
+                rowCount={products?.length}
                 numSelected={selected.length}
                 onRequestSort={handleRequestSort}
               />
 
               <TableBody>
-                {filteredList.map((product, index) => (
+                {filteredProducts?.map((product, index) => (
                   <ProductRow product={product} key={index} />
                 ))}
               </TableBody>
@@ -115,12 +160,12 @@ export default function ProductList(props) {
           </TableContainer>
         </Scrollbar>
 
-        <Stack alignItems="center" my={4}>
+        {/* <Stack alignItems="center" my={4}>
           <TablePagination
             onChange={handleChangePage}
-            count={Math.ceil(products.length / rowsPerPage)}
+            count={Math.ceil(products?.length / rowsPerPage)}
           />
-        </Stack>
+        </Stack> */}
       </Card>
     </Box>
   );
