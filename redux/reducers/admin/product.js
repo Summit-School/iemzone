@@ -42,6 +42,42 @@ export const shopProducts = createAsyncThunk(
   }
 )
 
+export const setPublishedProducts = createAsyncThunk(
+  'products/setPublishedProducts',
+  async (prodId, thunkAPI) => {
+    try {
+      return await productServices.setPublishedProducts(prodId)
+    } catch (error) {
+      const message =
+        (error.response &&
+          error.response.data &&
+          error.response.data.message) ||
+        error.message ||
+        error.toString()
+
+      return thunkAPI.rejectWithValue(message)
+    }
+  }
+)
+
+export const deleteProduct = createAsyncThunk(
+  'products/deleteProduct',
+  async (prodId, thunkAPI) => {
+    try {
+      return await productServices.deleteProduct(prodId)
+    } catch (error) {
+      const message =
+        (error.response &&
+          error.response.data &&
+          error.response.data.message) ||
+        error.message ||
+        error.toString()
+
+      return thunkAPI.rejectWithValue(message)
+    }
+  }
+)
+
 export const productSlice = createSlice({
   name: 'products',
   initialState,

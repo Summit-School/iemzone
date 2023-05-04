@@ -74,6 +74,7 @@ const Login = () => {
             variant: "success",
           });
           setLoading(false);
+          navigate.push("/profile");
         }
         if (res.meta.requestStatus === "rejected") {
           setLoading(false);

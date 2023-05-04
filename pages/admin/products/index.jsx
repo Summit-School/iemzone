@@ -65,38 +65,23 @@ export default function ProductList(props) {
   const { enqueueSnackbar } = useSnackbar();
   const dispatch = useDispatch();
 
-  const shop = useSelector((state) => state.shop.shop);
-  const shopId = shop?.shop._id;
   const shopProductsList = useSelector((state) => state.products.products);
   const products = shopProductsList?.products;
-  console.log(products);
 
   useEffect(() => {
     const id = userId();
     dispatch(getShop(id))
       .then((res) => {
         if (res.meta.requestStatus === "rejected") {
-          enqueueSnackbar(res.payload, {
+          return enqueueSnackbar(res.payload, {
             variant: "error",
           });
         }
+        const shopId = res.payload.shop._id;
+        dispatch(shopProducts(shopId));
       })
       .catch((err) => {
-        console.log(err);
-      });
-  }, []);
-
-  useEffect(() => {
-    dispatch(shopProducts(shopId))
-      .then((res) => {
-        if (res.meta.requestStatus === "rejected") {
-          enqueueSnackbar(res.payload, {
-            variant: "error",
-          });
-        }
-      })
-      .catch((err) => {
-        console.log(err);
+        console.error(err);
       });
   }, []);
 
@@ -160,12 +145,12 @@ export default function ProductList(props) {
           </TableContainer>
         </Scrollbar>
 
-        {/* <Stack alignItems="center" my={4}>
+        <Stack alignItems="center" my={4}>
           <TablePagination
             onChange={handleChangePage}
-            count={Math.ceil(products?.length / rowsPerPage)}
+            count={Math.ceil(products?.length / rowsPerPage) || 0}
           />
-        </Stack> */}
+        </Stack>
       </Card>
     </Box>
   );

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
 import { Delete, Edit, RemoveRedEye } from "@mui/icons-material";
 import { Avatar, Box } from "@mui/material";
@@ -14,7 +14,15 @@ import {
 } from "../StyledComponents";
 
 // ========================================================================
-import { shopProducts } from "../../../../redux/reducers/admin/product";
+import userId from "utils/userId";
+import { useDispatch, useSelector } from "react-redux";
+import { useSnackbar } from "notistack";
+import {
+  shopProducts,
+  setPublishedProducts,
+  deleteProduct,
+} from "../../../../redux/reducers/admin/product";
+import { getShop } from "../../../../redux/reducers/shop";
 
 // ========================================================================
 
@@ -22,6 +30,74 @@ const ProductRow = ({ product }) => {
   const { category, name, price, image, brand, id, published, slug } = product;
   const router = useRouter();
   const [productPulish, setProductPublish] = useState(published);
+
+  const dispatch = useDispatch();
+  const { enqueueSnackbar } = useSnackbar();
+
+  const shop = useSelector((state) => state.shop.shop);
+  const shopId = shop?.shop._id;
+
+  useEffect(() => {
+    const id = userId();
+    dispatch(getShop(id))
+      .then((res) => {
+        if (res.meta.requestStatus === "rejected") {
+          return enqueueSnackbar(res.payload, {
+            variant: "error",
+          });
+        }
+      })
+      .catch((err) => {
+        console.error(err);
+      });
+  }, []);
+
+  const setPublishedProductHandler = () => {
+    dispatch(setPublishedProducts(id))
+      .then((res) => {
+        if (res.meta.requestStatus === "fulfilled") {
+          enqueueSnackbar(res.payload, {
+            variant: "success",
+          });
+        }
+        if (res.meta.requestStatus === "rejected") {
+          enqueueSnackbar(res.payload, {
+            variant: "error",
+          });
+        }
+      })
+      .catch((err) => {
+        console.error(err);
+      });
+  };
+
+  const deleteProductHandler = () => {
+    const confirmation = window.confirm(
+      "Are you sure you want to delete this product?"
+    );
+    if (confirmation) {
+      dispatch(deleteProduct(id))
+        .then((res) => {
+          if (res.meta.requestStatus === "fulfilled") {
+            dispatch(shopProducts(shopId));
+            enqueueSnackbar(res.payload, {
+              variant: "success",
+            });
+          }
+          if (res.meta.requestStatus === "rejected") {
+            enqueueSnackbar(res.payload, {
+              variant: "error",
+            });
+          }
+        })
+        .catch((err) => {
+          console.error(err);
+        });
+    } else {
+      return;
+    }
+  };
+
   return (
     <StyledTableRow tabIndex={-1} role="checkbox">
       <StyledTableCell align="left">
@@ -43,7 +119,7 @@ const ProductRow = ({ product }) => {
         <CategoryWrapper>{category}</CategoryWrapper>
       </StyledTableCell>
 
-      <StyledTableCell align="left">
+      {/* <StyledTableCell align="left">
         <Avatar
           src={brand}
           sx={{
@@ -52,11 +128,12 @@ const ProductRow = ({ product }) => {
             borderRadius: 0,
           }}
         />
-      </StyledTableCell>
+      </StyledTableCell> */}
+      <StyledTableCell align="left">{brand}</StyledTableCell>
 
       <StyledTableCell align="left">{currency(price)}</StyledTableCell>
 
-      <StyledTableCell align="left">
+      <StyledTableCell align="left" onClick={setPublishedProductHandler}>
         <BazaarSwitch
           color="info"
           checked={productPulish}
@@ -75,7 +152,7 @@ const ProductRow = ({ product }) => {
           <RemoveRedEye />
         </StyledIconButton>
 
-        <StyledIconButton>
+        <StyledIconButton onClick={deleteProductHandler}>
           <Delete />
         </StyledIconButton>
       </StyledTableCell>
