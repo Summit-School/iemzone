@@ -3,9 +3,14 @@ import { useRouter } from "next/router";
 import { Box } from "@mui/material";
 import * as yup from "yup";
 import { H3 } from "components/Typography";
-import { ProductForm } from "pages-sections/admin";
+import { UpdateProduct } from "pages-sections/admin";
 import VendorDashboardLayout from "components/layouts/vendor-dashboard";
 // import api from "utils/__api__/products";
+// =============================================================================
+import { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { useSnackbar } from "notistack";
+import { singleProduct } from "../../../redux/reducers/admin/product";
 
 // =============================================================================
 EditProduct.getLayout = function getLayout(page) {
@@ -15,50 +20,63 @@ EditProduct.getLayout = function getLayout(page) {
 
 const INITIAL_VALUES = {
   name: "",
-  tags: "",
+  size: "",
   stock: "",
-  price: 0,
+  price: "",
   category: [],
+  brand: [],
   sale_price: "",
   description: "",
+  colors: "",
+  discount: "",
 };
 
 // form field validation schema
 const validationSchema = yup.object().shape({
   name: yup.string().required("required"),
   category: yup.array().min(1).required("required"),
+  brand: yup.array().min(1).required("required"),
   description: yup.string().required("required"),
   stock: yup.number().required("required"),
   price: yup.number().required("required"),
   sale_price: yup.number().required("required"),
-  tags: yup.string().required("required"),
+  size: yup.string().required("required"),
+  discount: yup.string().required("required"),
 });
 export default function EditProduct() {
   const { query } = useRouter();
-  const [product, setProduct] = useState({
-    ...INITIAL_VALUES,
-  });
+  // const [product, setProduct] = useState({
+  //   ...INITIAL_VALUES,
+  // });
 
-  // useEffect(() => {
-  //   api.getProduct(query.slug as string).then((data) => {
-  //     setProduct((state) => ({
-  //       ...state,
-  //       name: data.title,
-  //       price: data.price,
-  //       category: data.categories,
-  //     }));
-  //   });
-  // }, [query.slug]);
+  const { enqueueSnackbar } = useSnackbar();
+  const dispatch = useDispatch();
 
-  const handleFormSubmit = () => {};
+  const productResponse = useSelector((state) => state.products.product);
+  const product = productResponse?.product;
+
+  useEffect(() => {
+    const prodId = query.slug;
+    dispatch(singleProduct(prodId))
+      .then((res) => {
+        if (res.meta.requestStatus === "rejected") {
+          return enqueueSnackbar(res.payload, {
+            variant: "error",
+          });
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }, []);
+
   return (
     <Box py={4}>
       <H3 mb={2}>Edit Product</H3>
 
-      <ProductForm
+      <UpdateProduct
         initialValues={product}
         validationSchema={validationSchema}
-        handleFormSubmit={handleFormSubmit}
       />
     </Box>
   );

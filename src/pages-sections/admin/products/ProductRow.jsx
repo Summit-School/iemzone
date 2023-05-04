@@ -142,9 +142,7 @@ const ProductRow = ({ product }) => {
       </StyledTableCell>
 
       <StyledTableCell align="center">
-        <StyledIconButton
-          onClick={() => router.push(`/admin/products/${slug}`)}
-        >
+        <StyledIconButton onClick={() => router.push(`/admin/products/${id}`)}>
           <Edit />
         </StyledIconButton>
 

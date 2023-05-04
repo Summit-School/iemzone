@@ -42,6 +42,24 @@ export const shopProducts = createAsyncThunk(
   }
 )
 
+export const singleProduct = createAsyncThunk(
+  'products/singleProduct',
+  async (prodId, thunkAPI) => {
+    try {
+      return await productServices.singleProduct(prodId)
+    } catch (error) {
+      const message =
+        (error.response &&
+          error.response.data &&
+          error.response.data.message) ||
+        error.message ||
+        error.toString()
+
+      return thunkAPI.rejectWithValue(message)
+    }
+  }
+)
+
 export const setPublishedProducts = createAsyncThunk(
   'products/setPublishedProducts',
   async (prodId, thunkAPI) => {
@@ -86,7 +104,7 @@ export const productSlice = createSlice({
   },
   extraReducers: builder => {
     builder
-      .addCase(createProduct.fulfilled, (state, action) => {
+      .addCase(singleProduct.fulfilled, (state, action) => {
         state.product = action.payload
       })
        .addCase(shopProducts.fulfilled, (state, action) => {

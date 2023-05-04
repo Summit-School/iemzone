@@ -8,6 +8,7 @@ import CategoryForm from "./category/CategoryForm";
 import CategoryUpdate from "./category/CategoryUpdate";
 import ProductRow from "./products/ProductRow";
 import ProductForm from "./products/ProductForm";
+import UpdateProduct from "./products/UpdateProduct";
 import OrderRow from "./orders/OrderRow";
 import OrderDetails from "./orders/OrderDetails";
 import SellerRow from "./sellers/SellerRow";
@@ -30,6 +31,7 @@ export {
   CategoryRow,
   CategoryUpdate,
   ProductForm,
+  UpdateProduct,
   CategoryForm,
   OrderDetails,
   RefundRequestRow,
