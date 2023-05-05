@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { Button, Card, Grid, MenuItem, TextField } from "@mui/material";
-import { Formik, useFormikContext } from "formik";
+import { Formik } from "formik";
 import DropZone from "components/DropZone";
 import { FlexBox } from "components/flex-box";
 import BazaarImage from "components/BazaarImage";
@@ -11,7 +11,11 @@ import userId from "utils/userId";
 import { useDispatch, useSelector } from "react-redux";
 import { useSnackbar } from "notistack";
 import { getShop } from "../../../../redux/reducers/shop";
-import { createProduct } from "../../../../redux/reducers/admin/product";
+import {
+  updateProduct,
+  updateImageArray,
+  singleProduct,
+} from "../../../../redux/reducers/admin/product";
 import { userCategories } from "../../../../redux/reducers/admin/category";
 import { userBrands } from "../../../../redux/reducers/admin/brand";
 
@@ -25,7 +29,6 @@ const ProductForm = (props) => {
 
   const dispatch = useDispatch();
   const { enqueueSnackbar } = useSnackbar();
-  // const { resetForm } = useFormikContext();
 
   const shop = useSelector((state) => state.shop.shop);
   const shopId = shop?.shop._id;
@@ -33,17 +36,6 @@ const ProductForm = (props) => {
   const categories = userCats?.categories;
   const userBrds = useSelector((state) => state.brands.brands);
   const brands = userBrds?.brands;
-
-  //   useEffect(() => {
-  //     console.log(`${process.env.NEXT_PUBLIC_ENDPOINT}`);
-  //     const files = initialValues?.images;
-  //     files?.forEach((file) =>
-  //       Object.assign(file, {
-  //         preview: `${process.env.NEXT_PUBLIC_ENDPOINT}/${file}`,
-  //       })
-  //     );
-  //     setFiles(files);
-  //   }, []);
 
   useEffect(() => {
     dispatch(userBrands(id))
@@ -55,7 +47,7 @@ const ProductForm = (props) => {
         }
       })
       .catch((err) => {
-        console.log(err);
+        console.error(err);
       });
   }, []);
 
@@ -69,7 +61,7 @@ const ProductForm = (props) => {
         }
       })
       .catch((err) => {
-        console.log(err);
+        console.error(err);
       });
   }, []);
 
@@ -83,7 +75,7 @@ const ProductForm = (props) => {
         }
       })
       .catch((err) => {
-        console.log(err);
+        console.error(err);
       });
   }, []);
 
@@ -97,44 +89,68 @@ const ProductForm = (props) => {
     setFiles(files);
   };
 
-  const handleFormSubmit = (values, { resetForm }) => {
-    if (files.length === 0) {
-      return enqueueSnackbar("Image is required", {
-        variant: "error",
+  const handleFormSubmit = (values) => {
+    const productSlug = values.title?.replace(/\W+/g, "-").toLowerCase();
+    const form = new FormData();
+    form.append("userId", id);
+    form.append("shopId", shopId);
+    form.append("title", values.title);
+    form.append("slug", productSlug);
+    form.append("brand", values.brand);
+    form.append("categories", values.categories);
+    form.append("regularPrice", values.regularPrice);
+    form.append("salesPrice", values.salesPrice);
+    form.append("size", values.size);
+    form.append("stock", values.stock);
+    form.append("colors", values.colors);
+    form.append("discount", values.discount);
+    form.append("description", values.description);
+    for (let i = 0; i < files.length; i++) {
+      form.append("images", files[i]);
+    }
+    let data = {
+      form,
+      prodId: initialValues._id,
+    };
+    dispatch(updateProduct(data), setLoading(true))
+      .then((res) => {
+        if (res.meta.requestStatus === "fulfilled") {
+          enqueueSnackbar(res.payload, {
+            variant: "success",
+          });
+          setLoading(false);
+        }
+        if (res.meta.requestStatus === "rejected") {
+          setLoading(false);
+          enqueueSnackbar(res.payload, {
+            variant: "error",
+          });
+        }
+      })
+      .catch((err) => {
+        console.error(err);
+        setLoading(false);
       });
-    } else {
-      // const thumbnail = files[0];
-      const productSlug = values.name.replace(/\W+/g, "-").toLowerCase();
-      const form = new FormData();
-      form.append("userId", id);
-      form.append("shopId", shopId);
-      form.append("title", values.name);
-      form.append("slug", productSlug);
-      form.append("brand", values.brand);
-      form.append("categories", values.category);
-      form.append("regularPrice", values.price);
-      form.append("salesPrice", values.sale_price);
-      form.append("size", values.size);
-      form.append("stock", values.stock);
-      form.append("colors", values.colors);
-      form.append("discount", values.discount);
-      form.append("description", values.description);
-      // form.append("thumbnail", thumbnail);
-      for (let i = 0; i < files.length; i++) {
-        form.append("images", files[i]);
-      }
-      dispatch(createProduct(form), setLoading(true))
+  };
+
+  const handleImageDelete = (file) => () => {
+    const confirmation = window.confirm(
+      "Are you sure you want to delete this image?"
+    );
+    if (confirmation) {
+      let data = {
+        image: file,
+        prodId: initialValues._id,
+      };
+      dispatch(updateImageArray(data))
         .then((res) => {
           if (res.meta.requestStatus === "fulfilled") {
+            dispatch(singleProduct(data.prodId));
             enqueueSnackbar(res.payload, {
               variant: "success",
             });
-            setLoading(false);
-            resetForm();
-            setFiles([]);
           }
           if (res.meta.requestStatus === "rejected") {
-            setLoading(false);
             enqueueSnackbar(res.payload, {
               variant: "error",
             });
@@ -142,8 +158,9 @@ const ProductForm = (props) => {
         })
         .catch((err) => {
           console.error(err);
-          setLoading(false);
         });
+    } else {
+      return;
     }
   };
 
@@ -158,9 +175,7 @@ const ProductForm = (props) => {
       }}
     >
       <Formik
-        onSubmit={(values, { resetForm }) => {
-          handleFormSubmit(values, { resetForm });
-        }}
+        onSubmit={handleFormSubmit}
         initialValues={initialValues}
         validationSchema={validationSchema}
       >
@@ -177,7 +192,7 @@ const ProductForm = (props) => {
               <Grid item sm={6} xs={12}>
                 <TextField
                   fullWidth
-                  name="name"
+                  name="title"
                   label="Name *"
                   color="info"
                   size="medium"
@@ -185,28 +200,12 @@ const ProductForm = (props) => {
                   value={values?.title}
                   onBlur={handleBlur}
                   onChange={handleChange}
-                  error={!!touched.name && !!errors.name}
-                  helperText={touched.name && errors.name}
+                  error={!!touched.title && !!errors.title}
+                  helperText={touched.title && errors.title}
                 />
               </Grid>
 
               <Grid item sm={6} xs={12}>
-                <TextField
-                  fullWidth
-                  color="info"
-                  size="medium"
-                  name="brand"
-                  onBlur={handleBlur}
-                  placeholder="Brand"
-                  onChange={handleChange}
-                  value={values?.brand}
-                  label="Select Brand *"
-                  error={!!touched.brand && !!errors.brand}
-                  helperText={touched.brand && errors.brand}
-                />
-              </Grid>
-
-              {/* <Grid item sm={6} xs={12}>
                 {brands ? (
                   <TextField
                     select
@@ -217,7 +216,7 @@ const ProductForm = (props) => {
                     onBlur={handleBlur}
                     placeholder="Brand"
                     onChange={handleChange}
-                    value={values.brand}
+                    value={values?.brand || []}
                     label="Select Brand *"
                     SelectProps={{
                       multiple: true,
@@ -225,35 +224,36 @@ const ProductForm = (props) => {
                     error={!!touched.brand && !!errors.brand}
                     helperText={touched.brand && errors.brand}
                   >
-                    {brands?.map((brand) => (
-                      <MenuItem value={brand.name} key={brand._id}>
-                        {brand.name}
-                      </MenuItem>
-                    ))}
+                    {brands &&
+                      brands?.map((brand) => (
+                        <MenuItem value={brand.name} key={brand._id}>
+                          {brand.name}
+                        </MenuItem>
+                      ))}
                   </TextField>
                 ) : (
                   "No Brands Found"
                 )}
-              </Grid> */}
+              </Grid>
 
-              {/* <Grid item sm={6} xs={12}>
+              <Grid item sm={6} xs={12}>
                 {categories ? (
                   <TextField
                     select
                     fullWidth
                     color="info"
                     size="medium"
-                    name="category"
+                    name="categories"
                     onBlur={handleBlur}
                     placeholder="Category"
                     onChange={handleChange}
-                    value={values?.categories}
+                    value={values?.categories || []}
                     label="Select Category *"
                     SelectProps={{
                       multiple: true,
                     }}
-                    error={!!touched.category && !!errors.category}
-                    helperText={touched.category && errors.category}
+                    error={!!touched.categories && !!errors.categories}
+                    helperText={touched.categories && errors.categories}
                   >
                     {categories?.map((category) => (
                       <MenuItem value={category.name} key={category._id}>
@@ -264,7 +264,7 @@ const ProductForm = (props) => {
                 ) : (
                   "No categories Found"
                 )}
-              </Grid> */}
+              </Grid>
 
               <Grid item sm={6} xs={12}>
                 <TextField
@@ -314,7 +314,7 @@ const ProductForm = (props) => {
               <Grid item sm={6} xs={12}>
                 <TextField
                   fullWidth
-                  name="price"
+                  name="regularPrice"
                   color="info"
                   size="medium"
                   type="number"
@@ -323,8 +323,8 @@ const ProductForm = (props) => {
                   label="Regular Price *"
                   onChange={handleChange}
                   placeholder="Regular Price"
-                  error={!!touched.price && !!errors.price}
-                  helperText={touched.price && errors.price}
+                  error={!!touched.regularPrice && !!errors.regularPrice}
+                  helperText={touched.regularPrice && errors.regularPrice}
                 />
               </Grid>
               <Grid item sm={6} xs={12}>
@@ -333,14 +333,14 @@ const ProductForm = (props) => {
                   color="info"
                   size="medium"
                   type="number"
-                  name="sale_price"
+                  name="salesPrice"
                   label="Sale Price *"
                   onBlur={handleBlur}
                   onChange={handleChange}
                   placeholder="Sale Price"
                   value={values?.salesPrice}
-                  error={!!touched.sale_price && !!errors.sale_price}
-                  helperText={touched.sale_price && errors.sale_price}
+                  error={!!touched.salesPrice && !!errors.salesPrice}
+                  helperText={touched.salesPrice && errors.salesPrice}
                 />
               </Grid>
 
@@ -381,14 +381,14 @@ const ProductForm = (props) => {
 
               <Grid item xs={12}>
                 <FlexBox flexDirection="row" mt={2} flexWrap="wrap" gap={1}>
-                  {initialValues?.images.map((file, index) => {
+                  {initialValues?.images?.map((file, index) => {
                     return (
                       <UploadImageBox key={index}>
                         <BazaarImage
                           src={`${process.env.NEXT_PUBLIC_ENDPOINT}/${file}`}
                           width="100%"
                         />
-                        <StyledClear onClick={handleFileDelete(file)} />
+                        <StyledClear onClick={handleImageDelete(file)} />
                       </UploadImageBox>
                     );
                   })}

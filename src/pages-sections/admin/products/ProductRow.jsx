@@ -146,7 +146,7 @@ const ProductRow = ({ product }) => {
           <Edit />
         </StyledIconButton>
 
-        <StyledIconButton>
+        <StyledIconButton onClick={() => router.push(`/admin/products/${id}`)}>
           <RemoveRedEye />
         </StyledIconButton>
 

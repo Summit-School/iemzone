@@ -22,9 +22,27 @@ const singleProduct = async (prodId) => {
   return product.data
 };
 
-
 const setPublishedProducts = async (prodId) => {
   const response = await axios.put(`${URL}/change-product-published/${prodId}`);
+  return response.data;
+};
+
+const updateProduct = async (data) => {
+  const response = await axios.put(`${URL}/update-product/${data.prodId}`, data.form, {
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "multipart/form-data",
+    },
+  });
+  return response.data;
+};
+
+const updateImageArray = async (data) => {
+  const response = await axios.put(`${URL}/update-images/${data.prodId}`, data, {
+    headers: {
+      'Content-Type': 'application/json'
+    }
+  });
   return response.data;
 };
 
@@ -38,7 +56,9 @@ const productServices = {
   shopProducts,
   setPublishedProducts,
   deleteProduct,
-  singleProduct
+  singleProduct,
+  updateProduct,
+  updateImageArray
 };
 
 export default productServices;

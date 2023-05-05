@@ -2,7 +2,7 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
 import productServices from '../../services/admin/product'
 
 const initialState = {
-  products: null,
+  products: [],
   product: null
 }
 
@@ -78,6 +78,42 @@ export const setPublishedProducts = createAsyncThunk(
   }
 )
 
+export const updateProduct = createAsyncThunk(
+  'products/updateProduct',
+  async (data, thunkAPI) => {
+    try {
+      return await productServices.updateProduct(data)
+    } catch (error) {
+      const message =
+        (error.response &&
+          error.response.data &&
+          error.response.data.message) ||
+        error.message ||
+        error.toString()
+
+      return thunkAPI.rejectWithValue(message)
+    }
+  }
+)
+
+export const updateImageArray = createAsyncThunk(
+  'products/updateImageArray',
+  async (data, thunkAPI) => {
+    try {
+      return await productServices.updateImageArray(data)
+    } catch (error) {
+      const message =
+        (error.response &&
+          error.response.data &&
+          error.response.data.message) ||
+        error.message ||
+        error.toString()
+
+      return thunkAPI.rejectWithValue(message)
+    }
+  }
+)
+
 export const deleteProduct = createAsyncThunk(
   'products/deleteProduct',
   async (prodId, thunkAPI) => {
@@ -107,7 +143,10 @@ export const productSlice = createSlice({
       .addCase(singleProduct.fulfilled, (state, action) => {
         state.product = action.payload
       })
-       .addCase(shopProducts.fulfilled, (state, action) => {
+      .addCase(updateProduct.fulfilled, (state, action) => {
+        state.product = action.payload
+      })
+      .addCase(shopProducts.fulfilled, (state, action) => {
         state.products = action.payload
       })
   }

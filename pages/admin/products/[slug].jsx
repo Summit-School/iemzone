@@ -33,13 +33,13 @@ const INITIAL_VALUES = {
 
 // form field validation schema
 const validationSchema = yup.object().shape({
-  name: yup.string().required("required"),
-  category: yup.array().min(1).required("required"),
+  title: yup.string().required("required"),
+  categories: yup.array().min(1).required("required"),
   brand: yup.array().min(1).required("required"),
   description: yup.string().required("required"),
   stock: yup.number().required("required"),
-  price: yup.number().required("required"),
-  sale_price: yup.number().required("required"),
+  regularPrice: yup.number().required("required"),
+  salesPrice: yup.number().required("required"),
   size: yup.string().required("required"),
   discount: yup.string().required("required"),
 });

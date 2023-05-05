@@ -2,7 +2,7 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
 import categoryServices from '../../services/admin/category'
 
 const initialState = {
-  categories: null,
+  categories: [],
   category: null
 }
 

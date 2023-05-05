@@ -2,7 +2,7 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
 import brandServices from '../../services/admin/brand'
 
 const initialState = {
-  brands: null,
+  brands: [],
   brand: null
 }
 

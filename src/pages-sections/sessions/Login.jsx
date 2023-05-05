@@ -107,7 +107,7 @@ const Login = () => {
         />
 
         <H1 textAlign="center" mt={1} mb={4} fontSize={16}>
-          Welcome To Bazaar
+          Welcome To Iemzone
         </H1>
 
         <BazaarTextField
@@ -159,7 +159,6 @@ const Login = () => {
           sx={{
             height: 44,
           }}
-          onClick={handleFormSubmit}
         >
           {loading ? "Loading..." : "Login"}
         </Button>
