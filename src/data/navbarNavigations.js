@@ -232,18 +232,18 @@ const navbarNavigations = [
       // }
     ]
   },
-  {
-    megaMenu: true,
-    megaMenuWithSub: false,
-    title: 'Mega Menu',
-    child: megaMenus
-  },
-  {
-    megaMenu: false,
-    megaMenuWithSub: true,
-    title: 'Full Screen Menu',
-    child: categoriesMegaMenu
-  },
+  // {
+  //   megaMenu: true,
+  //   megaMenuWithSub: false,
+  //   title: 'Mega Menu',
+  //   child: megaMenus
+  // },
+  // {
+  //   megaMenu: false,
+  //   megaMenuWithSub: true,
+  //   title: 'Full Screen Menu',
+  //   child: categoriesMegaMenu
+  // },
   {
     megaMenu: false,
     megaMenuWithSub: false,
@@ -253,13 +253,13 @@ const navbarNavigations = [
         title: 'Sale Page',
         child: [
           {
-            title: 'Version 1',
+            title: 'Sale Page',
             url: '/sale-page-1'
           },
-          {
-            title: 'Version 2',
-            url: '/sale-page-2'
-          }
+          // {
+          //   title: 'Version 2',
+          //   url: '/sale-page-2'
+          // }
         ]
       },
       {
@@ -269,10 +269,10 @@ const navbarNavigations = [
             title: 'All vendors',
             url: '/shops'
           },
-          {
-            title: 'Vendor store',
-            url: '/shops/scarlett-beauty'
-          }
+          // {
+          //   title: 'Vendor store',
+          //   url: '/shops/scarlett-beauty'
+          // }
         ]
       },
       {
@@ -283,25 +283,21 @@ const navbarNavigations = [
             url: '/product/search/mobile phone'
           },
           {
-            title: 'Single product',
-            url: '/product/lord-2019'
-          },
-          {
             title: 'Cart',
             url: '/cart'
           },
-          {
-            title: 'Checkout',
-            url: '/checkout'
-          },
-          {
-            title: 'Alternative Checkout',
-            url: '/checkout-alternative'
-          },
-          {
-            title: 'Order confirmation',
-            url: '/order-confirmation'
-          }
+          // {
+          //   title: 'Checkout',
+          //   url: '/checkout'
+          // },
+          // {
+          //   title: 'Alternative Checkout',
+          //   url: '/checkout-alternative'
+          // },
+          // {
+          //   title: 'Order confirmation',
+          //   url: '/order-confirmation'
+          // }
         ]
       }
     ]
@@ -318,10 +314,10 @@ const navbarNavigations = [
             title: 'Order List',
             url: '/orders'
           },
-          {
-            title: 'Order Details',
-            url: '/orders/f0ba538b-c8f3-45ce-b6c1-209cf07ba5f8'
-          }
+          // {
+          //   title: 'Order Details',
+          //   url: '/orders/f0ba538b-c8f3-45ce-b6c1-209cf07ba5f8'
+          // }
         ]
       },
       {
@@ -331,10 +327,10 @@ const navbarNavigations = [
             title: 'View Profile',
             url: '/profile'
           },
-          {
-            title: 'Edit Profile',
-            url: '/profile/e42e28ea-528f-4bc8-81fb-97f658d67d75'
-          }
+          // {
+          //   title: 'Edit Profile',
+          //   url: '/profile/e42e28ea-528f-4bc8-81fb-97f658d67d75'
+          // }
         ]
       },
       {
@@ -344,10 +340,10 @@ const navbarNavigations = [
             title: 'Address List',
             url: '/address'
           },
-          {
-            title: 'Add Address',
-            url: '/address/d27d0e28-c35e-4085-af1e-f9f1b1bd9c34'
-          }
+          // {
+          //   title: 'Add Address',
+          //   url: '/address/d27d0e28-c35e-4085-af1e-f9f1b1bd9c34'
+          // }
         ]
       },
       {
@@ -357,10 +353,10 @@ const navbarNavigations = [
             title: 'All tickets',
             url: '/support-tickets'
           },
-          {
-            title: 'Ticket details',
-            url: '/support-tickets/when-will-my-product-arrive'
-          }
+          // {
+          //   title: 'Ticket details',
+          //   url: '/support-tickets/when-will-my-product-arrive'
+          // }
         ]
       },
       {
@@ -385,10 +381,10 @@ const navbarNavigations = [
             title: 'All products',
             url: '/admin/products'
           },
-          {
-            title: 'Add/Edit product',
-            url: '/admin/products/lord-2019'
-          }
+          // {
+          //   title: 'Add/Edit product',
+          //   url: '/admin/products/lord-2019'
+          // }
         ]
       },
       {
@@ -398,10 +394,10 @@ const navbarNavigations = [
             title: 'All orders',
             url: '/admin/orders'
           },
-          {
-            title: 'Order details',
-            url: '/admin/orders/f0ba538b-c8f3-45ce-b6c1-209cf07ba5f8'
-          }
+          // {
+          //   title: 'Order details',
+          //   url: '/admin/orders/f0ba538b-c8f3-45ce-b6c1-209cf07ba5f8'
+          // }
         ]
       },
       {
