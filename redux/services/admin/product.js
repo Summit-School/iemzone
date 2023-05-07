@@ -12,6 +12,11 @@ const createProduct = async (data) => {
   return response.data;
 };
 
+const allProducts = async () => {
+  const products = await axios.get(`${URL}/products`);
+  return products.data
+};
+
 const shopProducts = async (shopId) => {
   const products = await axios.get(`${URL}/shop-products/${shopId}`);
   return products.data
@@ -53,6 +58,7 @@ const deleteProduct = async (prodId) => {
 
 const productServices = {
   createProduct,
+  allProducts,
   shopProducts,
   setPublishedProducts,
   deleteProduct,

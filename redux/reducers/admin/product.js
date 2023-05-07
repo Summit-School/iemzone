@@ -24,6 +24,24 @@ export const createProduct = createAsyncThunk(
   }
 )
 
+export const allProducts = createAsyncThunk(
+  'products/allProducts',
+  async (thunkAPI) => {
+    try {
+      return await productServices.allProducts()
+    } catch (error) {
+      const message =
+        (error.response &&
+          error.response.data &&
+          error.response.data.message) ||
+        error.message ||
+        error.toString()
+
+      return thunkAPI.rejectWithValue(message)
+    }
+  }
+)
+
 export const shopProducts = createAsyncThunk(
   'products/shopProduct',
   async (shopId, thunkAPI) => {
@@ -147,6 +165,9 @@ export const productSlice = createSlice({
         state.product = action.payload
       })
       .addCase(shopProducts.fulfilled, (state, action) => {
+        state.products = action.payload
+      })
+      .addCase(allProducts.fulfilled, (state, action) => {
         state.products = action.payload
       })
   }

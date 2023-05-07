@@ -76,13 +76,16 @@ const ProductCard1 = ({
   id,
   slug,
   title,
-  price,
+  regularPrice,
+  salesPrice,
   imgUrl,
   rating = 5,
   hideRating,
   hoverEffect,
   discount = 5,
   showProductSize,
+  description,
+  category,
 }) => {
   const { enqueueSnackbar } = useSnackbar();
   const { state, dispatch } = useAppContext();
@@ -91,6 +94,7 @@ const ProductCard1 = ({
   const toggleIsFavorite = () => setIsFavorite((fav) => !fav);
   const toggleDialog = useCallback(() => setOpenModal((open) => !open), []);
   const cartItem = state.cart.find((item) => item.slug === slug);
+
   const handleCartAmountChange = (product, type) => () => {
     dispatch({
       type: "CHANGE_CART_AMOUNT",
@@ -106,6 +110,9 @@ const ProductCard1 = ({
         variant: "success",
       });
   };
+
+  const price = salesPrice;
+
   return (
     <StyledBazaarCard hoverEffect={hoverEffect}>
       <ImageWrapper>
@@ -127,10 +134,10 @@ const ProductCard1 = ({
           </IconButton>
         </HoverIconWrapper>
 
-        <Link href={`/product/${slug}`}>
+        <Link href={`/product/${id}`}>
           <LazyImage
             priority
-            src={imgUrl}
+            src={`${process.env.NEXT_PUBLIC_ENDPOINT}/${imgUrl}`}
             width={500}
             height={500}
             alt={title}
@@ -147,13 +154,16 @@ const ProductCard1 = ({
           id,
           slug,
           imgGroup: [imgUrl, imgUrl],
+          description,
+          category,
+          rating,
         }}
       />
 
       <ContentWrapper>
         <FlexBox>
           <Box flex="1 1 0" minWidth="0px" mr={1}>
-            <Link href={`/product/${slug}`}>
+            <Link href={`/product/${id}`}>
               <H3
                 mb={1}
                 title={title}
@@ -178,12 +188,12 @@ const ProductCard1 = ({
 
             <FlexBox alignItems="center" gap={1} mt={0.5}>
               <Box fontWeight="600" color="primary.main">
-                {calculateDiscount(price, discount)}
+                {calculateDiscount(regularPrice, discount)}
               </Box>
 
               {!!discount && (
                 <Box color="grey.600" fontWeight="600">
-                  <del>{currency(price)}</del>
+                  <del>{currency(regularPrice)}</del>
                 </Box>
               )}
             </FlexBox>

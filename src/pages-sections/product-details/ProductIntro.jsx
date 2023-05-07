@@ -8,28 +8,36 @@ import { H1, H2, H3, H6 } from "components/Typography";
 import { useAppContext } from "contexts/AppContext";
 import { FlexBox, FlexRowCenter } from "../../components/flex-box";
 import { currency } from "lib";
-import productVariants from "data/product-variants";
+// import productVariants from "data/product-variants";
 
 // ================================================================
+import { useSelector } from "react-redux";
 
 // ================================================================
 
 const ProductIntro = ({ product }) => {
-  const { id, price, title, images, slug, thumbnail } = product;
+  const { id, salesPrice, title, images, slug, thumbnail, brand, rating } =
+    product;
   const { state, dispatch } = useAppContext();
   const [selectedImage, setSelectedImage] = useState(0);
-  const [selectVariants, setSelectVariants] = useState({
-    option: "option 1",
-    type: "type 1",
-  });
+  // const [selectVariants, setSelectVariants] = useState({
+  //   option: "option 1",
+  //   type: "type 1",
+  // });
 
   // HANDLE CHAMGE TYPE AND OPTIONS
-  const handleChangeVariant = (variantName, value) => () => {
-    setSelectVariants((state) => ({
-      ...state,
-      [variantName.toLowerCase()]: value,
-    }));
-  };
+  // const handleChangeVariant = (variantName, value) => () => {
+  //   setSelectVariants((state) => ({
+  //     ...state,
+  //     [variantName.toLowerCase()]: value,
+  //   }));
+  // };
+
+  const getShopFromState = useSelector((state) => state.shop.shop);
+  const shop = getShopFromState?.shop;
+
+  // SETTING PRICE VARIABLE
+  const price = salesPrice;
 
   // CHECK PRODUCT EXIST OR NOT IN THE CART
   const cartItem = state.cart.find((item) => item.id === id);
@@ -61,7 +69,7 @@ const ProductIntro = ({ product }) => {
               width={300}
               height={300}
               loading="eager"
-              src={product.images[selectedImage]}
+              src={`${process.env.NEXT_PUBLIC_ENDPOINT}/${product.images[selectedImage]}`}
               sx={{
                 objectFit: "contain",
               }}
@@ -89,7 +97,7 @@ const ProductIntro = ({ product }) => {
                 }
               >
                 <Avatar
-                  src={url}
+                  src={`${process.env.NEXT_PUBLIC_ENDPOINT}/${url}`}
                   variant="square"
                   sx={{
                     height: 40,
@@ -105,7 +113,7 @@ const ProductIntro = ({ product }) => {
 
           <FlexBox alignItems="center" mb={1}>
             <Box>Brand:</Box>
-            <H6>Xiaomi</H6>
+            <H6>{brand}</H6>
           </FlexBox>
 
           <FlexBox alignItems="center" mb={2}>
@@ -114,14 +122,14 @@ const ProductIntro = ({ product }) => {
               <BazaarRating
                 color="warn"
                 fontSize="1.25rem"
-                value={4}
+                value={rating}
                 readOnly
               />
             </Box>
             <H6 lineHeight="1">(50)</H6>
           </FlexBox>
 
-          {productVariants.map((variant) => (
+          {/* {productVariants.map((variant) => (
             <Box key={variant.id} mb={2}>
               <H6 mb={1}>{variant.title}</H6>
 
@@ -143,7 +151,7 @@ const ProductIntro = ({ product }) => {
                 />
               ))}
             </Box>
-          ))}
+          ))} */}
 
           <Box pt={1} mb={3}>
             <H2 color="primary.main" mb={0.5} lineHeight="1">
@@ -200,7 +208,7 @@ const ProductIntro = ({ product }) => {
           <FlexBox alignItems="center" gap={1} mb={2}>
             <Box>Sold By:</Box>
             <Link href="/shops/scarlett-beauty">
-              <H6>Mobile Store</H6>
+              <H6>{shop?.name}</H6>
             </Link>
           </FlexBox>
         </Grid>

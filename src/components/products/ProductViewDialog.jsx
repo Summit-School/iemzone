@@ -71,6 +71,7 @@ const ProductViewDialog = (props) => {
       },
     });
   };
+
   return (
     <Dialog
       open={openDialog}
@@ -93,7 +94,7 @@ const ProductViewDialog = (props) => {
                 {product.imgGroup.map((item, index) => (
                   <BazaarImage
                     key={index}
-                    src={item}
+                    src={`${process.env.NEXT_PUBLIC_ENDPOINT}/${item}`}
                     sx={{
                       mx: "auto",
                       width: "100%",
@@ -112,7 +113,7 @@ const ProductViewDialog = (props) => {
               <H2>{product.title}</H2>
 
               <Paragraph py={1} color="grey.500" fontWeight={600} fontSize={13}>
-                CATEGORY: Cosmetic
+                CATEGORY: {product.category}
               </Paragraph>
 
               <H1 color="primary.main">{currency(product.price)}</H1>
@@ -121,17 +122,13 @@ const ProductViewDialog = (props) => {
                 <BazaarRating
                   color="warn"
                   fontSize="1.25rem"
-                  value={4}
+                  value={product.rating}
                   readOnly
                 />
                 <H6 lineHeight="1">(50)</H6>
               </FlexBox>
 
-              <Paragraph my={2}>
-                Sed egestas, ante et vulputate volutpat, eros pede semper est,
-                vitae luctus metus libero eu augue. Morbi purus liberpuro ate
-                vol faucibus adipiscing.
-              </Paragraph>
+              <Paragraph my={2}>{product.description}</Paragraph>
 
               <Divider
                 sx={{

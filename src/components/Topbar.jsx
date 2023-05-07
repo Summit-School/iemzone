@@ -133,7 +133,7 @@ const Topbar = ({ bgColor }) => {
             handler={
               <TouchRipple className="handler marginRight">
                 <Span className="menuTitle">
-                  {language === "en" ? "EN" : "DE"}
+                  {language === "en" ? "EN" : "FR"}
                 </Span>
                 <ExpandMore fontSize="inherit" />
               </TouchRipple>
@@ -189,8 +189,8 @@ const languageList = [
     value: "en",
   },
   {
-    title: "DE",
-    value: "de",
+    title: "FR",
+    value: "fr",
   },
 ];
 export default Topbar;

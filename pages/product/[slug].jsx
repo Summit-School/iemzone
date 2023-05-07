@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
 import { Box, Container, styled, Tab, Tabs } from "@mui/material";
 import { H2 } from "components/Typography";
@@ -14,6 +14,11 @@ import {
   getRelatedProducts,
 } from "utils/__api__/related-products";
 import api from "utils/__api__/products";
+// =============================================================================
+import { useDispatch, useSelector } from "react-redux";
+import { singleProduct } from "../../redux/reducers/admin/product";
+import { getShop } from "../../redux/reducers/shop";
+import userId from "utils/userId";
 
 // styled component
 const StyledTabs = styled(Tabs)(({ theme }) => ({
@@ -28,15 +33,45 @@ const StyledTabs = styled(Tabs)(({ theme }) => ({
   },
 }));
 
-// ===============================================================
-
-// ===============================================================
-
 const ProductDetails = (props) => {
-  const { frequentlyBought, relatedProducts, product } = props;
+  const { frequentlyBought, relatedProducts } = props;
   const router = useRouter();
+  const { query } = useRouter();
   const [selectedOption, setSelectedOption] = useState(0);
   const handleOptionClick = (_, value) => setSelectedOption(value);
+
+  const dispatch = useDispatch();
+
+  const getProduct = useSelector((state) => state.products.product);
+  const getShopFromState = useSelector((state) => state.shop.shop);
+  const shop = getShopFromState?.shop;
+  const product = getProduct?.product;
+
+  useEffect(() => {
+    const id = userId();
+    dispatch(singleProduct(query.slug))
+      .then((res) => {
+        if (res.meta.requestStatus === "rejected") {
+          return enqueueSnackbar(res.payload, {
+            variant: "error",
+          });
+        }
+        dispatch(getShop(id))
+          .then((res) => {
+            if (res.meta.requestStatus === "rejected") {
+              return enqueueSnackbar(res.payload, {
+                variant: "error",
+              });
+            }
+          })
+          .catch((err) => {
+            console.error(err);
+          });
+      })
+      .catch((err) => {
+        console.error(err);
+      });
+  }, []);
 
   // Show a loading state when the fallback is rendered
   if (router.isFallback) {
@@ -50,7 +85,11 @@ const ProductDetails = (props) => {
         }}
       >
         {/* PRODUCT DETAILS INFO AREA */}
-        {product ? <ProductIntro product={product} /> : <H2>Loading...</H2>}
+        {product ? (
+          <ProductIntro shop={shop} product={product} />
+        ) : (
+          <H2>Loading...</H2>
+        )}
 
         {/* PRODUCT DESCRIPTION AND REVIEW */}
         <StyledTabs
@@ -79,6 +118,7 @@ const ProductDetails = (props) => {
     </ShopLayout1>
   );
 };
+
 export const getStaticPaths = async () => {
   const paths = await api.getSlugs();
   return {
@@ -91,12 +131,12 @@ export const getStaticPaths = async () => {
 export const getStaticProps = async ({ params }) => {
   const relatedProducts = await getRelatedProducts();
   const frequentlyBought = await getFrequentlyBought();
-  const product = await api.getProduct(params.slug);
+  // const product = await api.getProduct(params.slug);
   return {
     props: {
       frequentlyBought,
       relatedProducts,
-      product,
+      // product,
     },
   };
 };

@@ -253,7 +253,7 @@ const navbarNavigations = [
         title: 'Sale Page',
         child: [
           {
-            title: 'Sale Page',
+            title: 'Market',
             url: '/sale-page-1'
           },
           // {

@@ -192,9 +192,9 @@ const ProductForm = (props) => {
                     onChange={handleChange}
                     value={values.brand}
                     label="Select Brand *"
-                    SelectProps={{
-                      multiple: true,
-                    }}
+                    // SelectProps={{
+                    //   multiple: true,
+                    // }}
                     error={!!touched.brand && !!errors.brand}
                     helperText={touched.brand && errors.brand}
                   >
@@ -221,9 +221,9 @@ const ProductForm = (props) => {
                     onChange={handleChange}
                     value={values.category}
                     label="Select Category *"
-                    SelectProps={{
-                      multiple: true,
-                    }}
+                    // SelectProps={{
+                    //   multiple: true,
+                    // }}
                     error={!!touched.category && !!errors.category}
                     helperText={touched.category && errors.category}
                   >

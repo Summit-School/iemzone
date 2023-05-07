@@ -12,6 +12,10 @@ import { renderProductCount } from "../src/lib";
 import useScroller from "hooks/useScroller";
 import api from "utils/__api__/sales";
 // import productsList from "data/product-database";
+// =============================================================================
+import { useDispatch, useSelector } from "react-redux";
+import { useSnackbar } from "notistack";
+import { allProducts } from "../redux/reducers/admin/product";
 
 //  custom styled components
 const CategoryBoxWrapper = styled(FlexRowCenter)(({ selected, theme }) => ({
@@ -51,6 +55,7 @@ const CategoryWrapper = styled(Box)(({ show, theme }) => ({
   boxShadow: theme.shadows[2],
   transition: "top 0.3s ease-in-out",
 }));
+
 const SalePage1 = () => {
   const PRODUCT_PER_PAGE = 28;
   const categoryRef = useRef(null);
@@ -59,6 +64,12 @@ const SalePage1 = () => {
   const [productList, setProductList] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState("women");
   const { isFixedHeader } = useScroller(categoryRef);
+
+  const { enqueueSnackbar } = useSnackbar();
+  const dispatch = useDispatch();
+
+  const marketProductsList = useSelector((state) => state.products.products);
+  const products = marketProductsList?.products;
 
   // HANDLE CHANGE PAGE
   const handlePageChange = (_, page) => setPage(page);
@@ -73,11 +84,23 @@ const SalePage1 = () => {
 
   // FETCH PRODUCTS FROM SERVER
   useEffect(() => {
-    api.getProducts(page).then((data) => setProductList(data));
+    // api.getProducts(page).then((data) => setProductList(data));
+    dispatch(allProducts())
+      .then((res) => {
+        if (res.meta.requestStatus === "rejected") {
+          return enqueueSnackbar(res.payload, {
+            variant: "error",
+          });
+        }
+        setProductList(res.payload.products);
+      })
+      .catch((err) => {
+        console.error(err);
+      });
   }, [page]);
   return (
     <SaleLayout>
-      <SEO title="Sale page v1" />
+      <SEO title="Market - Iemzone" />
 
       <Container
         sx={{
@@ -142,16 +165,19 @@ const SalePage1 = () => {
 
         {/* PRODUCT LIST AREA */}
         <Grid container spacing={3} minHeight={500}>
-          {productList.map((item) => (
-            <Grid item lg={3} md={4} sm={6} xs={12} key={item.id}>
+          {products?.map((item) => (
+            <Grid item lg={3} md={4} sm={6} xs={12} key={item._id}>
               <ProductCard1
-                id={item.id}
+                id={item._id}
                 slug={item.slug}
                 title={item.title}
-                price={item.price}
+                regularPrice={item.regularPrice}
+                salesPrice={item.salesPrice}
                 rating={item.rating}
                 imgUrl={item.thumbnail}
                 discount={item.discount}
+                description={item.description}
+                category={item.categories}
               />
             </Grid>
           ))}
