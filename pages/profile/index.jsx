@@ -43,7 +43,7 @@ const Profile = () => {
         }
       })
       .catch((err) => {
-        console.log(err);
+        console.error(err);
       });
   }, []);
 
@@ -102,7 +102,7 @@ const Profile = () => {
               }}
             >
               <Avatar
-                src={user?.avatar}
+                src={`${process.env.NEXT_PUBLIC_ENDPOINT}/${user?.avatar}`}
                 sx={{
                   height: 64,
                   width: 64,

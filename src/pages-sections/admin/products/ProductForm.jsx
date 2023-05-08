@@ -140,6 +140,7 @@ const ProductForm = (props) => {
   const handleFileDelete = (file) => () => {
     setFiles((files) => files.filter((item) => item.name !== file.name));
   };
+
   return (
     <Card
       sx={{

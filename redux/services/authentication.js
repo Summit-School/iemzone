@@ -30,10 +30,11 @@ const fetchUserData = async (userId) => {
 };
 
 const updateUser = async (data) => {
-  const response = await axios.put(`${URL}/update-user/${data.userId}`, data,{
-    headers: {
-      'Content-Type': 'application/json'
-    }
+  const response = await axios.put(`${URL}/update-user/${data.userId}`, data.form,{
+     headers: {
+      Accept: "application/json",
+      "Content-Type": "multipart/form-data",
+    },
   });
   return response.data;
 };

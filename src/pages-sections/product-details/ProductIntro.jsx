@@ -207,7 +207,7 @@ const ProductIntro = ({ product }) => {
 
           <FlexBox alignItems="center" gap={1} mb={2}>
             <Box>Sold By:</Box>
-            <Link href="/shops/scarlett-beauty">
+            <Link href={`/shops/${shop?.name}`}>
               <H6>{shop?.name}</H6>
             </Link>
           </FlexBox>

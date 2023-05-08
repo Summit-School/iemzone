@@ -7,10 +7,10 @@ import ProductIntro from "pages-sections/product-details/ProductIntro";
 import ProductReview from "pages-sections/product-details/ProductReview";
 import AvailableShops from "pages-sections/product-details/AvailableShops";
 import RelatedProducts from "pages-sections/product-details/RelatedProducts";
-import FrequentlyBought from "pages-sections/product-details/FrequentlyBought";
+// import FrequentlyBought from "pages-sections/product-details/FrequentlyBought";
 import ProductDescription from "pages-sections/product-details/ProductDescription";
 import {
-  getFrequentlyBought,
+  // getFrequentlyBought,
   getRelatedProducts,
 } from "utils/__api__/related-products";
 import api from "utils/__api__/products";
@@ -43,8 +43,6 @@ const ProductDetails = (props) => {
   const dispatch = useDispatch();
 
   const getProduct = useSelector((state) => state.products.product);
-  const getShopFromState = useSelector((state) => state.shop.shop);
-  const shop = getShopFromState?.shop;
   const product = getProduct?.product;
 
   useEffect(() => {
@@ -85,11 +83,7 @@ const ProductDetails = (props) => {
         }}
       >
         {/* PRODUCT DETAILS INFO AREA */}
-        {product ? (
-          <ProductIntro shop={shop} product={product} />
-        ) : (
-          <H2>Loading...</H2>
-        )}
+        {product ? <ProductIntro product={product} /> : <H2>Loading...</H2>}
 
         {/* PRODUCT DESCRIPTION AND REVIEW */}
         <StyledTabs
@@ -99,17 +93,19 @@ const ProductDetails = (props) => {
           onChange={handleOptionClick}
         >
           <Tab className="inner-tab" label="Description" />
-          <Tab className="inner-tab" label="Review (3)" />
+          <Tab className="inner-tab" label="Review(s)" />
         </StyledTabs>
 
         <Box mb={6}>
-          {selectedOption === 0 && <ProductDescription />}
+          {selectedOption === 0 && (
+            <ProductDescription description={product?.description} />
+          )}
           {selectedOption === 1 && <ProductReview />}
         </Box>
 
-        {frequentlyBought && (
+        {/* {frequentlyBought && (
           <FrequentlyBought productsData={frequentlyBought} />
-        )}
+        )} */}
 
         <AvailableShops />
 
@@ -129,7 +125,7 @@ export const getStaticPaths = async () => {
 };
 
 export const getStaticProps = async ({ params }) => {
-  const relatedProducts = await getRelatedProducts();
+  // const relatedProducts = await getRelatedProducts();
   const frequentlyBought = await getFrequentlyBought();
   // const product = await api.getProduct(params.slug);
   return {

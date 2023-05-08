@@ -15,6 +15,11 @@ import UserDashboardHeader from "components/header/UserDashboardHeader";
 import CustomerDashboardLayout from "components/layouts/customer-dashboard";
 import CustomerDashboardNavigation from "components/layouts/customer-dashboard/Navigations";
 import api from "utils/__api__/users";
+import BazaarImage from "components/BazaarImage";
+import {
+  UploadImageBox,
+  StyledClear,
+} from "../../src/pages-sections/admin/StyledComponents";
 // ===========================================================
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -25,6 +30,8 @@ import userId from "utils/userId";
 const ProfileEditor = () => {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
+  const [file, setFile] = useState(null);
+
   const user = useSelector((state) => state.authentication.userData);
 
   const INITIAL_VALUES = {
@@ -62,13 +69,18 @@ const ProfileEditor = () => {
 
   const handleFormSubmit = async (values) => {
     const id = userId();
+    const avatar = file;
+    const form = new FormData();
+    form.append("userId", id);
+    form.append("avatar", avatar);
+    form.append("firstName", values.first_name);
+    form.append("lastName", values.last_name);
+    form.append("email", values.email);
+    form.append("phone", values.contact);
+    form.append("dateOfBirth", values.birth_date);
     let data = {
       userId: id,
-      firstName: values.first_name,
-      lastName: values.last_name,
-      email: values.email,
-      phone: values.number,
-      dateOfBirth: values.birth_date,
+      form,
     };
     dispatch(updateUser(data), setLoading(true))
       .then((res) => {
@@ -90,6 +102,20 @@ const ProfileEditor = () => {
         console.error(err);
         setLoading(false);
       });
+  };
+
+  // HANDLE UPDATE NEW IMAGE IMAGE SELECT
+  const handleFileSelect = (files) => {
+    const file = files[0];
+    Object.assign(file, {
+      preview: URL.createObjectURL(file),
+    });
+    setFile(file);
+  };
+
+  // HANDLE DELETE UPLOAD IMAGE
+  const handleFileDelete = (file) => () => {
+    setFile(null);
   };
 
   // SECTION TITLE HEADER LINK
@@ -125,7 +151,10 @@ const ProfileEditor = () => {
       <Card1>
         <FlexBox alignItems="flex-end" mb={3}>
           <Avatar
-            src="/assets/images/faces/ralph.png"
+            src={
+              `${process.env.NEXT_PUBLIC_ENDPOINT}/${user?.avatar}` ||
+              "/assets/images/bazaar-black-sm.svg"
+            }
             sx={{
               height: 64,
               width: 64,
@@ -151,11 +180,22 @@ const ProfileEditor = () => {
 
           <Box display="none">
             <input
-              onChange={(e) => console.log(e.target.files)}
+              onChange={(e) => handleFileSelect(e.target.files)}
               id="profile-image"
               accept="image/*"
               type="file"
             />
+          </Box>
+
+          <Box ml={2.5}>
+            {file != null ? (
+              <UploadImageBox>
+                <BazaarImage src={file.preview} width="100%" />
+                <StyledClear onClick={handleFileDelete(file)} />
+              </UploadImageBox>
+            ) : (
+              ""
+            )}
           </Box>
         </FlexBox>
 
@@ -261,12 +301,7 @@ const ProfileEditor = () => {
                 </Grid>
               </Box>
 
-              <Button
-                type="submit"
-                variant="contained"
-                color="primary"
-                onClick={handleFormSubmit}
-              >
+              <Button type="submit" variant="contained" color="primary">
                 {loading ? "Loading..." : " Save Changes"}
               </Button>
             </form>
