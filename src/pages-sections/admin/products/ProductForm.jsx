@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { Button, Card, Grid, MenuItem, TextField } from "@mui/material";
-import { Formik, useFormikContext } from "formik";
+import { Formik } from "formik";
 import DropZone from "components/DropZone";
 import { FlexBox } from "components/flex-box";
 import BazaarImage from "components/BazaarImage";
@@ -25,7 +25,6 @@ const ProductForm = (props) => {
 
   const dispatch = useDispatch();
   const { enqueueSnackbar } = useSnackbar();
-  // const { resetForm } = useFormikContext();
 
   const shop = useSelector((state) => state.shop.shop);
   const shopId = shop?.shop._id;
@@ -112,6 +111,7 @@ const ProductForm = (props) => {
       for (let i = 0; i < files.length; i++) {
         form.append("images", files[i]);
       }
+
       dispatch(createProduct(form), setLoading(true))
         .then((res) => {
           if (res.meta.requestStatus === "fulfilled") {

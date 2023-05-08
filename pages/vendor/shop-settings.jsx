@@ -1,5 +1,5 @@
-import { useState } from "react";
-import { Delete } from "@mui/icons-material";
+import { useState, useEffect } from "react";
+// import { Delete } from "@mui/icons-material";
 import {
   Box,
   Button,
@@ -13,29 +13,17 @@ import {
 import * as Yup from "yup";
 import { Formik } from "formik";
 import DropZone from "components/DropZone";
-import { FlexBox } from "components/flex-box";
+// import { FlexBox } from "components/flex-box";
 import { H3, Paragraph } from "components/Typography";
 import VendorDashboardLayout from "components/layouts/vendor-dashboard";
 // ####################################################################
 import userId from "../../src/utils/userId";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useSnackbar } from "notistack";
-import { createShop } from "../../redux/reducers/shop";
+import { createShop, getShop } from "../../redux/reducers/shop";
 
-const INITIAL_VALUES = {
-  shopName: "",
-  shopSlug: "",
-  shopPhone: "",
-  shopEmail: "",
-  shopAddress: "",
-  shopFacebookLink: "",
-  shopTwitterLink: "",
-  shopYoutubeLink: "",
-  shopInstagramLink: "",
-};
 const validationSchema = Yup.object().shape({
   shopName: Yup.string().required("Shop Name is required!"),
-  shopSlug: Yup.string().required("Shop Slug is required!"),
   shopEmail: Yup.string().required("Shop Email is required!"),
   shopPhone: Yup.string().required("Shop Phone is required!"),
   shopAddress: Yup.string().required("Shop Address is required!"),
@@ -76,6 +64,35 @@ export default function ShopSettings() {
   const dispatch = useDispatch();
   const { enqueueSnackbar } = useSnackbar();
 
+  const getShopFromState = useSelector((state) => state.shop.shop);
+  const shop = getShopFromState?.shop;
+
+  const INITIAL_VALUES = {
+    shopName: shop?.name || "",
+    shopSlug: shop?.slug || "",
+    shopPhone: shop?.phone || "",
+    shopEmail: shop?.email || "",
+    shopAddress: shop?.address || "",
+    shopFacebookLink: shop?.socialLinks.facebook || "",
+    shopTwitterLink: shop?.socialLinks.twitter || "",
+    shopYoutubeLink: shop?.socialLinks.youtube || "",
+    shopInstagramLink: shop?.socialLinks.instagram || "",
+  };
+
+  useEffect(() => {
+    dispatch(getShop(id))
+      .then((res) => {
+        if (res.meta.requestStatus === "rejected") {
+          return enqueueSnackbar(res.payload, {
+            variant: "error",
+          });
+        }
+      })
+      .catch((err) => {
+        console.error(err);
+      });
+  }, []);
+
   const handleFormSubmit = (values) => {
     if (
       !validFileTypes.find(
@@ -86,10 +103,11 @@ export default function ShopSettings() {
         variant: "error",
       });
     } else {
+      const shopSlug = values.shopName.replace(/\W+/g, "-").toLowerCase();
       let form = new FormData();
       form.append("userId", id);
       form.append("name", values.shopName);
-      form.append("slug", values.shopSlug);
+      form.append("slug", shopSlug);
       form.append("phone", values.shopPhone);
       form.append("email", values.shopEmail);
       form.append("address", values.shopAddress);
@@ -160,18 +178,6 @@ export default function ShopSettings() {
                   onChange={handleChange}
                   error={Boolean(errors.shopName && touched.shopName)}
                   helperText={touched.shopName && errors.shopName}
-                />
-
-                <TextField
-                  color="info"
-                  size="medium"
-                  name="shopSlug"
-                  label="Slug *"
-                  onBlur={handleBlur}
-                  value={values.shopSlug}
-                  onChange={handleChange}
-                  error={Boolean(errors.shopSlug && touched.shopSlug)}
-                  helperText={touched.shopSlug && errors.shopSlug}
                 />
 
                 <TextField

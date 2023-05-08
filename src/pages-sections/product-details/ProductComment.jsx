@@ -9,23 +9,25 @@ import { getDateDifference } from "lib";
 // ===========================================================
 
 const ProductComment = (props) => {
-  const { name, imgUrl, rating, date, comment } = props;
+  const { firstName, lastName, imgUrl, rating, createdAt, comment } = props;
   return (
     <Box mb={4} maxWidth="600px">
       <FlexBox alignItems="center" mb={2}>
         <Avatar
-          src={imgUrl}
+          src={`${process.env.NEXT_PUBLIC_ENDPOINT}/${imgUrl}`}
           sx={{
             width: 48,
             height: 48,
           }}
         />
         <Box ml={2}>
-          <H5 mb={0.5}>{name}</H5>
+          <H5 mb={0.5}>
+            {firstName} {lastName}
+          </H5>
           <FlexBox alignItems="center">
             <BazaarRating value={rating} color="warn" readOnly />
             <H6 mx={1.25}>{rating}</H6>
-            <Span>{getDateDifference(date)}</Span>
+            <Span>{getDateDifference(createdAt)}</Span>
           </FlexBox>
         </Box>
       </FlexBox>

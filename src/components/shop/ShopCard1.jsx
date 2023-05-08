@@ -24,18 +24,29 @@ const ContentWrapper = styled(Box)(({ theme, img }) => ({
   )}), 
     url(${img || "/assets/images/banners/cycle.png"})`,
 }));
+
 const ShopCard1 = (props) => {
-  const { name, rating, address, phone, coverPicture, profilePicture, slug } =
-    props;
+  const {
+    name,
+    rating,
+    address,
+    phone,
+    coverPicture,
+    profilePicture,
+    slug,
+    id,
+  } = props;
   return (
     <Card>
-      <ContentWrapper img={coverPicture}>
+      <ContentWrapper
+        img={`${process.env.NEXT_PUBLIC_ENDPOINT}/${coverPicture.src}`}
+      >
         <H3 fontWeight="600" mb={1}>
           {name}
         </H3>
 
         <Rating
-          value={rating || 0}
+          value={rating || 5}
           color="warn"
           size="small"
           readOnly
@@ -68,7 +79,7 @@ const ShopCard1 = (props) => {
 
       <FlexBetween pl={3} pr={1}>
         <Avatar
-          src={profilePicture}
+          src={`${process.env.NEXT_PUBLIC_ENDPOINT}/${profilePicture}`}
           sx={{
             width: 64,
             height: 64,
@@ -77,7 +88,7 @@ const ShopCard1 = (props) => {
             borderColor: "grey.100",
           }}
         />
-        <Link href={`/shops/${slug}`}>
+        <Link href={`/shops/${id}`}>
           <IconButton
             sx={{
               my: 0.5,

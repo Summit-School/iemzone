@@ -12,7 +12,16 @@ import { H3, Small, Span } from "components/Typography";
 // =======================================================
 
 const ShopIntroCard = (props) => {
-  const { name, phone, address, coverPicture, profilePicture } = props;
+  const {
+    name,
+    phone,
+    address,
+    coverPicture,
+    profilePicture,
+    socialLinks,
+    email,
+  } = props;
+
   return (
     <Card
       sx={{
@@ -23,13 +32,16 @@ const ShopIntroCard = (props) => {
       <Box
         height="202px"
         sx={{
-          background: `url(${coverPicture}) center/cover`,
+          background: `url(${
+            `${process.env.NEXT_PUBLIC_ENDPOINT}/${coverPicture}` ||
+            "/assets/images/banners/cycle.png"
+          } center/cover)`,
         }}
       />
 
       <FlexBox mt={-8} px={3.75} flexWrap="wrap">
         <Avatar
-          src={profilePicture}
+          src={`${process.env.NEXT_PUBLIC_ENDPOINT}/${profilePicture}`}
           sx={{
             mr: "37px",
             width: "120px",
@@ -62,6 +74,53 @@ const ShopIntroCard = (props) => {
             </Box>
 
             <FlexBox my={1} gap={1.5}>
+              <a
+                href={socialLinks?.facebook}
+                target="_blank"
+                rel="noreferrer noopener"
+              >
+                <FacebookFilled
+                  sx={{
+                    fontSize: 27,
+                  }}
+                />
+              </a>
+              <a
+                href={socialLinks?.instagram}
+                target="_blank"
+                rel="noreferrer noopener"
+              >
+                <InstagramFilled
+                  sx={{
+                    fontSize: 27,
+                  }}
+                />
+              </a>
+              <a
+                href={socialLinks?.twitter}
+                target="_blank"
+                rel="noreferrer noopener"
+              >
+                <TwitterFilled
+                  sx={{
+                    fontSize: 27,
+                  }}
+                />
+              </a>
+              <a
+                href={socialLinks?.youtube}
+                target="_blank"
+                rel="noreferrer noopener"
+              >
+                <YoutubeFilled
+                  sx={{
+                    fontSize: 27,
+                  }}
+                />
+              </a>
+            </FlexBox>
+
+            {/* <FlexBox my={1} gap={1.5}>
               {socialLinks.map((item, ind) => (
                 <a
                   href={item.url}
@@ -76,7 +135,7 @@ const ShopIntroCard = (props) => {
                   />
                 </a>
               ))}
-            </FlexBox>
+            </FlexBox> */}
           </FlexBetween>
 
           <FlexBetween flexWrap="wrap">
@@ -111,7 +170,7 @@ const ShopIntroCard = (props) => {
               </FlexBox>
             </Box>
 
-            <a href="mailto:scarletbeauty@xmail.com">
+            <a href={`mailto:${email}`}>
               <Button
                 variant="outlined"
                 color="primary"
@@ -128,22 +187,22 @@ const ShopIntroCard = (props) => {
     </Card>
   );
 };
-const socialLinks = [
-  {
-    icon: FacebookFilled,
-    url: "https://facebook.com",
-  },
-  {
-    icon: TwitterFilled,
-    url: "https://twitter.com",
-  },
-  {
-    icon: YoutubeFilled,
-    url: "https://youtube.com",
-  },
-  {
-    icon: InstagramFilled,
-    url: "https://instagram.com",
-  },
-];
+// const socialLinks = [
+//   {
+//     icon: FacebookFilled,
+//     url: "https://facebook.com",
+//   },
+//   {
+//     icon: TwitterFilled,
+//     url: "https://twitter.com",
+//   },
+//   {
+//     icon: YoutubeFilled,
+//     url: "https://youtube.com",
+//   },
+//   {
+//     icon: InstagramFilled,
+//     url: "https://instagram.com",
+//   },
+// ];
 export default ShopIntroCard;

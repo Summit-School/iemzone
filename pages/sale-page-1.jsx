@@ -7,7 +7,7 @@ import ProductCard1 from "components/product-cards/ProductCard1";
 import { FlexBetween, FlexBox, FlexRowCenter } from "components/flex-box";
 import { H1, H5, Span } from "components/Typography";
 import appIcons from "components/icons";
-import productDB from "data/product-database";
+// import productDB from "data/product-database";
 import { renderProductCount } from "../src/lib";
 import useScroller from "hooks/useScroller";
 import api from "utils/__api__/sales";
@@ -61,7 +61,7 @@ const SalePage1 = () => {
   const categoryRef = useRef(null);
   const [page, setPage] = useState(1);
   const [categories, setCategories] = useState([]);
-  const [productList, setProductList] = useState([]);
+  // const [productList, setProductList] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState("women");
   const { isFixedHeader } = useScroller(categoryRef);
 
@@ -92,7 +92,6 @@ const SalePage1 = () => {
             variant: "error",
           });
         }
-        setProductList(res.payload.products);
       })
       .catch((err) => {
         console.error(err);
@@ -186,14 +185,14 @@ const SalePage1 = () => {
         {/* PAGINATION AREA */}
         <FlexBetween flexWrap="wrap" my={8}>
           <Span>
-            {renderProductCount(page, PRODUCT_PER_PAGE, productDB.length)}
+            {renderProductCount(page, PRODUCT_PER_PAGE, products?.length)}
           </Span>
           <Pagination
             page={page}
             color="primary"
             variant="outlined"
             onChange={handlePageChange}
-            count={Math.ceil(productDB.length / PRODUCT_PER_PAGE)}
+            count={Math.ceil(products?.length / PRODUCT_PER_PAGE)}
           />
         </FlexBetween>
       </Container>

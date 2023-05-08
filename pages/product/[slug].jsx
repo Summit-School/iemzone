@@ -17,8 +17,10 @@ import api from "utils/__api__/products";
 // =============================================================================
 import { useDispatch, useSelector } from "react-redux";
 import { singleProduct } from "../../redux/reducers/admin/product";
+import { getProductReviews } from "../../redux/reducers/admin/productReview";
 import { getShop } from "../../redux/reducers/shop";
 import userId from "utils/userId";
+// =============================================================================
 
 // styled component
 const StyledTabs = styled(Tabs)(({ theme }) => ({
@@ -54,6 +56,18 @@ const ProductDetails = (props) => {
             variant: "error",
           });
         }
+        const prodId = res.payload.product._id;
+        dispatch(getProductReviews(prodId))
+          .then((res) => {
+            if (res.meta.requestStatus === "rejected") {
+              return enqueueSnackbar(res.payload, {
+                variant: "error",
+              });
+            }
+          })
+          .catch((err) => {
+            console.error(err);
+          });
         dispatch(getShop(id))
           .then((res) => {
             if (res.meta.requestStatus === "rejected") {
@@ -100,7 +114,7 @@ const ProductDetails = (props) => {
           {selectedOption === 0 && (
             <ProductDescription description={product?.description} />
           )}
-          {selectedOption === 1 && <ProductReview />}
+          {selectedOption === 1 && <ProductReview product={product} />}
         </Box>
 
         {/* {frequentlyBought && (
@@ -125,12 +139,12 @@ export const getStaticPaths = async () => {
 };
 
 export const getStaticProps = async ({ params }) => {
-  // const relatedProducts = await getRelatedProducts();
-  const frequentlyBought = await getFrequentlyBought();
+  const relatedProducts = await getRelatedProducts();
+  // const frequentlyBought = await getFrequentlyBought();
   // const product = await api.getProduct(params.slug);
   return {
     props: {
-      frequentlyBought,
+      // frequentlyBought,
       relatedProducts,
       // product,
     },

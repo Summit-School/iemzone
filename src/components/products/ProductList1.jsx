@@ -9,7 +9,7 @@ const ProductList1 = ({ products }) => {
   return (
     <Fragment>
       <Grid container spacing={3}>
-        {products.map((item) => (
+        {products?.map((item) => (
           <Grid item lg={4} sm={6} xs={12} key={item.id}>
             <ProductCard1
               id={item.id}

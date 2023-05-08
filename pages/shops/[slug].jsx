@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import { useRouter } from "next/router";
 import { Container, Grid, IconButton, useMediaQuery } from "@mui/material";
 import FilterList from "@mui/icons-material/FilterList";
@@ -6,15 +7,38 @@ import ShopLayout1 from "components/layouts/ShopLayout1";
 import ShopIntroCard from "components/shop/ShopIntroCard";
 import ProductList1 from "components/products/ProductList1";
 import ProductFilterCard from "pages-sections/product-details/ProductFilterCard";
-import api from "utils/__api__/shop";
+// import api from "utils/__api__/shop";
 
 // ============================================================
-
+import { useDispatch, useSelector } from "react-redux";
+import { useSnackbar } from "notistack";
+import { getShopDetails } from "../../redux/reducers/shop";
 // ============================================================
 
-const ShopDetails = ({ shop }) => {
+const ShopDetails = () => {
   const router = useRouter();
+  const { query } = useRouter();
   const isDownMd = useMediaQuery((theme) => theme.breakpoints.down("md"));
+
+  const { enqueueSnackbar } = useSnackbar();
+  const dispatch = useDispatch();
+
+  const shopObject = useSelector((state) => state.shop.shop);
+  const shop = shopObject?.shop;
+
+  useEffect(() => {
+    dispatch(getShopDetails(query.slug))
+      .then((res) => {
+        if (res.meta.requestStatus === "rejected") {
+          return enqueueSnackbar(res.payload, {
+            variant: "error",
+          });
+        }
+      })
+      .catch((err) => {
+        console.error(err);
+      });
+  }, []);
 
   // Show a loading state when the fallback is rendered
   if (router.isFallback) {
@@ -39,11 +63,13 @@ const ShopDetails = ({ shop }) => {
       >
         {/* SHOP INTRODUCTION AREA */}
         <ShopIntroCard
-          name={shop.name}
-          phone={shop.phone}
-          address={shop.address}
-          coverPicture={shop.coverPicture}
-          profilePicture={shop.profilePicture}
+          name={shop?.name}
+          phone={shop?.phone}
+          address={shop?.address}
+          email={shop?.email}
+          coverPicture={shop?.coverPicture}
+          profilePicture={shop?.profilePicture}
+          socialLinks={shop?.socialLinks}
         />
 
         <Grid container spacing={3}>
@@ -71,28 +97,28 @@ const ShopDetails = ({ shop }) => {
             )}
 
             {/* PRODUCT LIST AREA */}
-            <ProductList1 products={shop.products.slice(0, 9)} />
+            <ProductList1 products={shop?.products?.slice(0, 9)} />
           </Grid>
         </Grid>
       </Container>
     </ShopLayout1>
   );
 };
-export const getStaticPaths = async () => {
-  const paths = await api.getSlugs();
-  return {
-    paths: paths,
-    //indicates that no page needs be created at build time
-    fallback: "blocking", //indicates the type of fallback
-  };
-};
+// export const getStaticPaths = async () => {
+//   const paths = await api.getSlugs();
+//   return {
+//     paths: paths,
+//     //indicates that no page needs be created at build time
+//     fallback: "blocking", //indicates the type of fallback
+//   };
+// };
 
-export const getStaticProps = async ({ params }) => {
-  const shop = await api.getProductsBySlug(String(params.slug));
-  return {
-    props: {
-      shop,
-    },
-  };
-};
+// export const getStaticProps = async ({ params }) => {
+//   const shop = await api.getProductsBySlug(String(params.slug));
+//   return {
+//     props: {
+//       shop,
+//     },
+//   };
+// };
 export default ShopDetails;

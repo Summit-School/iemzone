@@ -10,20 +10,25 @@ const useId = () => {
     typeof window !== "undefined"
       ? window.localStorage.getItem("iemzone-user")
       : false;
-  const isTokenExpired = isExpired(userToken);
-  if (isTokenExpired === true) {
-    // return enqueueSnackbar("Session Expired. Please login again.", {
-    //         variant: "error",
-    //       });
-    // navigate.push("/");
-    return typeof window !== "undefined"? window.alert("Session Expired. Please login again"): false
-  }
-  const decodedToken = decodeToken(userToken);
-  const id = decodedToken.userId;
+  if (userToken) {
+    const isTokenExpired = isExpired(userToken);
+    if (isTokenExpired === true) {
+      // return enqueueSnackbar("Session Expired. Please login again.", {
+      //         variant: "error",
+      //       });
+      // navigate.push("/");
+      return typeof window !== "undefined"
+        ? window.alert("Session Expired. Please login to continue")
+        : false;
+    }
+    const decodedToken = decodeToken(userToken);
+    const id = decodedToken.userId;
 
-  return id;
+    return id;
+  }
+  return typeof window !== "undefined"
+    ? window.alert("Please login to continue")
+    : false;
 };
 
 export default useId;
-
-

@@ -269,7 +269,7 @@ const ProfileEditor = () => {
                     />
                   </Grid>
 
-                  <Grid item md={6} xs={12}>
+                  {/* <Grid item md={6} xs={12}>
                     <LocalizationProvider dateAdapter={AdapterDateFns}>
                       <DatePicker
                         label="Birth Date"
@@ -297,7 +297,7 @@ const ProfileEditor = () => {
                         }}
                       />
                     </LocalizationProvider>
-                  </Grid>
+                  </Grid> */}
                 </Grid>
               </Box>
 
