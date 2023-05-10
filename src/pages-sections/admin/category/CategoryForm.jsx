@@ -41,7 +41,7 @@ const CategoryForm = (props) => {
     setFiles(files);
   };
 
-  const handleFormSubmit = (values) => {
+  const handleFormSubmit = (values, { resetForm }) => {
     if (files.length === 0) {
       return enqueueSnackbar("Image is required", {
         variant: "error",
@@ -64,6 +64,7 @@ const CategoryForm = (props) => {
               variant: "success",
             });
             setLoading(false);
+            resetForm();
           }
           if (res.meta.requestStatus === "rejected") {
             setLoading(false);

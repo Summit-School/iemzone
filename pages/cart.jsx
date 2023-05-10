@@ -1,14 +1,14 @@
 import Link from "next/link";
 import { Button, Card, Divider, Grid, TextField } from "@mui/material";
 import Autocomplete from "@mui/material/Autocomplete";
-import MenuItem from "@mui/material/MenuItem";
+// import MenuItem from "@mui/material/MenuItem";
 import SEO from "components/SEO";
 import { Span } from "components/Typography";
 import { FlexBetween, FlexBox } from "components/flex-box";
 import ProductCard7 from "components/product-cards/ProductCard7";
 import CheckoutNavLayout from "components/layouts/CheckoutNavLayout";
 import { useAppContext } from "contexts/AppContext";
-import countryList from "data/countryList";
+import cityList from "data/cityList";
 import { currency } from "lib";
 const Cart = () => {
   const { state } = useAppContext();
@@ -42,13 +42,13 @@ const Cart = () => {
               </Span>
             </FlexBetween>
 
-            <Divider
+            {/* <Divider
               sx={{
                 mb: 2,
               }}
-            />
+            /> */}
 
-            <FlexBox alignItems="center" columnGap={1} mb={2}>
+            {/* <FlexBox alignItems="center" columnGap={1} mb={2}>
               <Span fontWeight="600">Additional Comments</Span>
 
               <Span
@@ -71,7 +71,7 @@ const Cart = () => {
               sx={{
                 mb: 2,
               }}
-            />
+            /> */}
 
             <Divider
               sx={{
@@ -105,24 +105,24 @@ const Cart = () => {
               }}
             />
 
-            <Span fontWeight={600} mb={2} display="block">
+            {/* <Span fontWeight={600} mb={2} display="block">
               Shipping Estimates
             </Span>
 
             <Autocomplete
               fullWidth
-              sx={{
-                mb: 2,
-              }}
-              options={countryList}
+              // sx={{
+              //   mb: 2,
+              // }}
+              options={cityList}
               // getOptionLabel={(option) => option.label}
               renderInput={(params) => (
                 <TextField
                   {...params}
                   size="small"
-                  label="Country"
+                  label="City"
                   variant="outlined"
-                  placeholder="Select Country"
+                  placeholder="Select City"
                 />
               )}
             />
@@ -152,9 +152,9 @@ const Cart = () => {
               sx={{
                 mt: 2,
               }}
-            />
+            /> */}
 
-            <Button
+            {/* <Button
               variant="outlined"
               color="primary"
               fullWidth
@@ -163,7 +163,7 @@ const Cart = () => {
               }}
             >
               Calculate Shipping
-            </Button>
+            </Button> */}
 
             <Button
               fullWidth
@@ -180,14 +180,14 @@ const Cart = () => {
     </CheckoutNavLayout>
   );
 };
-const stateList = [
-  {
-    value: "new-york",
-    label: "New York",
-  },
-  {
-    value: "chicago",
-    label: "Chicago",
-  },
-];
+// const stateList = [
+//   {
+//     value: "new-york",
+//     label: "New York",
+//   },
+//   {
+//     value: "chicago",
+//     label: "Chicago",
+//   },
+// ];
 export default Cart;

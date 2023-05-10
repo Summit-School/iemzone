@@ -1,4 +1,5 @@
 import axios from "axios";
+
 export const getShopList = async () => {
   const response = await axios.get("/api/shops");
   return response.data;

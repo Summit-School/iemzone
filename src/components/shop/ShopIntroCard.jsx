@@ -22,6 +22,8 @@ const ShopIntroCard = (props) => {
     email,
   } = props;
 
+  const img = `${process.env.NEXT_PUBLIC_ENDPOINT}/${coverPicture}`;
+
   return (
     <Card
       sx={{
@@ -29,13 +31,18 @@ const ShopIntroCard = (props) => {
         pb: 2.5,
       }}
     >
-      <Box
+      {/* <Box
         height="202px"
         sx={{
           background: `url(${
-            `${process.env.NEXT_PUBLIC_ENDPOINT}/${coverPicture}` ||
-            "/assets/images/banners/cycle.png"
-          } center/cover)`,
+            img || "/assets/images/banners/cycle.png"
+          }) center/cover`,
+        }}
+      /> */}
+      <Box
+        height="202px"
+        sx={{
+          background: `url(${"/assets/images/banners/cycle.png"}) center/cover`,
         }}
       />
 

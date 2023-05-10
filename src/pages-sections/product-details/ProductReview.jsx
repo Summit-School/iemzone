@@ -82,7 +82,7 @@ const ProductReview = ({ product }) => {
   });
   return (
     <Box>
-      {reviews.length > 0 ? (
+      {reviews?.length > 0 ? (
         reviews?.map((item, ind) => <ProductComment {...item} key={ind} />)
       ) : (
         <Paragraph color="grey.700">No Reviews Found</Paragraph>

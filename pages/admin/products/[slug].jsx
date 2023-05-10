@@ -43,6 +43,7 @@ const validationSchema = yup.object().shape({
   size: yup.string().required("required"),
   discount: yup.string().required("required"),
 });
+
 export default function EditProduct() {
   const { query } = useRouter();
   // const [product, setProduct] = useState({

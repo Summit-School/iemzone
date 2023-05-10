@@ -192,7 +192,7 @@ const MiniCart = ({ toggleSidenav }) => {
               mb: "0.75rem",
               height: "40px",
             }}
-            onClick={handleNavigate("/checkout-alternative")}
+            onClick={handleNavigate("/checkout")}
           >
             Checkout Now ({currency(getTotalPrice())})
           </Button>
