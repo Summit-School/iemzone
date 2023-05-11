@@ -46,6 +46,7 @@ const validationSchema = yup.object().shape({
 
 export default function EditProduct() {
   const { query } = useRouter();
+  console.log(query.slug);
   // const [product, setProduct] = useState({
   //   ...INITIAL_VALUES,
   // });
@@ -57,8 +58,7 @@ export default function EditProduct() {
   const product = productResponse?.product;
 
   useEffect(() => {
-    const prodId = query.slug;
-    dispatch(singleProduct(prodId))
+    dispatch(singleProduct(query.slug))
       .then((res) => {
         if (res.meta.requestStatus === "rejected") {
           return enqueueSnackbar(res.payload, {
@@ -67,18 +67,22 @@ export default function EditProduct() {
         }
       })
       .catch((err) => {
-        console.log(err);
+        console.error(err);
       });
-  }, []);
+  }, [query.slug]);
 
   return (
     <Box py={4}>
       <H3 mb={2}>Edit Product</H3>
 
-      <UpdateProduct
-        initialValues={product}
-        validationSchema={validationSchema}
-      />
+      {product ? (
+        <UpdateProduct
+          initialValues={product}
+          validationSchema={validationSchema}
+        />
+      ) : (
+        <H2>Loading...</H2>
+      )}
     </Box>
   );
 }

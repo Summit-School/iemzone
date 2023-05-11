@@ -7,19 +7,24 @@ import { Formik } from "formik";
 import Card1 from "components/Card1";
 import Autocomplete from "@mui/material/Autocomplete";
 import FormControlLabel from "@mui/material/FormControlLabel";
-import countryList from "data/countryList";
+import cityList from "data/cityList";
+
 const CheckoutForm = () => {
   const router = useRouter();
   const [sameAsShipping, setSameAsShipping] = useState(false);
+
   const handleFormSubmit = async (values) => {
+    localStorage.setItem("iemzone-shipping-data", JSON.stringify(values));
     router.push("/payment");
   };
+
   const handleCheckboxChange = (values, setFieldValue) => (e, _) => {
     const checked = e.currentTarget.checked;
     setSameAsShipping(checked);
     setFieldValue("same_as_shipping", checked);
     setFieldValue("billing_name", checked ? values.shipping_name : "");
   };
+
   return (
     <Formik
       initialValues={initialValues}
@@ -145,23 +150,17 @@ const CheckoutForm = () => {
                   sx={{
                     mb: 2,
                   }}
-                  options={countryList}
-                  value={values.shipping_country}
+                  options={cityList}
+                  value={values.shipping_city}
                   getOptionLabel={(option) => option.label}
-                  onChange={(_, value) =>
-                    setFieldValue("shipping_country", value)
-                  }
+                  onChange={(_, value) => setFieldValue("shipping_city", value)}
                   renderInput={(params) => (
                     <TextField
-                      label="Country"
+                      label="City"
                       variant="outlined"
-                      placeholder="Select Country"
-                      error={
-                        !!touched.shipping_country && !!errors.shipping_country
-                      }
-                      helperText={
-                        touched.shipping_country && errors.shipping_country
-                      }
+                      placeholder="Select City"
+                      error={!!touched.shipping_city && !!errors.shipping_city}
+                      helperText={touched.shipping_city && errors.shipping_city}
                       {...params}
                     />
                   )}
@@ -305,22 +304,18 @@ const CheckoutForm = () => {
                     sx={{
                       mb: 2,
                     }}
-                    options={countryList}
-                    value={values.billing_country}
+                    options={cityList}
+                    value={values.billing_city}
                     getOptionLabel={(option) => option.label}
                     onChange={(_, value) =>
-                      setFieldValue("billing_country", value)
+                      setFieldValue("billing_city", value)
                     }
                     renderInput={(params) => (
                       <TextField
-                        label="Country"
-                        placeholder="Select Country"
-                        error={
-                          !!touched.billing_country && !!errors.billing_country
-                        }
-                        helperText={
-                          touched.billing_country && errors.billing_country
-                        }
+                        label="City"
+                        placeholder="Select City"
+                        error={!!touched.billing_city && !!errors.billing_city}
+                        helperText={touched.billing_city && errors.billing_city}
                         {...params}
                       />
                     )}
@@ -382,7 +377,7 @@ const initialValues = {
   shipping_company: "",
   shipping_address1: "",
   shipping_address2: "",
-  shipping_country: countryList[229],
+  shipping_city: cityList[229],
   billing_zip: "",
   billing_name: "",
   billing_email: "",
@@ -390,22 +385,22 @@ const initialValues = {
   billing_company: "",
   billing_address1: "",
   billing_address2: "",
-  billing_country: countryList[229],
+  billing_city: cityList[229],
 };
 
 // uncomment these fields below for from validation
 const checkoutSchema = yup.object().shape({
-  // shipping_name: yup.string().required("required"),
-  // shipping_email: yup.string().email("invalid email").required("required"),
-  // shipping_contact: yup.string().required("required"),
-  // shipping_zip: yup.string().required("required"),
-  // shipping_country: yup.object().required("required"),
-  // shipping_address1: yup.string().required("required"),
+  shipping_name: yup.string().required("required"),
+  shipping_email: yup.string().email("invalid email").required("required"),
+  shipping_contact: yup.string().required("required"),
+  shipping_zip: yup.string().required("required"),
+  shipping_city: yup.object().required("required"),
+  shipping_address1: yup.string().required("required"),
   // billing_name: yup.string().required("required"),
   // billing_email: yup.string().required("required"),
   // billing_contact: yup.string().required("required"),
   // billing_zip: yup.string().required("required"),
-  // billing_country: yup.object().required("required"),
+  // billing_city: yup.object().required("required"),
   // billing_address1: yup.string().required("required"),
 });
 export default CheckoutForm;

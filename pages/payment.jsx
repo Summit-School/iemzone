@@ -2,6 +2,7 @@ import { Grid } from "@mui/material";
 import PaymentForm from "pages-sections/payment/PaymentForm";
 import PaymentSummary from "pages-sections/payment/PaymentSummary";
 import CheckoutNavLayout from "components/layouts/CheckoutNavLayout";
+
 const Checkout = () => {
   return (
     <CheckoutNavLayout>

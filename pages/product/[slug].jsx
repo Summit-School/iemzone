@@ -83,7 +83,7 @@ const ProductDetails = (props) => {
       .catch((err) => {
         console.error(err);
       });
-  }, []);
+  }, [query.slug]);
 
   // Show a loading state when the fallback is rendered
   if (router.isFallback) {

@@ -9,15 +9,58 @@ import Card1 from "components/Card1";
 import { FlexBox } from "components/flex-box";
 import { Paragraph } from "components/Typography";
 import useWindowSize from "hooks/useWindowSize";
+import { useAppContext } from "contexts/AppContext";
+// ================================================================
+import userId from "utils/userId";
+import { useDispatch, useSelector } from "react-redux";
+import { useSnackbar } from "notistack";
+import { stripePayment } from "../../../redux/reducers/stripe";
+
 const PaymentForm = () => {
+  const { state } = useAppContext();
+  const cartList = state.cart;
   const [paymentMethod, setPaymentMethod] = useState("credit-card");
   const width = useWindowSize();
-  const router = useRouter();
-  const isMobile = width < 769;
-  const handleFormSubmit = async (values) => router.push("/payment");
+  // const router = useRouter();
+  // const isMobile = width < 769;
+  const id = userId();
+  const dispatch = useDispatch();
+  const { enqueueSnackbar } = useSnackbar();
+
+  const handleFormSubmit = async (values) => {
+    const shippingData = JSON.parse(
+      localStorage.getItem("iemzone-shipping-data")
+    );
+    const data = {
+      userId: id,
+      paymentMethod: paymentMethod,
+      cartItems: cartList,
+      shippingData: shippingData,
+    };
+    console.log(data);
+    dispatch(stripePayment(data))
+      .then((res) => {
+        if (res.meta.requestStatus === "fulfilled") {
+          enqueueSnackbar("Processing...", {
+            variant: "success",
+          });
+          // window.location.href = res.payload.url;
+        }
+        if (res.meta.requestStatus === "rejected") {
+          enqueueSnackbar(res.payload, {
+            variant: "error",
+          });
+        }
+      })
+      .catch((err) => {
+        console.error(err);
+      });
+  };
+
   const handlePaymentMethodChange = ({ target: { name } }) => {
     setPaymentMethod(name);
   };
+
   return (
     <Fragment>
       <Card1
@@ -48,7 +91,7 @@ const PaymentForm = () => {
           }}
         />
 
-        {paymentMethod === "credit-card" && (
+        {/* {paymentMethod === "credit-card" && (
           <Formik
             onSubmit={handleFormSubmit}
             initialValues={initialValues}
@@ -132,9 +175,9 @@ const PaymentForm = () => {
               </form>
             )}
           </Formik>
-        )}
+        )} */}
 
-        <FormControlLabel
+        {/* <FormControlLabel
           name="paypal"
           sx={{
             mb: 3,
@@ -181,7 +224,7 @@ const PaymentForm = () => {
               }}
             />
           </Fragment>
-        )}
+        )} */}
 
         <FormControlLabel
           name="cod"
@@ -213,14 +256,13 @@ const PaymentForm = () => {
 
         <Grid item sm={6} xs={12}>
           <Button
-            LinkComponent={Link}
             variant="contained"
             color="primary"
-            href="/orders"
             type="submit"
+            onClick={handleFormSubmit}
             fullWidth
           >
-            Review
+            Place Order
           </Button>
         </Grid>
       </Grid>

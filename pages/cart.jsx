@@ -1,6 +1,6 @@
-import Link from "next/link";
+import { useRouter } from "next/router";
 import { Button, Card, Divider, Grid, TextField } from "@mui/material";
-import Autocomplete from "@mui/material/Autocomplete";
+// import Autocomplete from "@mui/material/Autocomplete";
 // import MenuItem from "@mui/material/MenuItem";
 import SEO from "components/SEO";
 import { Span } from "components/Typography";
@@ -8,13 +8,20 @@ import { FlexBetween, FlexBox } from "components/flex-box";
 import ProductCard7 from "components/product-cards/ProductCard7";
 import CheckoutNavLayout from "components/layouts/CheckoutNavLayout";
 import { useAppContext } from "contexts/AppContext";
-import cityList from "data/cityList";
+// import cityList from "data/cityList";
 import { currency } from "lib";
+
 const Cart = () => {
   const { state } = useAppContext();
+  const { push } = useRouter();
   const cartList = state.cart;
   const getTotalPrice = () =>
     cartList.reduce((accum, item) => accum + item.price * item.qty, 0);
+
+  const handleNavigate = (path) => () => {
+    push(path);
+  };
+
   return (
     <CheckoutNavLayout>
       <SEO title="Cart" />
@@ -168,9 +175,8 @@ const Cart = () => {
             <Button
               fullWidth
               color="primary"
-              href="/checkout"
               variant="contained"
-              LinkComponent={Link}
+              onClick={handleNavigate("/checkout")}
             >
               Checkout Now
             </Button>

@@ -3,6 +3,7 @@ import SEO from "components/SEO";
 import CheckoutForm from "pages-sections/checkout/CheckoutForm";
 import CheckoutNavLayout from "components/layouts/CheckoutNavLayout";
 import CheckoutSummary from "pages-sections/checkout/CheckoutSummary";
+
 const Checkout = () => {
   return (
     <CheckoutNavLayout>
