@@ -23,7 +23,7 @@ const OrderRow = ({ order }) => {
     }
   };
   return (
-    <Link href={`/orders/${order.id}`}>
+    <Link href={`/orders/${order._id}`}>
       <TableRow
         sx={{
           my: "1rem",
@@ -31,7 +31,7 @@ const OrderRow = ({ order }) => {
         }}
       >
         <H5 m={0.75} textAlign="left">
-          {order.id.split("-")[0]}
+          {order._id.substring(0, 10) + "..."}
         </H5>
 
         <Box m={0.75}>

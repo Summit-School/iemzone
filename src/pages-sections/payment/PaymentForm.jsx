@@ -14,7 +14,7 @@ import { useAppContext } from "contexts/AppContext";
 import userId from "utils/userId";
 import { useDispatch, useSelector } from "react-redux";
 import { useSnackbar } from "notistack";
-import { placeOrder } from "../../../redux/reducers/placeOrder";
+import { placeOrder } from "../../../redux/reducers/order";
 import { stripePayment } from "../../../redux/reducers/stripe";
 
 const PaymentForm = () => {

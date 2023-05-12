@@ -5,6 +5,7 @@ import categories from "./reducers/admin/category";
 import brands from "./reducers/admin/brand";
 import products from "./reducers/admin/product";
 import productReviews from "./reducers/admin/productReview";
+import orders from "./reducers/order";
 import stripePayment from "./reducers/stripe";
 
 export const store = configureStore({
@@ -16,5 +17,6 @@ export const store = configureStore({
     products,
     productReviews,
     stripePayment,
+    orders,
   },
 });

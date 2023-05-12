@@ -1,3 +1,4 @@
+import { useState, useEffect } from "react";
 import { Pagination } from "@mui/material";
 import { ShoppingBag } from "@mui/icons-material";
 import TableRow from "components/TableRow";
@@ -10,10 +11,36 @@ import CustomerDashboardNavigation from "components/layouts/customer-dashboard/N
 import api from "utils/__api__/orders";
 
 // ====================================================
+import { useDispatch, useSelector } from "react-redux";
+import { useSnackbar } from "notistack";
+import { getUserOrders } from "../../redux/reducers/order";
+import userId from "utils/userId";
 
 // ====================================================
 
 const Orders = ({ orderList }) => {
+  const { enqueueSnackbar } = useSnackbar();
+  const dispatch = useDispatch();
+
+  const userOrders = useSelector((state) => state.orders.orders);
+  const orders = userOrders?.orders;
+  console.log(orders);
+
+  useEffect(() => {
+    const id = userId();
+    dispatch(getUserOrders(id))
+      .then((res) => {
+        if (res.meta.requestStatus === "rejected") {
+          return enqueueSnackbar(res.payload, {
+            variant: "error",
+          });
+        }
+      })
+      .catch((err) => {
+        console.error(err);
+      });
+  }, []);
+
   return (
     <CustomerDashboardLayout>
       {/* TITLE HEADER AREA */}
@@ -63,13 +90,13 @@ const Orders = ({ orderList }) => {
         />
       </TableRow>
 
-      {orderList.map((order) => (
-        <OrderRow order={order} key={order.id} />
+      {orders?.map((order) => (
+        <OrderRow order={order} key={order._id} />
       ))}
 
       <FlexBox justifyContent="center" mt={5}>
         <Pagination
-          count={5}
+          count={orders?.length}
           color="primary"
           variant="outlined"
           onChange={(data) => console.log(data)}

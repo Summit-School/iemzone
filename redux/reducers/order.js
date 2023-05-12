@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import orderServices from "../services/placeOrder";
+import orderServices from "../services/order";
 
 const initialState = {
   orders: [],
@@ -24,6 +24,24 @@ export const placeOrder = createAsyncThunk(
   }
 );
 
+export const getUserOrders = createAsyncThunk(
+  "orders/getUserOrders",
+  async (userId, thunkAPI) => {
+    try {
+      return await orderServices.getUserOrders(userId);
+    } catch (error) {
+      const message =
+        (error.response &&
+          error.response.data &&
+          error.response.data.message) ||
+        error.message ||
+        error.toString();
+
+      return thunkAPI.rejectWithValue(message);
+    }
+  }
+);
+
 export const orderSlice = createSlice({
   name: "orders",
   initialState,
@@ -31,9 +49,13 @@ export const orderSlice = createSlice({
     reset: (state) => {},
   },
   extraReducers: (builder) => {
-    builder.addCase(placeOrder.fulfilled, (state, action) => {
-      state.orders = action.payload;
-    });
+    builder
+      .addCase(placeOrder.fulfilled, (state, action) => {
+        state.order = action.payload;
+      })
+      .addCase(getUserOrders.fulfilled, (state, action) => {
+        state.orders = action.payload;
+      });
   },
 });
 
