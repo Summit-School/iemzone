@@ -14,14 +14,16 @@ import { useAppContext } from "contexts/AppContext";
 import userId from "utils/userId";
 import { useDispatch, useSelector } from "react-redux";
 import { useSnackbar } from "notistack";
+import { placeOrder } from "../../../redux/reducers/placeOrder";
 import { stripePayment } from "../../../redux/reducers/stripe";
 
 const PaymentForm = () => {
   const { state } = useAppContext();
   const cartList = state.cart;
   const [paymentMethod, setPaymentMethod] = useState("credit-card");
+  const [loading, setLoading] = useState(false);
   const width = useWindowSize();
-  // const router = useRouter();
+  const router = useRouter();
   // const isMobile = width < 769;
   const id = userId();
   const dispatch = useDispatch();
@@ -37,19 +39,46 @@ const PaymentForm = () => {
       cartItems: cartList,
       shippingData: shippingData,
     };
-    console.log(data);
-    dispatch(stripePayment(data))
+    if (cartList.length < 1) {
+      return enqueueSnackbar("cart is empty", {
+        variant: "error",
+      });
+    }
+    if (paymentMethod === "cod") {
+      return dispatch(placeOrder(data), setLoading(true))
+        .then((res) => {
+          if (res.meta.requestStatus === "fulfilled") {
+            enqueueSnackbar(res.payload, {
+              variant: "success",
+            });
+            setLoading(false);
+            router.push("/order-confirmation");
+          }
+          if (res.meta.requestStatus === "rejected") {
+            enqueueSnackbar(res.payload, {
+              variant: "error",
+            });
+            setLoading(false);
+          }
+        })
+        .catch((err) => {
+          console.error(err);
+        });
+    }
+    dispatch(stripePayment(data), setLoading(true))
       .then((res) => {
         if (res.meta.requestStatus === "fulfilled") {
           enqueueSnackbar("Processing...", {
             variant: "success",
           });
-          // window.location.href = res.payload.url;
+          setLoading(false);
+          window.location.href = res.payload.url;
         }
         if (res.meta.requestStatus === "rejected") {
           enqueueSnackbar(res.payload, {
             variant: "error",
           });
+          setLoading(false);
         }
       })
       .catch((err) => {
@@ -262,7 +291,7 @@ const PaymentForm = () => {
             onClick={handleFormSubmit}
             fullWidth
           >
-            Place Order
+            {loading ? "Loading..." : "Place Order"}
           </Button>
         </Grid>
       </Grid>

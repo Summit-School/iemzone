@@ -10,13 +10,7 @@ import { currency } from "lib";
 
 // ======================================================
 
-const ProductCard4 = ({
-  title,
-  price,
-  imgUrl,
-  rating = 5,
-  reviewCount = 10,
-}) => {
+const ProductCard4 = ({ title, salesPrice, imgUrl, rating, reviewCount }) => {
   return (
     <Box>
       <HoverBox mb={2} mx="auto" borderRadius={2}>
@@ -24,7 +18,7 @@ const ProductCard4 = ({
           alt={title}
           width={380}
           height={380}
-          src={imgUrl}
+          src={`${process.env.NEXT_PUBLIC_ENDPOINT}/${imgUrl}`}
           style={{
             objectFit: "contain",
             objectPosition: "center center",
@@ -42,7 +36,7 @@ const ProductCard4 = ({
       </H4>
 
       <H4 fontSize={14} textAlign="center" color="primary.main">
-        {currency(price)}
+        {currency(salesPrice)}
       </H4>
     </Box>
   );

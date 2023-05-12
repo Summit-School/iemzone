@@ -13,6 +13,7 @@ import ProductFilterCard from "pages-sections/product-details/ProductFilterCard"
 import { useDispatch, useSelector } from "react-redux";
 import { useSnackbar } from "notistack";
 import { getShopDetails } from "../../redux/reducers/shop";
+import { shopProducts } from "../../redux/reducers/admin/product";
 // ============================================================
 
 const ShopDetails = () => {
@@ -25,6 +26,8 @@ const ShopDetails = () => {
 
   const shopObject = useSelector((state) => state.shop.shop);
   const shop = shopObject?.shop;
+  const shopProducts = useSelector((state) => state.products.products);
+  const products = shopProducts?.products;
 
   useEffect(() => {
     dispatch(getShopDetails(query.slug))
@@ -34,6 +37,7 @@ const ShopDetails = () => {
             variant: "error",
           });
         }
+        dispatch(shopProducts(query.slug));
       })
       .catch((err) => {
         console.error(err);
@@ -97,7 +101,7 @@ const ShopDetails = () => {
             )}
 
             {/* PRODUCT LIST AREA */}
-            <ProductList1 products={shop?.products?.slice(0, 9)} />
+            <ProductList1 products={products?.slice(0, 9)} />
           </Grid>
         </Grid>
       </Container>

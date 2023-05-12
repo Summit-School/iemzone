@@ -26,20 +26,23 @@ const Section2 = ({ flashDeals }) => {
       seeMoreLink="#"
     >
       <Carousel
-        totalSlides={flashDeals.length}
+        totalSlides={flashDeals?.length}
         visibleSlides={visibleSlides}
         infinite={true}
       >
-        {flashDeals.map((item) => (
+        {flashDeals?.map((item) => (
           <Box py={0.5} key={item.id}>
             <ProductCard1
-              id={item.id}
+              id={item._id}
               slug={item.slug}
               title={item.title}
-              price={item.price}
+              regularPrice={item.regularPrice}
+              salesPrice={item.salesPrice}
               rating={item.rating}
               imgUrl={item.thumbnail}
               discount={item.discount}
+              description={item.description}
+              category={item.categories}
             />
           </Box>
         ))}

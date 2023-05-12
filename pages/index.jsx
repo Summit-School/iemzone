@@ -1,4 +1,5 @@
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
+import { useEffect } from "react";
 import SEO from "components/SEO";
 import Setting from "components/Setting";
 import Newsletter from "components/Newsletter";
@@ -16,9 +17,32 @@ import Section11 from "pages-sections/market-1/Section11";
 import Section12 from "pages-sections/market-1/Section12";
 import Section13 from "pages-sections/market-1/Section13";
 import api from "utils/__api__/market-1";
-// =================================================================
+// =============================================================================
+import { useDispatch, useSelector } from "react-redux";
+import { useSnackbar } from "notistack";
+import { allProducts } from "../redux/reducers/admin/product";
 
 const MarketShop = (props) => {
+  const { enqueueSnackbar } = useSnackbar();
+  const dispatch = useDispatch();
+
+  const marketProductsList = useSelector((state) => state.products.products);
+  const products = marketProductsList?.products;
+
+  useEffect(() => {
+    dispatch(allProducts())
+      .then((res) => {
+        if (res.meta.requestStatus === "rejected") {
+          return enqueueSnackbar(res.payload, {
+            variant: "error",
+          });
+        }
+      })
+      .catch((err) => {
+        console.error(err);
+      });
+  }, []);
+
   return (
     <ShopLayout1>
       <SEO title="Iemzone" description="Multi-vendor Ecommerce Platform" />
@@ -27,32 +51,29 @@ const MarketShop = (props) => {
       <Section1 carouselData={props.mainCarouselData} />
 
       {/* FLASH DEALS SECTION */}
-      <Section2 flashDeals={props.flashDealsData} />
+      <Section2 flashDeals={products} />
 
       {/* TOP CATEGORIES */}
       <Section3 categoryList={props.topCategories} />
 
       {/* TOP RATED PRODUCTS */}
-      <Section4
-        topRatedList={props.topRatedProducts}
-        topRatedBrands={props.topRatedBrands}
-      />
+      <Section4 topRatedList={products} topRatedBrands={props.topRatedBrands} />
 
       {/* NEW ARRIVAL LIST */}
-      <Section5 newArrivalsList={props.newArrivalsList} />
+      <Section5 newArrivalsList={products} />
 
       {/* BIG DISCOUNTS */}
-      <Section13 bigDiscountList={props.bigDiscountList} />
+      <Section13 bigDiscountList={products} />
 
       {/* CAR LIST */}
-      <Section6 carBrands={props.carBrands} carList={props.carList} />
+      <Section6 carBrands={props.carBrands} carList={products} />
 
       {/* MOBILE PHONES */}
       <Section7
         title="Mobile Phones"
         shops={props.mobileShops}
         brands={props.mobileBrands}
-        productList={props.mobileList}
+        productList={products}
       />
 
       {/* PROMO BANNERS */}
@@ -63,14 +84,14 @@ const MarketShop = (props) => {
         title="Optics / Watch"
         shops={props.opticsShops}
         brands={props.opticsBrands}
-        productList={props.opticsList}
+        productList={products}
       />
 
       {/* CATEGORIES */}
       <Section10 categories={props.bottomCategories} />
 
       {/* MORE FOR YOU */}
-      <Section11 moreItems={props.moreItems} />
+      <Section11 moreItems={products} />
 
       {/* SERVICE CARDS */}
       <Section12 serviceList={props.serviceList} />

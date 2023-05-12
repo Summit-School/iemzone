@@ -62,17 +62,20 @@ const Section6 = ({ carList, carBrands }) => {
           <CategorySectionHeader title="Cars" seeMoreLink="#" />
 
           <Grid container spacing={3}>
-            {carList.map((item) => (
-              <Grid item lg={4} sm={6} xs={12} key={item.id}>
+            {carList?.map((item) => (
+              <Grid item lg={4} sm={6} xs={12} key={item._id}>
                 <ProductCard1
                   hoverEffect
-                  id={item.id}
+                  id={item._id}
                   slug={item.slug}
                   title={item.title}
-                  price={item.price}
+                  regularPrice={item.regularPrice}
+                  salesPrice={item.salesPrice}
                   rating={item.rating}
                   imgUrl={item.thumbnail}
                   discount={item.discount}
+                  description={item.description}
+                  category={item.categories}
                 />
               </Grid>
             ))}

@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { useEffect } from "react";
 import Image from "next/image";
 import { Button, Container, styled } from "@mui/material";
 import SEO from "components/SEO";
@@ -17,7 +18,13 @@ const StyledButton = styled(Button)({
   marginTop: "2rem",
   padding: "11px 24px",
 });
+
 const OrderConfirmation = () => {
+  useEffect(() => {
+    // remove shipping details from localStorage
+    localStorage.removeItem("iemzone-shipping-data");
+  }, []);
+
   return (
     <ShopLayout1>
       <SEO title="Order Confirmation" />

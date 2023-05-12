@@ -27,12 +27,13 @@ const Section4 = ({ topRatedBrands, topRatedList }) => {
               }}
             >
               <Grid container spacing={4}>
-                {topRatedList.map((item) => (
-                  <Grid item md={3} sm={6} xs={6} key={item.title}>
-                    <Link href={`/product/${item.slug}`}>
+                {topRatedList?.map((item) => (
+                  <Grid item md={3} sm={6} xs={6} key={item._id}>
+                    <Link href={`/product/${item._id}`}>
                       <ProductCard4
                         title={item.title}
-                        price={item.price}
+                        regularPrice={item.regularPrice}
+                        salesPrice={item.salesPrice}
                         rating={item.rating}
                         imgUrl={item.thumbnail}
                         reviewCount={item.reviews.length}

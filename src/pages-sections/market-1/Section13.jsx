@@ -33,8 +33,8 @@ const Section13 = ({ bigDiscountList }) => {
     >
       <Box my="-0.25rem">
         <Carousel totalSlides={9} visibleSlides={visibleSlides}>
-          {bigDiscountList.map(
-            ({ id, title, thumbnail, price, discount, slug }) => (
+          {bigDiscountList?.map(
+            ({ id, title, thumbnail, regularPrice, discount, slug }) => (
               <Box py={0.5} key={id}>
                 <BazaarCard
                   sx={{
@@ -47,7 +47,7 @@ const Section13 = ({ bigDiscountList }) => {
                         width={500}
                         height={500}
                         alt={title}
-                        src={thumbnail}
+                        src={`${process.env.NEXT_PUBLIC_ENDPOINT}/${thumbnail}`}
                       />
                     </HoverBox>
 
@@ -57,11 +57,11 @@ const Section13 = ({ bigDiscountList }) => {
 
                     <FlexBox gap={1}>
                       <H4 fontWeight="600" fontSize="14px" color="primary.main">
-                        {calculateDiscount(price, discount)}
+                        {calculateDiscount(regularPrice, discount)}
                       </H4>
 
                       <H4 fontWeight="600" fontSize="14px" color="grey.600">
-                        <del>{currency(price)}</del>
+                        <del>{currency(regularPrice)}</del>
                       </H4>
                     </FlexBox>
                   </Link>

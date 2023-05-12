@@ -18,16 +18,18 @@ const Section5 = ({ newArrivalsList }) => {
         }}
       >
         <Grid container spacing={3}>
-          {newArrivalsList.map(({ id, title, price, thumbnail, slug }) => (
-            <Grid item lg={2} md={3} sm={4} xs={6} key={id}>
-              <ProductCard2
-                thumbnail={thumbnail}
-                title={title}
-                price={price}
-                slug={slug}
-              />
-            </Grid>
-          ))}
+          {newArrivalsList?.map(
+            ({ _id, title, salesPrice, thumbnail, slug }) => (
+              <Grid item lg={2} md={3} sm={4} xs={6} key={_id}>
+                <ProductCard2
+                  thumbnail={thumbnail}
+                  title={title}
+                  price={salesPrice}
+                  slug={slug}
+                />
+              </Grid>
+            )
+          )}
         </Grid>
       </BazaarCard>
     </CategorySectionCreator>

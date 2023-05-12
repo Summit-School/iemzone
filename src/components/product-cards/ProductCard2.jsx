@@ -17,7 +17,7 @@ const ProductCard2 = (props) => {
           width={180}
           height={180}
           alt={title}
-          src={thumbnail}
+          src={`${process.env.NEXT_PUBLIC_ENDPOINT}/${thumbnail}`}
           style={{
             width: "100%",
             height: "auto",

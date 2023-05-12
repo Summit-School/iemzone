@@ -5,14 +5,14 @@ export const mainCarouselData = [
     imgUrl: "/assets/images/products/nike-black.png",
     description: `Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quis lobortis consequat eu, quam etiam at quis ut convalliss.`,
     buttonText: "Shop Now",
-    buttonLik: "#",
+    buttonLik: "/sale-page-1",
   },
   {
     title: "50% Off For Your First Shopping",
     imgUrl: "/assets/images/products/nike-black.png",
     description: `Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quis lobortis consequat eu, quam etiam at quis ut convalliss.`,
     buttonText: "Shop Now",
-    buttonLik: "#",
+    buttonLik: "/sale-page-1",
   },
 ];
 export const categories = [

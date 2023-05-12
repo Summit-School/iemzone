@@ -12,21 +12,28 @@ const ProductList1 = ({ products }) => {
         {products?.map((item) => (
           <Grid item lg={4} sm={6} xs={12} key={item.id}>
             <ProductCard1
-              id={item.id}
+              id={item._id}
               slug={item.slug}
               title={item.title}
-              price={item.price}
+              regularPrice={item.regularPrice}
+              salesPrice={item.salesPrice}
               rating={item.rating}
               imgUrl={item.thumbnail}
               discount={item.discount}
+              description={item.description}
+              category={item.categories}
             />
           </Grid>
         ))}
       </Grid>
 
       <FlexBetween flexWrap="wrap" mt={4}>
-        <Span color="grey.600">Showing 1-9 of 1.3k Products</Span>
-        <Pagination count={10} variant="outlined" color="primary" />
+        <Span color="grey.600">Showing 1-9 of {products?.length} Products</Span>
+        <Pagination
+          count={Math.ceil(products?.length / 9)}
+          variant="outlined"
+          color="primary"
+        />
       </FlexBetween>
     </Fragment>
   );

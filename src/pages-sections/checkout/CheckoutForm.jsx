@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
 import { Button, Checkbox, Grid, TextField, Typography } from "@mui/material";
 import * as yup from "yup";
@@ -369,6 +369,7 @@ const CheckoutForm = () => {
     </Formik>
   );
 };
+
 const initialValues = {
   shipping_zip: "",
   shipping_name: "",
@@ -403,4 +404,5 @@ const checkoutSchema = yup.object().shape({
   // billing_city: yup.object().required("required"),
   // billing_address1: yup.string().required("required"),
 });
+
 export default CheckoutForm;

@@ -20,4 +20,5 @@ const Checkout = () => {
     </CheckoutNavLayout>
   );
 };
+
 export default Checkout;

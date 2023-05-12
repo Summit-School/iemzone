@@ -13,17 +13,20 @@ const Section11 = ({ moreItems }) => {
       <CategorySectionHeader title="More For You" seeMoreLink="#" />
 
       <Grid container spacing={3}>
-        {moreItems.map((item) => (
+        {moreItems?.map((item) => (
           <Grid item lg={3} md={4} sm={6} xs={12} key={item.id}>
             <ProductCard1
               hoverEffect
-              id={item.id}
+              id={item._id}
               slug={item.slug}
               title={item.title}
-              price={item.price}
+              regularPrice={item.regularPrice}
+              salesPrice={item.salesPrice}
               rating={item.rating}
               imgUrl={item.thumbnail}
               discount={item.discount}
+              description={item.description}
+              category={item.categories}
             />
           </Grid>
         ))}
