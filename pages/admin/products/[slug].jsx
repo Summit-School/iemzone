@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useRouter } from "next/router";
 import { Box } from "@mui/material";
 import * as yup from "yup";
-import { H3 } from "components/Typography";
+import { H3, H2 } from "components/Typography";
 import { UpdateProduct } from "pages-sections/admin";
 import VendorDashboardLayout from "components/layouts/vendor-dashboard";
 // import api from "utils/__api__/products";
