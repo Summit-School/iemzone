@@ -46,7 +46,6 @@ const validationSchema = yup.object().shape({
 
 export default function EditProduct() {
   const { query } = useRouter();
-  console.log(query.slug);
   // const [product, setProduct] = useState({
   //   ...INITIAL_VALUES,
   // });

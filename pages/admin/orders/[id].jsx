@@ -4,7 +4,11 @@ import { useRouter } from "next/router";
 import { H3 } from "components/Typography";
 import VendorDashboardLayout from "components/layouts/vendor-dashboard";
 import { OrderDetails } from "pages-sections/admin";
-import api from "utils/__api__/dashboard";
+// import api from "utils/__api__/dashboard";
+// =============================================================================
+import { useDispatch, useSelector } from "react-redux";
+import { useSnackbar } from "notistack";
+import { getSingleOrder } from "../../../redux/reducers/order";
 
 // =============================================================================
 OrderEdit.getLayout = function getLayout(page) {
@@ -14,17 +18,33 @@ OrderEdit.getLayout = function getLayout(page) {
 
 export default function OrderEdit() {
   const { query } = useRouter();
-  const [orderDetails, setOrderDetails] = useState(null);
+  const { enqueueSnackbar } = useSnackbar();
+  const dispatch = useDispatch();
+
+  const orderResponse = useSelector((state) => state.orders.order);
+  const order = orderResponse?.order;
+
   useEffect(() => {
-    api.getOrder(query.id).then((data) => setOrderDetails(data));
+    dispatch(getSingleOrder(query.id))
+      .then((res) => {
+        if (res.meta.requestStatus === "rejected") {
+          return enqueueSnackbar(res.payload, {
+            variant: "error",
+          });
+        }
+      })
+      .catch((err) => {
+        console.error(err);
+      });
   }, [query.id]);
-  if (!orderDetails) {
+
+  if (!order) {
     return <h1>Loading...</h1>;
   }
   return (
     <Box py={4}>
       <H3 mb={2}>Order Details</H3>
-      <OrderDetails order={orderDetails} />
+      <OrderDetails order={order} />
     </Box>
   );
 }

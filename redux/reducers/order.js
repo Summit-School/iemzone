@@ -42,6 +42,42 @@ export const getUserOrders = createAsyncThunk(
   }
 );
 
+export const getSingleOrder = createAsyncThunk(
+  "orders/getSingleOrder",
+  async (prodId, thunkAPI) => {
+    try {
+      return await orderServices.getSingleOrder(prodId);
+    } catch (error) {
+      const message =
+        (error.response &&
+          error.response.data &&
+          error.response.data.message) ||
+        error.message ||
+        error.toString();
+
+      return thunkAPI.rejectWithValue(message);
+    }
+  }
+);
+
+export const updateOrderStatus = createAsyncThunk(
+  "orders/updateOrderStatus",
+  async (data, thunkAPI) => {
+    try {
+      return await orderServices.updateOrderStatus(data);
+    } catch (error) {
+      const message =
+        (error.response &&
+          error.response.data &&
+          error.response.data.message) ||
+        error.message ||
+        error.toString();
+
+      return thunkAPI.rejectWithValue(message);
+    }
+  }
+);
+
 export const orderSlice = createSlice({
   name: "orders",
   initialState,
@@ -51,6 +87,9 @@ export const orderSlice = createSlice({
   extraReducers: (builder) => {
     builder
       .addCase(placeOrder.fulfilled, (state, action) => {
+        state.order = action.payload;
+      })
+      .addCase(getSingleOrder.fulfilled, (state, action) => {
         state.order = action.payload;
       })
       .addCase(getUserOrders.fulfilled, (state, action) => {

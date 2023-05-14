@@ -3815,7 +3815,7 @@ export const serviceList = [
   {
     id: "5f9bd366-9583-4e6d-9b11-abe74b9c5d96",
     icon: "Truck",
-    title: "Worldwide Delivery",
+    title: "Nationwide Delivery",
     description: null,
   },
   {

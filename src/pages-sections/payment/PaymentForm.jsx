@@ -20,6 +20,8 @@ import { stripePayment } from "../../../redux/reducers/stripe";
 const PaymentForm = () => {
   const { state } = useAppContext();
   const cartList = state.cart;
+  const getTotalPrice = () =>
+    cartList.reduce((accum, item) => accum + item.price * item.qty, 0);
   const [paymentMethod, setPaymentMethod] = useState("credit-card");
   const [loading, setLoading] = useState(false);
   const width = useWindowSize();
@@ -28,6 +30,7 @@ const PaymentForm = () => {
   const id = userId();
   const dispatch = useDispatch();
   const { enqueueSnackbar } = useSnackbar();
+  const totalPrice = getTotalPrice();
 
   const handleFormSubmit = async (values) => {
     const shippingData = JSON.parse(
@@ -35,9 +38,10 @@ const PaymentForm = () => {
     );
     const data = {
       userId: id,
-      paymentMethod: paymentMethod,
+      paymentMethod,
       cartItems: cartList,
-      shippingData: shippingData,
+      shippingData,
+      totalPrice,
     };
     if (cartList.length < 1) {
       return enqueueSnackbar("cart is empty", {

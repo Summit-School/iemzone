@@ -1,3 +1,4 @@
+import { useState, useEffect } from "react";
 import { Box, Card, Stack, Table, TableContainer } from "@mui/material";
 import TableBody from "@mui/material/TableBody";
 import { H3 } from "components/Typography";
@@ -8,7 +9,14 @@ import TablePagination from "components/data-table/TablePagination";
 import VendorDashboardLayout from "components/layouts/vendor-dashboard";
 import useMuiTable from "hooks/useMuiTable";
 import { OrderRow } from "pages-sections/admin";
-import api from "utils/__api__/dashboard";
+// import api from "utils/__api__/dashboard";
+// ====================================================
+import { useDispatch, useSelector } from "react-redux";
+import { useSnackbar } from "notistack";
+import { getUserOrders } from "../../../redux/reducers/order";
+import userId from "utils/userId";
+
+// ====================================================
 // TABLE HEADING DATA LIST
 const tableHeading = [
   {
@@ -27,8 +35,8 @@ const tableHeading = [
     align: "left",
   },
   {
-    id: "billingAddress",
-    label: "Billing Address",
+    id: "shippingAddress",
+    label: "Shipping Address",
     align: "left",
   },
   {
@@ -56,13 +64,34 @@ OrderList.getLayout = function getLayout(page) {
 
 // =============================================================================
 
-export default function OrderList({ orders }) {
+export default function OrderList() {
+  const { enqueueSnackbar } = useSnackbar();
+  const dispatch = useDispatch();
+
+  const userOrders = useSelector((state) => state.orders.orders);
+  const orders = userOrders?.orders;
+
+  useEffect(() => {
+    const id = userId();
+    dispatch(getUserOrders(id))
+      .then((res) => {
+        if (res.meta.requestStatus === "rejected") {
+          return enqueueSnackbar(res.payload, {
+            variant: "error",
+          });
+        }
+      })
+      .catch((err) => {
+        console.error(err);
+      });
+  }, []);
+
   // RESHAPE THE ORDER LIST BASED TABLE HEAD CELL ID
-  const filteredOrders = orders.map((item) => ({
-    id: item.id,
+  const filteredOrders = orders?.map((item) => ({
+    id: item._id,
     qty: item.items.length,
     purchaseDate: item.createdAt,
-    billingAddress: item.shippingAddress,
+    shippingAddress: item.shippingData.shipping_address1,
     amount: item.totalPrice,
     status: item.status,
   }));
@@ -85,7 +114,7 @@ export default function OrderList({ orders }) {
 
       <SearchArea
         handleSearch={() => {}}
-        buttonText="Create Order"
+        buttonText="Search Order"
         handleBtnClick={() => {}}
         searchPlaceholder="Search Order..."
       />
@@ -127,11 +156,11 @@ export default function OrderList({ orders }) {
     </Box>
   );
 }
-export const getStaticProps = async () => {
-  const orders = await api.orders();
-  return {
-    props: {
-      orders,
-    },
-  };
-};
+// export const getStaticProps = async () => {
+//   const orders = await api.orders();
+//   return {
+//     props: {
+//       orders,
+//     },
+//   };
+// };

@@ -14,11 +14,13 @@ import { format } from "date-fns";
 // ========================================================================
 
 const OrderRow = ({ order }) => {
-  const { amount, id, qty, purchaseDate, billingAddress, status } = order;
+  const { amount, id, qty, purchaseDate, shippingAddress, status } = order;
   const router = useRouter();
   return (
     <StyledTableRow tabIndex={-1} role="checkbox">
-      <StyledTableCell align="left">#{id.split("-")[0]}</StyledTableCell>
+      <StyledTableCell align="left">
+        #{id.split("-")[0].substring(0, 5) + "..."}
+      </StyledTableCell>
       <StyledTableCell align="left">{qty}</StyledTableCell>
 
       <StyledTableCell
@@ -36,7 +38,7 @@ const OrderRow = ({ order }) => {
           fontWeight: 400,
         }}
       >
-        {billingAddress}
+        {shippingAddress}
       </StyledTableCell>
 
       <StyledTableCell align="left">{currency(amount)}</StyledTableCell>

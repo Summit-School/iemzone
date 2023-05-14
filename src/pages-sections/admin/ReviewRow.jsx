@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Avatar } from "@mui/material";
+import { Avatar, Rating } from "@mui/material";
 import { Delete } from "@mui/icons-material";
 import BazaarSwitch from "components/BazaarSwitch";
 import { FlexBox } from "components/flex-box";
@@ -15,7 +15,8 @@ import {
 // ========================================================================
 
 const ReviewRow = ({ review }) => {
-  const { customer, product, comment, published, productImage } = review;
+  const { customer, product, comment, published, productImage, rating } =
+    review;
   const [productPulish, setProductPublish] = useState(published);
   return (
     <StyledTableRow tabIndex={-1} role="checkbox">
@@ -35,6 +36,10 @@ const ReviewRow = ({ review }) => {
 
       <StyledTableCell align="left">
         <Small>{comment}</Small>
+      </StyledTableCell>
+
+      <StyledTableCell align="left">
+        <Rating value={rating} size="small" color="warning" readOnly />
       </StyledTableCell>
 
       <StyledTableCell align="left">

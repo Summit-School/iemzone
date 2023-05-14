@@ -34,8 +34,8 @@ const Section13 = ({ bigDiscountList }) => {
       <Box my="-0.25rem">
         <Carousel totalSlides={9} visibleSlides={visibleSlides}>
           {bigDiscountList?.map(
-            ({ id, title, thumbnail, regularPrice, discount, slug }) => (
-              <Box py={0.5} key={id}>
+            ({ _id, title, thumbnail, regularPrice, discount, slug }) => (
+              <Box py={0.5} key={_id}>
                 <BazaarCard
                   sx={{
                     p: "1rem",

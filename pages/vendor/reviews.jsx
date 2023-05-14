@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { RemoveRedEye } from "@mui/icons-material";
 import {
   Avatar,
@@ -12,6 +13,7 @@ import TableBody from "@mui/material/TableBody";
 import Scrollbar from "components/Scrollbar";
 import { FlexBox } from "components/flex-box";
 import TableHeader from "components/data-table/TableHeader";
+import BazaarSwitch from "components/BazaarSwitch";
 import { H3, Paragraph, Small } from "components/Typography";
 import TablePagination from "components/data-table/TablePagination";
 import VendorDashboardLayout from "components/layouts/vendor-dashboard";
@@ -44,6 +46,11 @@ const tableHeading = [
     align: "left",
   },
   {
+    id: "published",
+    label: "Published",
+    align: "left",
+  },
+  {
     id: "action",
     label: "Action",
     align: "center",
@@ -70,6 +77,8 @@ export default function Reviews({ reviews }) {
   } = useMuiTable({
     listData: reviews,
   });
+  const [productPulish, setProductPublish] = useState(true);
+
   return (
     <Box py={4}>
       <H3 mb={2}>Product Reviews</H3>
@@ -121,6 +130,14 @@ export default function Reviews({ reviews }) {
                         size="small"
                         color="warning"
                         readOnly
+                      />
+                    </StyledTableCell>
+
+                    <StyledTableCell align="left">
+                      <BazaarSwitch
+                        color="info"
+                        checked={productPulish}
+                        onChange={() => setProductPublish((state) => !state)}
                       />
                     </StyledTableCell>
 

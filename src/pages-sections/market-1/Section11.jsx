@@ -14,7 +14,7 @@ const Section11 = ({ moreItems }) => {
 
       <Grid container spacing={3}>
         {moreItems?.map((item) => (
-          <Grid item lg={3} md={4} sm={6} xs={12} key={item.id}>
+          <Grid item lg={3} md={4} sm={6} xs={12} key={item._id}>
             <ProductCard1
               hoverEffect
               id={item._id}

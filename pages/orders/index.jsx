@@ -18,13 +18,12 @@ import userId from "utils/userId";
 
 // ====================================================
 
-const Orders = ({ orderList }) => {
+const Orders = () => {
   const { enqueueSnackbar } = useSnackbar();
   const dispatch = useDispatch();
 
   const userOrders = useSelector((state) => state.orders.orders);
   const orders = userOrders?.orders;
-  console.log(orders);
 
   useEffect(() => {
     const id = userId();
@@ -105,12 +104,12 @@ const Orders = ({ orderList }) => {
     </CustomerDashboardLayout>
   );
 };
-export const getStaticProps = async () => {
-  const orderList = await api.getOrders();
-  return {
-    props: {
-      orderList,
-    },
-  };
-};
+// export const getStaticProps = async () => {
+//   const orderList = await api.getOrders();
+//   return {
+//     props: {
+//       orderList,
+//     },
+//   };
+// };
 export default Orders;

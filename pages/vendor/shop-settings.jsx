@@ -343,50 +343,42 @@ export default function ShopSettings() {
                   Social Links
                 </Paragraph>
 
-                <Paragraph fontWeight={700} mb={4}>
-                  <TextField
-                    fullWidth
-                    color="info"
-                    size="medium"
-                    label="Facebook"
-                    onBlur={handleBlur}
-                    onChange={handleChange}
-                    placeholder="https://www.facebook.com"
-                  />
-                </Paragraph>
-                <Paragraph fontWeight={700} mb={4}>
-                  <TextField
-                    fullWidth
-                    color="info"
-                    size="medium"
-                    label="Twitter"
-                    onBlur={handleBlur}
-                    onChange={handleChange}
-                    placeholder="https://www.twitter.com"
-                  />
-                </Paragraph>
-                <Paragraph fontWeight={700} mb={4}>
-                  <TextField
-                    fullWidth
-                    color="info"
-                    size="medium"
-                    label="Youtube"
-                    onBlur={handleBlur}
-                    onChange={handleChange}
-                    placeholder="https://www.youtube.com"
-                  />
-                </Paragraph>
-                <Paragraph fontWeight={700} mb={4}>
-                  <TextField
-                    fullWidth
-                    color="info"
-                    size="medium"
-                    label="Instagram"
-                    onBlur={handleBlur}
-                    onChange={handleChange}
-                    placeholder="https://www.instagram.com"
-                  />
-                </Paragraph>
+                <TextField
+                  fullWidth
+                  color="info"
+                  size="medium"
+                  label="Facebook"
+                  onBlur={handleBlur}
+                  onChange={handleChange}
+                  placeholder="https://www.facebook.com"
+                />
+                <TextField
+                  fullWidth
+                  color="info"
+                  size="medium"
+                  label="Twitter"
+                  onBlur={handleBlur}
+                  onChange={handleChange}
+                  placeholder="https://www.twitter.com"
+                />
+                <TextField
+                  fullWidth
+                  color="info"
+                  size="medium"
+                  label="Youtube"
+                  onBlur={handleBlur}
+                  onChange={handleChange}
+                  placeholder="https://www.youtube.com"
+                />
+                <TextField
+                  fullWidth
+                  color="info"
+                  size="medium"
+                  label="Instagram"
+                  onBlur={handleBlur}
+                  onChange={handleChange}
+                  placeholder="https://www.instagram.com"
+                />
 
                 <Button color="info" variant="contained" type="submit">
                   {loading ? "Loading..." : "Save Changes"}

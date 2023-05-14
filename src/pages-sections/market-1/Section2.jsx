@@ -31,7 +31,7 @@ const Section2 = ({ flashDeals }) => {
         infinite={true}
       >
         {flashDeals?.map((item) => (
-          <Box py={0.5} key={item.id}>
+          <Box py={0.5} key={item._id}>
             <ProductCard1
               id={item._id}
               slug={item.slug}

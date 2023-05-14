@@ -26,6 +26,11 @@ const tableHeading = [
     align: "left",
   },
   {
+    id: "rating",
+    label: "Rating",
+    align: "left",
+  },
+  {
     id: "published",
     label: "Published",
     align: "left",

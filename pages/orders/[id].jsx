@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { Fragment } from "react";
 import { useRouter } from "next/router";
 import { format } from "date-fns";
@@ -23,7 +24,12 @@ import CustomerDashboardLayout from "components/layouts/customer-dashboard";
 import CustomerDashboardNavigation from "components/layouts/customer-dashboard/Navigations";
 import useWindowSize from "hooks/useWindowSize";
 import { currency } from "lib";
-import api from "utils/__api__/orders";
+// import api from "utils/__api__/orders";
+// =============================================================================
+import { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { useSnackbar } from "notistack";
+import { getSingleOrder } from "../../redux/reducers/order";
 
 // styled components
 const StyledFlexbox = styled(FlexBetween)(({ theme }) => ({
@@ -46,8 +52,9 @@ const StyledFlexbox = styled(FlexBetween)(({ theme }) => ({
 }));
 // =============================================================
 
-const OrderDetails = ({ order }) => {
+const OrderDetails = () => {
   const router = useRouter();
+  const { query } = useRouter();
   const width = useWindowSize();
   const orderStatus = "Shipping";
   const orderStatusList = ["Packaging", "Shipping", "Delivering", "Complete"];
@@ -55,9 +62,31 @@ const OrderDetails = ({ order }) => {
   const breakpoint = 350;
   const statusIndex = orderStatusList.indexOf(orderStatus);
 
+  const { enqueueSnackbar } = useSnackbar();
+  const dispatch = useDispatch();
+
+  const orderResponse = useSelector((state) => state.orders.order);
+  const order = orderResponse?.order;
+
+  useEffect(() => {
+    dispatch(getSingleOrder(query.id))
+      .then((res) => {
+        if (res.meta.requestStatus === "rejected") {
+          return enqueueSnackbar(res.payload, {
+            variant: "error",
+          });
+        }
+      })
+      .catch((err) => {
+        console.error(err);
+      });
+  }, [query.id]);
+
   // SECTION TITLE HEADER
   const HEADER_BUTTON = (
     <Button
+      LinkComponent={Link}
+      href="/sale=page-1"
       color="primary"
       sx={{
         bgcolor: "primary.light",
@@ -148,7 +177,7 @@ const OrderDetails = ({ order }) => {
             color="primary.main"
             bgcolor="primary.light"
           >
-            Estimated Delivery Date <b>4th October</b>
+            Estimated Delivery Period <b>7 Days</b>
           </Typography>
         </FlexBox>
       </Card>
@@ -173,7 +202,7 @@ const OrderDetails = ({ order }) => {
               Order ID:
             </Typography>
 
-            <Typography fontSize={14}>{order.id}</Typography>
+            <Typography fontSize={14}>{order?._id}</Typography>
           </FlexBox>
 
           <FlexBox className="pre" m={0.75} alignItems="center">
@@ -182,7 +211,7 @@ const OrderDetails = ({ order }) => {
             </Typography>
 
             <Typography fontSize={14}>
-              {format(new Date(order.createdAt), "dd MMM, yyyy")}
+              {/* {format(new Date(order?.createdAt), "dd MMM, yyyy")} */}
             </Typography>
           </FlexBox>
 
@@ -198,7 +227,7 @@ const OrderDetails = ({ order }) => {
         </TableRow>
 
         <Box py={1}>
-          {order.items.map((item, ind) => (
+          {order?.items.map((item, ind) => (
             <FlexBox
               px={2}
               py={1}
@@ -208,24 +237,24 @@ const OrderDetails = ({ order }) => {
             >
               <FlexBox flex="2 2 260px" m={0.75} alignItems="center">
                 <Avatar
-                  src={item.product_img}
+                  src={`${process.env.NEXT_PUBLIC_ENDPOINT}/${item.imgUrl}`}
                   sx={{
                     height: 64,
                     width: 64,
                   }}
                 />
                 <Box ml={2.5}>
-                  <H6 my="0px">{item.product_name}</H6>
+                  <H6 my="0px">{item.name}</H6>
 
                   <Typography fontSize="14px" color="grey.600">
-                    {currency(item.product_price)} x {item.product_quantity}
+                    {currency(item.price)} x {item.qty}
                   </Typography>
                 </Box>
               </FlexBox>
 
               <FlexBox flex="1 1 260px" m={0.75} alignItems="center">
                 <Typography fontSize="14px" color="grey.600">
-                  Product properties: Black, L
+                  {order?.status}
                 </Typography>
               </FlexBox>
 
@@ -252,7 +281,10 @@ const OrderDetails = ({ order }) => {
             </H5>
 
             <Paragraph fontSize={14} my={0}>
-              {order.shippingAddress}
+              {order?.shippingData.shipping_address1}
+            </Paragraph>
+            <Paragraph fontSize={14} my={0}>
+              {order?.shippingData.shipping_address2}
             </Paragraph>
           </Card>
         </Grid>
@@ -272,7 +304,7 @@ const OrderDetails = ({ order }) => {
                 Subtotal:
               </Typography>
 
-              <H6 my="0px">{currency(order.totalPrice)}</H6>
+              <H6 my="0px">{currency(order?.totalPrice)}</H6>
             </FlexBetween>
 
             <FlexBetween mb={1}>
@@ -280,7 +312,7 @@ const OrderDetails = ({ order }) => {
                 Shipping fee:
               </Typography>
 
-              <H6 my="0px">{currency(0)}</H6>
+              <H6 my="0px">{currency(1000)}</H6>
             </FlexBetween>
 
             <FlexBetween mb={1}>
@@ -288,7 +320,7 @@ const OrderDetails = ({ order }) => {
                 Discount:
               </Typography>
 
-              <H6 my="0px">{currency(order.discount)}</H6>
+              <H6 my="0px">{currency(order?.discount)}</H6>
             </FlexBetween>
 
             <Divider
@@ -299,31 +331,35 @@ const OrderDetails = ({ order }) => {
 
             <FlexBetween mb={2}>
               <H6 my="0px">Total</H6>
-              <H6 my="0px">{currency(order.totalPrice)}</H6>
+              <H6 my="0px">{currency(order?.totalPrice)}</H6>
             </FlexBetween>
 
-            <Typography fontSize={14}>Paid by Credit/Debit Card</Typography>
+            <Typography fontSize={14}>
+              {order?.paymentMethod === "cod"
+                ? "Cash on Delivery"
+                : "Credit/Debit Card"}
+            </Typography>
           </Card>
         </Grid>
       </Grid>
     </CustomerDashboardLayout>
   );
 };
-export const getStaticPaths = async () => {
-  const paths = await api.getIds();
-  return {
-    paths: paths,
-    //indicates that no page needs be created at build time
-    fallback: "blocking", //indicates the type of fallback
-  };
-};
+// export const getStaticPaths = async () => {
+//   const paths = await api.getIds();
+//   return {
+//     paths: paths,
+//     //indicates that no page needs be created at build time
+//     fallback: "blocking", //indicates the type of fallback
+//   };
+// };
 
-export const getStaticProps = async ({ params }) => {
-  const order = await api.getOrder(String(params.id));
-  return {
-    props: {
-      order,
-    },
-  };
-};
+// export const getStaticProps = async ({ params }) => {
+//   const order = await api.getOrder(String(params.id));
+//   return {
+//     props: {
+//       order,
+//     },
+//   };
+// };
 export default OrderDetails;
