@@ -80,7 +80,3 @@ const ShopList = () => {
 //   };
 // };
 export default ShopList;
-
-tax;
-discount;
-totalPrice;
