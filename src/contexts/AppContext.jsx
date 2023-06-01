@@ -4,41 +4,22 @@ import { createContext, useContext, useMemo, useReducer } from "react";
 
 // =================================================================================
 
-const INITIAL_CART = [
-  // {
-  //   qty: 1,
-  //   price: 210,
-  //   slug: "silver-high-neck-sweater",
-  //   name: "Silver High Neck Sweater",
-  //   id: "6e8f151b-277b-4465-97b6-547f6a72e5c9",
-  //   imgUrl:
-  //     "/assets/images/products/Fashion/Clothes/1.SilverHighNeckSweater.png",
-  // },
-  // {
-  //   qty: 1,
-  //   price: 110,
-  //   slug: "yellow-casual-sweater",
-  //   name: "Yellow Casual Sweater",
-  //   id: "76d14d65-21d0-4b41-8ee1-eef4c2232793",
-  //   imgUrl:
-  //     "/assets/images/products/Fashion/Clothes/21.YellowCasualSweater.png",
-  // },
-  // {
-  //   qty: 1,
-  //   price: 140,
-  //   slug: "denim-blue-jeans",
-  //   name: "Denim Blue Jeans",
-  //   id: "0fffb188-98d8-47f7-8189-254f06cad488",
-  //   imgUrl: "/assets/images/products/Fashion/Clothes/4.DenimBlueJeans.png",
-  // },
-];
+const INITIAL_CART =
+  typeof window !== "undefined"
+    ? JSON.parse(localStorage.getItem("cartItems")) || []
+    : [];
+
+// const INITIAL_CART = [];
+
 const INITIAL_STATE = {
   cart: INITIAL_CART,
 };
+
 const AppContext = createContext({
   state: INITIAL_STATE,
   dispatch: () => {},
 });
+
 const reducer = (state, action) => {
   switch (action.type) {
     case "CHANGE_CART_AMOUNT":
@@ -47,6 +28,9 @@ const reducer = (state, action) => {
       let exist = cartList.find((item) => item.id === cartItem.id);
       if (cartItem.qty < 1) {
         const filteredCart = cartList.filter((item) => item.id !== cartItem.id);
+        console.log(filteredCart, cartList);
+        // saving cart items to localStorage
+        localStorage.setItem("cartItems", filteredCart);
         return {
           ...state,
           cart: filteredCart,
@@ -63,11 +47,14 @@ const reducer = (state, action) => {
               }
             : item
         );
+        // saving updated cart to localStorage
+        console.log(newCart);
         return {
           ...state,
           cart: newCart,
         };
       }
+      console.log([...cartList, cartItem]);
       return {
         ...state,
         cart: [...cartList, cartItem],

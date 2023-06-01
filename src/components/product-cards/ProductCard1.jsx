@@ -93,7 +93,7 @@ const ProductCard1 = ({
   const [isFavorite, setIsFavorite] = useState(false);
   const toggleIsFavorite = () => setIsFavorite((fav) => !fav);
   const toggleDialog = useCallback(() => setOpenModal((open) => !open), []);
-  const cartItem = state.cart.find((item) => item.slug === slug);
+  const cartItem = state.cart?.find((item) => item.slug === slug);
 
   const handleCartAmountChange = (product, type) => () => {
     dispatch({
