@@ -211,7 +211,7 @@ const OrderDetails = () => {
             </Typography>
 
             <Typography fontSize={14}>
-              {/* {format(new Date(order?.createdAt), "dd MMM, yyyy")} */}
+              {order && format(new Date(order?.createdAt), "dd MMM, yyyy")}
             </Typography>
           </FlexBox>
 
@@ -280,13 +280,194 @@ const OrderDetails = () => {
               Shipping Address
             </H5>
 
-            <Paragraph fontSize={14} my={0}>
-              {order?.shippingData.shipping_address1}
-            </Paragraph>
-            <Paragraph fontSize={14} my={0}>
-              {order?.shippingData.shipping_address2}
-            </Paragraph>
+            <FlexBetween mb={1}>
+              <Typography fontSize={14} color="grey.600">
+                Name
+              </Typography>
+
+              <Paragraph fontSize={14} my={0}>
+                {order?.shippingData.shipping_name}
+              </Paragraph>
+            </FlexBetween>
+
+            <FlexBetween mb={1}>
+              <Typography fontSize={14} color="grey.600">
+                Email
+              </Typography>
+
+              <Paragraph fontSize={14} my={0}>
+                {order?.shippingData.shipping_email}
+              </Paragraph>
+            </FlexBetween>
+
+            <FlexBetween mb={1}>
+              <Typography fontSize={14} color="grey.600">
+                Contact
+              </Typography>
+
+              <Paragraph fontSize={14} my={0}>
+                {order?.shippingData.shipping_contact}
+              </Paragraph>
+            </FlexBetween>
+
+            <FlexBetween mb={1}>
+              <Typography fontSize={14} color="grey.600">
+                Company
+              </Typography>
+
+              <Paragraph fontSize={14} my={0}>
+                {order?.shippingData.shipping_company}
+              </Paragraph>
+            </FlexBetween>
+
+            <FlexBetween mb={1}>
+              <Typography fontSize={14} color="grey.600">
+                City
+              </Typography>
+
+              <Paragraph fontSize={14} my={0}>
+                {order?.shippingData.shipping_city.label}
+              </Paragraph>
+            </FlexBetween>
+
+            <FlexBetween mb={1}>
+              <Typography fontSize={14} color="grey.600">
+                Address one
+              </Typography>
+
+              <Paragraph fontSize={14} my={0}>
+                {order?.shippingData.shipping_address1}
+              </Paragraph>
+            </FlexBetween>
+
+            <FlexBetween mb={1}>
+              <Typography fontSize={14} color="grey.600">
+                Address two
+              </Typography>
+
+              <Paragraph fontSize={14} my={0}>
+                {order?.shippingData.shipping_address2}
+              </Paragraph>
+            </FlexBetween>
+
+            <FlexBetween mb={1}>
+              <Typography fontSize={14} color="grey.600">
+                Zip Code
+              </Typography>
+
+              <Paragraph fontSize={14} my={0}>
+                {order?.shippingData.shipping_zip}
+              </Paragraph>
+            </FlexBetween>
           </Card>
+        </Grid>
+
+        <Grid item lg={6} md={6} xs={12}>
+          {order && order.shippingData.same_as_shipping ? (
+            <Card
+              sx={{
+                p: "20px 30px",
+              }}
+            >
+              <H5 mt={0} mb={2}>
+                Billing Address
+              </H5>
+
+              <Paragraph fontSize={14} my={0}>
+                Billing information is thesame as shipping information.
+              </Paragraph>
+            </Card>
+          ) : (
+            <Card
+              sx={{
+                p: "20px 30px",
+              }}
+            >
+              <H5 mt={0} mb={2}>
+                Billing Address
+              </H5>
+
+              <FlexBetween mb={1}>
+                <Typography fontSize={14} color="grey.600">
+                  Name
+                </Typography>
+
+                <Paragraph fontSize={14} my={0}>
+                  {order?.shippingData.billing_name}
+                </Paragraph>
+              </FlexBetween>
+
+              <FlexBetween mb={1}>
+                <Typography fontSize={14} color="grey.600">
+                  Email
+                </Typography>
+
+                <Paragraph fontSize={14} my={0}>
+                  {order?.shippingData.billing_email}
+                </Paragraph>
+              </FlexBetween>
+
+              <FlexBetween mb={1}>
+                <Typography fontSize={14} color="grey.600">
+                  Contact
+                </Typography>
+
+                <Paragraph fontSize={14} my={0}>
+                  {order?.shippingData.billing_contact}
+                </Paragraph>
+              </FlexBetween>
+
+              <FlexBetween mb={1}>
+                <Typography fontSize={14} color="grey.600">
+                  Company
+                </Typography>
+
+                <Paragraph fontSize={14} my={0}>
+                  {order?.shippingData.billing_company}
+                </Paragraph>
+              </FlexBetween>
+
+              <FlexBetween mb={1}>
+                <Typography fontSize={14} color="grey.600">
+                  City
+                </Typography>
+
+                <Paragraph fontSize={14} my={0}>
+                  {order?.shippingData.billing_city.label}
+                </Paragraph>
+              </FlexBetween>
+
+              <FlexBetween mb={1}>
+                <Typography fontSize={14} color="grey.600">
+                  Address one
+                </Typography>
+
+                <Paragraph fontSize={14} my={0}>
+                  {order?.shippingData.billing_address1}
+                </Paragraph>
+              </FlexBetween>
+
+              <FlexBetween mb={1}>
+                <Typography fontSize={14} color="grey.600">
+                  Address two
+                </Typography>
+
+                <Paragraph fontSize={14} my={0}>
+                  {order?.shippingData.billing_address2}
+                </Paragraph>
+              </FlexBetween>
+
+              <FlexBetween mb={1}>
+                <Typography fontSize={14} color="grey.600">
+                  Zip Code
+                </Typography>
+
+                <Paragraph fontSize={14} my={0}>
+                  {order?.shippingData.billing_zip}
+                </Paragraph>
+              </FlexBetween>
+            </Card>
+          )}
         </Grid>
 
         <Grid item lg={6} md={6} xs={12}>
@@ -334,11 +515,15 @@ const OrderDetails = () => {
               <H6 my="0px">{currency(order?.totalPrice)}</H6>
             </FlexBetween>
 
-            <Typography fontSize={14}>
-              {order?.paymentMethod === "cod"
-                ? "Cash on Delivery"
-                : "Credit/Debit Card"}
-            </Typography>
+            <FlexBetween mb={2}>
+              <H6 my="0px">Payment Method</H6>
+
+              <Typography fontSize={14}>
+                {order?.paymentMethod === "cod"
+                  ? "Cash on Delivery"
+                  : "Credit/Debit Card"}
+              </Typography>
+            </FlexBetween>
           </Card>
         </Grid>
       </Grid>

@@ -5,11 +5,9 @@ import { createContext, useContext, useMemo, useReducer } from "react";
 // =================================================================================
 
 const INITIAL_CART =
-  typeof window !== "undefined"
-    ? JSON.parse(localStorage.getItem("cartItems")) || []
-    : [];
-
-// const INITIAL_CART = [];
+  (typeof window !== "undefined" &&
+    JSON.parse(localStorage.getItem("cartItems"))) ||
+  [];
 
 const INITIAL_STATE = {
   cart: INITIAL_CART,
@@ -28,9 +26,8 @@ const reducer = (state, action) => {
       let exist = cartList.find((item) => item.id === cartItem.id);
       if (cartItem.qty < 1) {
         const filteredCart = cartList.filter((item) => item.id !== cartItem.id);
-        console.log(filteredCart, cartList);
-        // saving cart items to localStorage
-        localStorage.setItem("cartItems", filteredCart);
+        // saving updated cart to localStorage
+        localStorage.setItem("cartItems", JSON.stringify(filteredCart));
         return {
           ...state,
           cart: filteredCart,
@@ -48,13 +45,16 @@ const reducer = (state, action) => {
             : item
         );
         // saving updated cart to localStorage
-        console.log(newCart);
+        localStorage.setItem("cartItems", JSON.stringify(newCart));
         return {
           ...state,
           cart: newCart,
         };
       }
-      console.log([...cartList, cartItem]);
+      localStorage.setItem(
+        "cartItems",
+        JSON.stringify([...cartList, cartItem])
+      );
       return {
         ...state,
         cart: [...cartList, cartItem],

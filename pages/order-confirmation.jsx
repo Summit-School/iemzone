@@ -23,6 +23,8 @@ const OrderConfirmation = () => {
   useEffect(() => {
     // remove shipping details from localStorage
     localStorage.removeItem("iemzone-shipping-data");
+    // remove cartItems from localStorage
+    localStorage.removeItem("cartItems");
   }, []);
 
   return (

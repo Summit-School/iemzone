@@ -23,12 +23,15 @@ import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useSnackbar } from "notistack";
 import { fetchUserData } from "../../redux/reducers/authentication";
+import { getUserOrders } from "../../redux/reducers/order";
 import userId from "utils/userId";
 
 const Profile = () => {
   const downMd = useMediaQuery((theme) => theme.breakpoints.down("md"));
 
   const user = useSelector((state) => state.authentication.userData);
+  const userOrders = useSelector((state) => state.orders.orders);
+  const orders = userOrders?.orders;
   const { enqueueSnackbar } = useSnackbar();
   const dispatch = useDispatch();
 
@@ -41,6 +44,7 @@ const Profile = () => {
             variant: "error",
           });
         }
+        dispatch(getUserOrders(id));
       })
       .catch((err) => {
         console.error(err);
@@ -63,7 +67,7 @@ const Profile = () => {
   );
   const infoList = [
     {
-      title: "16",
+      title: `${orders && orders.length}`,
       subtitle: "All Orders",
     },
     {
@@ -122,7 +126,7 @@ const Profile = () => {
                   </div>
 
                   <Typography color="grey.600" letterSpacing="0.2em">
-                    SILVER USER
+                    IEMZONE USER
                   </Typography>
                 </FlexBetween>
               </Box>
