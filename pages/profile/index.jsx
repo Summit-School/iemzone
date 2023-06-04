@@ -106,7 +106,7 @@ const Profile = () => {
               }}
             >
               <Avatar
-                src={`${process.env.NEXT_PUBLIC_ENDPOINT}/${user?.avatar}`}
+                src={`${user?.avatar}`}
                 sx={{
                   height: 64,
                   width: 64,

@@ -151,10 +151,7 @@ const ProfileEditor = () => {
       <Card1>
         <FlexBox alignItems="flex-end" mb={3}>
           <Avatar
-            src={
-              `${process.env.NEXT_PUBLIC_ENDPOINT}/${user?.avatar}` ||
-              "/assets/images/bazaar-black-sm.svg"
-            }
+            src={`${user?.avatar}` || "/assets/images/bazaar-black-sm.svg"}
             sx={{
               height: 64,
               width: 64,

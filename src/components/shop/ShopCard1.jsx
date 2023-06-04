@@ -36,11 +36,10 @@ const ShopCard1 = (props) => {
     slug,
     id,
   } = props;
+  console.log(profilePicture);
   return (
     <Card>
-      <ContentWrapper
-        img={`${process.env.NEXT_PUBLIC_ENDPOINT}/${coverPicture.src}`}
-      >
+      <ContentWrapper img={`${coverPicture.src}`}>
         <H3 fontWeight="600" mb={1}>
           {name}
         </H3>
@@ -79,7 +78,7 @@ const ShopCard1 = (props) => {
 
       <FlexBetween pl={3} pr={1}>
         <Avatar
-          src={`${process.env.NEXT_PUBLIC_ENDPOINT}/${profilePicture}`}
+          src={`${profilePicture}`}
           sx={{
             width: 64,
             height: 64,

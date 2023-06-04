@@ -22,7 +22,7 @@ const ShopIntroCard = (props) => {
     email,
   } = props;
 
-  const img = `${process.env.NEXT_PUBLIC_ENDPOINT}/${coverPicture}`;
+  const img = `${coverPicture}`;
 
   return (
     <Card
@@ -48,7 +48,7 @@ const ShopIntroCard = (props) => {
 
       <FlexBox mt={-8} px={3.75} flexWrap="wrap">
         <Avatar
-          src={`${process.env.NEXT_PUBLIC_ENDPOINT}/${profilePicture}`}
+          src={`${profilePicture}`}
           sx={{
             mr: "37px",
             width: "120px",

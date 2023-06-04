@@ -15,6 +15,7 @@ const ShopList = () => {
   const dispatch = useDispatch();
 
   const shopList = useSelector((state) => state.shop.shops);
+  console.log(shopList);
 
   useEffect(() => {
     dispatch(getAllShops())
@@ -61,11 +62,11 @@ const ShopList = () => {
         {/* PAGINTAION AREA */}
         <FlexBetween flexWrap="wrap" mt={4}>
           <Span color="grey.600">Showing 1-9 of {shopList?.length} Shops</Span>
-          <Pagination
+          {/* <Pagination
             count={shopList?.length}
             variant="outlined"
             color="primary"
-          />
+          /> */}
         </FlexBetween>
       </Container>
     </ShopLayout1>
