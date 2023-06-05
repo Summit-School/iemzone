@@ -69,7 +69,7 @@ const ProductIntro = ({ product }) => {
               width={300}
               height={300}
               loading="eager"
-              src={`${process.env.NEXT_PUBLIC_ENDPOINT}/${product.images[selectedImage]}`}
+              src={`${product.images[selectedImage].image}`}
               sx={{
                 objectFit: "contain",
               }}
@@ -97,7 +97,7 @@ const ProductIntro = ({ product }) => {
                 }
               >
                 <Avatar
-                  src={`${process.env.NEXT_PUBLIC_ENDPOINT}/${url}`}
+                  src={`${url.image}`}
                   variant="square"
                   sx={{
                     height: 40,

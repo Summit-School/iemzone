@@ -70,7 +70,6 @@ export default function OrderList() {
 
   const userOrders = useSelector((state) => state.orders.orders);
   const orders = userOrders?.orders;
-  console.log(orders);
 
   useEffect(() => {
     const id = userId();

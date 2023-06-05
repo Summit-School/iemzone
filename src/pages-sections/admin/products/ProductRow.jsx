@@ -103,7 +103,7 @@ const ProductRow = ({ product }) => {
       <StyledTableCell align="left">
         <FlexBox alignItems="center" gap={1.5}>
           <Avatar
-            src={`${process.env.NEXT_PUBLIC_ENDPOINT}/${image}`}
+            src={`${image.image}`}
             sx={{
               borderRadius: "8px",
             }}

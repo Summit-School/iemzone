@@ -47,7 +47,7 @@ const Section13 = ({ bigDiscountList }) => {
                         width={500}
                         height={500}
                         alt={title}
-                        src={`${process.env.NEXT_PUBLIC_ENDPOINT}/${thumbnail}`}
+                        src={`${thumbnail.image}`}
                       />
                     </HoverBox>
 

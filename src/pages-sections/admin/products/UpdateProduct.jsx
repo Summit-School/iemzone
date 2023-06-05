@@ -16,7 +16,7 @@ import {
   updateImageArray,
   singleProduct,
 } from "../../../../redux/reducers/admin/product";
-import { userCategories } from "../../../../redux/reducers/admin/category";
+import { allCategories } from "../../../../redux/reducers/admin/category";
 import { userBrands } from "../../../../redux/reducers/admin/brand";
 
 // ================================================================
@@ -32,8 +32,7 @@ const ProductForm = (props) => {
 
   const shop = useSelector((state) => state.shop.shop);
   const shopId = shop?.shop._id;
-  const userCats = useSelector((state) => state.categories.categories);
-  const categories = userCats?.categories;
+  const categories = useSelector((state) => state.categories.categories);
   const userBrds = useSelector((state) => state.brands.brands);
   const brands = userBrds?.brands;
 
@@ -52,7 +51,7 @@ const ProductForm = (props) => {
   }, []);
 
   useEffect(() => {
-    dispatch(userCategories(id))
+    dispatch(allCategories())
       .then((res) => {
         if (res.meta.requestStatus === "rejected") {
           enqueueSnackbar(res.payload, {
@@ -384,10 +383,7 @@ const ProductForm = (props) => {
                   {initialValues?.images?.map((file, index) => {
                     return (
                       <UploadImageBox key={index}>
-                        <BazaarImage
-                          src={`${process.env.NEXT_PUBLIC_ENDPOINT}/${file}`}
-                          width="100%"
-                        />
+                        <BazaarImage src={`${file.image}`} width="100%" />
                         <StyledClear onClick={handleImageDelete(file)} />
                       </UploadImageBox>
                     );

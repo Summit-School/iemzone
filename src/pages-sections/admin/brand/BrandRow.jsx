@@ -27,7 +27,7 @@ const BrandRow = ({ brand, selected }) => {
 
       <StyledTableCell align="center">
         <Avatar
-          src={`${process.env.NEXT_PUBLIC_ENDPOINT}/${image}`}
+          src={`${image}`}
           sx={{
             width: 55,
             height: "auto",

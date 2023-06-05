@@ -15,7 +15,6 @@ const ShopList = () => {
   const dispatch = useDispatch();
 
   const shopList = useSelector((state) => state.shop.shops);
-  console.log(shopList);
 
   useEffect(() => {
     dispatch(getAllShops())

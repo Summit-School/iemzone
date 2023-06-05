@@ -12,7 +12,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useSnackbar } from "notistack";
 import { getShop } from "../../../../redux/reducers/shop";
 import { createProduct } from "../../../../redux/reducers/admin/product";
-import { userCategories } from "../../../../redux/reducers/admin/category";
+import { allCategories } from "../../../../redux/reducers/admin/category";
 import { userBrands } from "../../../../redux/reducers/admin/brand";
 
 // ================================================================
@@ -28,8 +28,7 @@ const ProductForm = (props) => {
 
   const shop = useSelector((state) => state.shop.shop);
   const shopId = shop?.shop._id;
-  const userCats = useSelector((state) => state.categories.categories);
-  const categories = userCats?.categories;
+  const categories = useSelector((state) => state.categories.categories);
   const userBrds = useSelector((state) => state.brands.brands);
   const brands = userBrds?.brands;
 
@@ -48,7 +47,7 @@ const ProductForm = (props) => {
   }, []);
 
   useEffect(() => {
-    dispatch(userCategories(id))
+    dispatch(allCategories())
       .then((res) => {
         if (res.meta.requestStatus === "rejected") {
           enqueueSnackbar(res.payload, {

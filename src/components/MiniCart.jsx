@@ -132,7 +132,7 @@ const MiniCart = ({ toggleSidenav }) => {
             <Link href={`/product/${item.id}`}>
               <Avatar
                 alt={item.name}
-                src={`${process.env.NEXT_PUBLIC_ENDPOINT}/${item.imgUrl}`}
+                src={`${item.imgUrl.image}`}
                 sx={{
                   mx: 2,
                   width: 76,

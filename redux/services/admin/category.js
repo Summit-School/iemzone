@@ -12,8 +12,8 @@ const createCategory = async (data) => {
   return response.data;
 };
 
-const userCategories = async (userId) => {
-  const response = await axios.get(`${URL}/user-categories/${userId}`);
+const categories = async () => {
+  const response = await axios.get(`${URL}/categories`);
   return response.data;
 };
 
@@ -23,12 +23,16 @@ const singleCategory = async (slug) => {
 };
 
 const updateCategory = async (data) => {
-  const response = await axios.put(`${URL}/update-category/${data.categoryId}`, data.form, {
-    headers: {
-      Accept: "application/json",
-      "Content-Type": "multipart/form-data",
-    },
-  });
+  const response = await axios.put(
+    `${URL}/update-category/${data.categoryId}`,
+    data.form,
+    {
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "multipart/form-data",
+      },
+    }
+  );
   return response.data;
 };
 
@@ -44,14 +48,11 @@ const changeFeaturedCategory = async (catId) => {
 
 const categoryServices = {
   createCategory,
-  userCategories,
+  categories,
   singleCategory,
   updateCategory,
   deleteCategory,
-  changeFeaturedCategory
+  changeFeaturedCategory,
 };
 
 export default categoryServices;
-
-
- 

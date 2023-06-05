@@ -94,7 +94,7 @@ const ProductViewDialog = (props) => {
                 {product.imgGroup.map((item, index) => (
                   <BazaarImage
                     key={index}
-                    src={`${process.env.NEXT_PUBLIC_ENDPOINT}/${item}`}
+                    src={`${item.image}`}
                     sx={{
                       mx: "auto",
                       width: "100%",

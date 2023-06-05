@@ -18,7 +18,7 @@ const ProductCard4 = ({ title, salesPrice, imgUrl, rating, reviewCount }) => {
           alt={title}
           width={380}
           height={380}
-          src={`${process.env.NEXT_PUBLIC_ENDPOINT}/${imgUrl}`}
+          src={`${imgUrl.image}`}
           style={{
             objectFit: "contain",
             objectPosition: "center center",

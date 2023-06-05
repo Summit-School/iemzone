@@ -53,10 +53,7 @@ const ProductCard7 = ({ id, name, qty, price, imgUrl, slug }) => {
         width={140}
         height={140}
         display="block"
-        src={
-          `${process.env.NEXT_PUBLIC_ENDPOINT}/${imgUrl}` ||
-          "/assets/images/products/iphone-xi.png"
-        }
+        src={`${imgUrl.image}` || "/assets/images/products/iphone-xi.png"}
       />
 
       <IconButton

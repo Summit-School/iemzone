@@ -90,7 +90,7 @@ const CategoryRow = ({ item, selected }) => {
 
       <StyledTableCell align="left">
         <Avatar
-          src={`${process.env.NEXT_PUBLIC_ENDPOINT}/${image}`}
+          src={`${image}`}
           sx={{
             borderRadius: "8px",
           }}

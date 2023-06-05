@@ -137,7 +137,7 @@ const ProductCard1 = ({
         <Link href={`/product/${id}`}>
           <LazyImage
             priority
-            src={`${process.env.NEXT_PUBLIC_ENDPOINT}/${imgUrl}`}
+            src={`${imgUrl.image}`}
             width={500}
             height={500}
             alt={title}

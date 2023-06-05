@@ -36,10 +36,9 @@ const ShopCard1 = (props) => {
     slug,
     id,
   } = props;
-  console.log(profilePicture);
   return (
     <Card>
-      <ContentWrapper img={`${coverPicture.src}`}>
+      <ContentWrapper img={`${coverPicture}`}>
         <H3 fontWeight="600" mb={1}>
           {name}
         </H3>

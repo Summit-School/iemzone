@@ -138,7 +138,7 @@ const OrderDetails = ({ order }) => {
             >
               <FlexBox flexShrink={0} gap={1.5} alignItems="center">
                 <Avatar
-                  src={`${process.env.NEXT_PUBLIC_ENDPOINT}/${item.imgUrl}`}
+                  src={`${item.imgUrl.image}`}
                   sx={{
                     height: 64,
                     width: 64,
@@ -318,7 +318,7 @@ const OrderDetails = ({ order }) => {
             <Paragraph color="grey.600">Shipping fee:</Paragraph>
 
             <FlexBox alignItems="center" gap={1} maxWidth={100}>
-              <Paragraph>1000 XAF</Paragraph>
+              <Paragraph>$1000.00</Paragraph>
               {/* <TextField
                 color="info"
                 defaultValue={10}
