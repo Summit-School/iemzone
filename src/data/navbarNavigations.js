@@ -178,12 +178,36 @@ const megaMenus = [
 // MAIN NAVIGATION DATA
 const navbarNavigations = [
   {
-    title: "Home",
     megaMenu: false,
     megaMenuWithSub: false,
     title: "Homepage",
     url: "/",
   },
+  {
+    megaMenu: false,
+    megaMenuWithSub: false,
+    title: "Market",
+    url: "/sale-page-1",
+  },
+  {
+    megaMenu: false,
+    megaMenuWithSub: false,
+    title: "Vendors",
+    url: "/shops",
+  },
+  {
+    megaMenu: false,
+    megaMenuWithSub: false,
+    title: "Wishlist",
+    url: "/wish-list",
+  },
+  {
+    megaMenu: false,
+    megaMenuWithSub: false,
+    title: "Account",
+    url: "/profile",
+  },
+
   // {
   //   megaMenu: true,
   //   megaMenuWithSub: false,
@@ -196,82 +220,82 @@ const navbarNavigations = [
   //   title: 'Full Screen Menu',
   //   child: categoriesMegaMenu
   // },
-  {
-    megaMenu: false,
-    megaMenuWithSub: false,
-    title: "Pages",
-    child: [
-      {
-        title: "Market",
-        url: "/sale-page-1",
-      },
-      {
-        title: "All vendors",
-        url: "/shops",
-      },
-      {
-        title: "Shop",
-        child: [
-          {
-            title: "Search product",
-            url: "/product/search/mobile phone",
-          },
-          {
-            title: "Cart",
-            url: "/cart",
-          },
-          // {
-          //   title: 'Checkout',
-          //   url: '/checkout'
-          // },
-          // {
-          //   title: 'Alternative Checkout',
-          //   url: '/checkout-alternative'
-          // },
-          // {
-          //   title: 'Order confirmation',
-          //   url: '/order-confirmation'
-          // }
-        ],
-      },
-    ],
-  },
-  {
-    megaMenu: false,
-    megaMenuWithSub: false,
-    title: "User Account",
-    child: [
-      {
-        title: "Profile",
-        url: "/profile",
-      },
-      {
-        title: "Orders",
-        url: "/orders",
-      },
-      // {
-      //   title: "Address",
-      //   child: [
-      //     {
-      //       title: "Address List",
-      //       url: "/address",
-      //     },
-      //     // {
-      //     //   title: 'Add Address',
-      //     //   url: '/address/d27d0e28-c35e-4085-af1e-f9f1b1bd9c34'
-      //     // }
-      //   ],
-      // },
-      {
-        title: "Support tickets",
-        url: "/support-tickets",
-      },
-      {
-        title: "Wishlist",
-        url: "/wish-list",
-      },
-    ],
-  },
+  // {
+  //   megaMenu: false,
+  //   megaMenuWithSub: false,
+  //   title: "Pages",
+  //   child: [
+  //     {
+  //       title: "Market",
+  //       url: "/sale-page-1",
+  //     },
+  //     {
+  //       title: "All vendors",
+  //       url: "/shops",
+  //     },
+  //     {
+  //       title: "Shop",
+  //       child: [
+  //         {
+  //           title: "Search product",
+  //           url: "/product/search/mobile phone",
+  //         },
+  //         {
+  //           title: "Cart",
+  //           url: "/cart",
+  //         },
+  //         // {
+  //         //   title: 'Checkout',
+  //         //   url: '/checkout'
+  //         // },
+  //         // {
+  //         //   title: 'Alternative Checkout',
+  //         //   url: '/checkout-alternative'
+  //         // },
+  //         // {
+  //         //   title: 'Order confirmation',
+  //         //   url: '/order-confirmation'
+  //         // }
+  //       ],
+  //     },
+  //   ],
+  // },
+  // {
+  //   megaMenu: false,
+  //   megaMenuWithSub: false,
+  //   title: "User Account",
+  //   child: [
+  //     {
+  //       title: "Profile",
+  //       url: "/profile",
+  //     },
+  //     {
+  //       title: "Orders",
+  //       url: "/orders",
+  //     },
+  //     // {
+  //     //   title: "Address",
+  //     //   child: [
+  //     //     {
+  //     //       title: "Address List",
+  //     //       url: "/address",
+  //     //     },
+  //     //     // {
+  //     //     //   title: 'Add Address',
+  //     //     //   url: '/address/d27d0e28-c35e-4085-af1e-f9f1b1bd9c34'
+  //     //     // }
+  //     //   ],
+  //     // },
+  //     {
+  //       title: "Support tickets",
+  //       url: "/support-tickets",
+  //     },
+  //     {
+  //       title: "Wishlist",
+  //       url: "/wish-list",
+  //     },
+  //   ],
+  // },
   {
     megaMenu: false,
     megaMenuWithSub: false,

@@ -12,6 +12,11 @@ const createBrand = async (data) => {
   return response.data;
 };
 
+const allBrands = async () => {
+  const response = await axios.get(`${URL}/brands`);
+  return response.data;
+};
+
 const userBrands = async (userId) => {
   const response = await axios.get(`${URL}/user-brands/${userId}`);
   return response.data;
@@ -21,7 +26,6 @@ const singleBrand = async (slug) => {
   const response = await axios.get(`${URL}/brand/${slug}`);
   return response.data;
 };
-
 
 const deleteBrand = async (brandId) => {
   const response = await axios.delete(`${URL}/delete-brand/${brandId}`);
@@ -36,12 +40,10 @@ const changeFeaturedBrand = async (brandId) => {
 const brandServices = {
   createBrand,
   userBrands,
+  allBrands,
   singleBrand,
   deleteBrand,
-  changeFeaturedBrand
+  changeFeaturedBrand,
 };
 
 export default brandServices;
-
-
- 

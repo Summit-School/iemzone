@@ -1,138 +1,158 @@
-import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
-import brandServices from '../../services/admin/brand'
+import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import brandServices from "../../services/admin/brand";
 
 const initialState = {
   brands: [],
-  brand: null
-}
+  brand: null,
+};
 
 export const createBrand = createAsyncThunk(
-  'brands/createBrand',
+  "brands/createBrand",
   async (data, thunkAPI) => {
     try {
-      return await brandServices.createBrand(data)
+      return await brandServices.createBrand(data);
     } catch (error) {
       const message =
         (error.response &&
           error.response.data &&
           error.response.data.message) ||
         error.message ||
-        error.toString()
+        error.toString();
 
-      return thunkAPI.rejectWithValue(message)
+      return thunkAPI.rejectWithValue(message);
     }
   }
-)
+);
+
+export const allBrands = createAsyncThunk(
+  "brands/allBrands",
+  async (thunkAPI) => {
+    try {
+      return await brandServices.allBrands();
+    } catch (error) {
+      const message =
+        (error.response &&
+          error.response.data &&
+          error.response.data.message) ||
+        error.message ||
+        error.toString();
+
+      return thunkAPI.rejectWithValue(message);
+    }
+  }
+);
 
 export const userBrands = createAsyncThunk(
-  'brands/userBrands',
+  "brands/userBrands",
   async (userId, thunkAPI) => {
     try {
-      return await brandServices.userBrands(userId)
+      return await brandServices.userBrands(userId);
     } catch (error) {
       const message =
         (error.response &&
           error.response.data &&
           error.response.data.message) ||
         error.message ||
-        error.toString()
+        error.toString();
 
-      return thunkAPI.rejectWithValue(message)
+      return thunkAPI.rejectWithValue(message);
     }
   }
-)
+);
 
 export const singleBrand = createAsyncThunk(
-  'brands/singleBrand',
+  "brands/singleBrand",
   async (slug, thunkAPI) => {
     try {
-      return await brandServices.singleBrand(slug)
+      return await brandServices.singleBrand(slug);
     } catch (error) {
       const message =
         (error.response &&
           error.response.data &&
           error.response.data.message) ||
         error.message ||
-        error.toString()
+        error.toString();
 
-      return thunkAPI.rejectWithValue(message)
+      return thunkAPI.rejectWithValue(message);
     }
   }
-)
+);
 
 export const updateBrand = createAsyncThunk(
-  'brands/updateBrand',
+  "brands/updateBrand",
   async (data, thunkAPI) => {
     try {
-      return await brandServices.updateBrand(data)
+      return await brandServices.updateBrand(data);
     } catch (error) {
       const message =
         (error.response &&
           error.response.data &&
           error.response.data.message) ||
         error.message ||
-        error.toString()
+        error.toString();
 
-      return thunkAPI.rejectWithValue(message)
+      return thunkAPI.rejectWithValue(message);
     }
   }
-)
+);
 
 export const deleteCategory = createAsyncThunk(
-  'brands/deleteBrand',
+  "brands/deleteBrand",
   async (brandId, thunkAPI) => {
     try {
-      return await brandServices.deleteCategory(brandId)
+      return await brandServices.deleteCategory(brandId);
     } catch (error) {
       const message =
         (error.response &&
           error.response.data &&
           error.response.data.message) ||
         error.message ||
-        error.toString()
+        error.toString();
 
-      return thunkAPI.rejectWithValue(message)
+      return thunkAPI.rejectWithValue(message);
     }
   }
-)
+);
 
 export const changeFeaturedBrand = createAsyncThunk(
-  'brands/changeFeaturedBrand',
+  "brands/changeFeaturedBrand",
   async (brandId, thunkAPI) => {
     try {
-      return await brandServices.changeFeaturedBrand(brandId)
+      return await brandServices.changeFeaturedBrand(brandId);
     } catch (error) {
       const message =
         (error.response &&
           error.response.data &&
           error.response.data.message) ||
         error.message ||
-        error.toString()
+        error.toString();
 
-      return thunkAPI.rejectWithValue(message)
+      return thunkAPI.rejectWithValue(message);
     }
   }
-)
+);
 
 export const brandSlice = createSlice({
-  name: 'brands',
+  name: "brands",
   initialState,
   reducers: {
-    reset: state => {}
+    reset: (state) => {},
   },
-  extraReducers: builder => {
+  extraReducers: (builder) => {
     builder
       .addCase(userBrands.fulfilled, (state, action) => {
-        state.brands = action.payload
+        state.brands = action.payload;
       })
-
-       .addCase(singleBrand.fulfilled, (state, action) => {
-        state.brand = action.payload
+      .addCase(allBrands.fulfilled, (state, action) => {
+        state.brands = action.payload;
       })
-  }
-})
+      .addCase(singleBrand.fulfilled, (state, action) => {
+        state.brand = action.payload;
+      });
+  },
+});
 
 // Action creators are generated for each case reducer function
-export const { reset } = brandSlice.actions
+export const { reset } = brandSlice.actions;
 
-export default brandSlice.reducer
+export default brandSlice.reducer;

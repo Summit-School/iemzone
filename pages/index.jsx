@@ -21,6 +21,7 @@ import api from "utils/__api__/market-1";
 import { useDispatch, useSelector } from "react-redux";
 import { useSnackbar } from "notistack";
 import { allProducts } from "../redux/reducers/admin/product";
+import { allBrands } from "../redux/reducers/admin/brand";
 
 const MarketShop = (props) => {
   const { enqueueSnackbar } = useSnackbar();
@@ -28,9 +29,22 @@ const MarketShop = (props) => {
 
   const marketProductsList = useSelector((state) => state.products.products);
   const products = marketProductsList?.products;
+  const brands = useSelector((state) => state.brands.brands);
+  console.log(brands);
 
   useEffect(() => {
     dispatch(allProducts())
+      .then((res) => {
+        if (res.meta.requestStatus === "rejected") {
+          return enqueueSnackbar(res.payload, {
+            variant: "error",
+          });
+        }
+      })
+      .catch((err) => {
+        console.error(err);
+      });
+    dispatch(allBrands())
       .then((res) => {
         if (res.meta.requestStatus === "rejected") {
           return enqueueSnackbar(res.payload, {
@@ -57,7 +71,7 @@ const MarketShop = (props) => {
       <Section3 categoryList={props.topCategories} />
 
       {/* TOP RATED PRODUCTS */}
-      <Section4 topRatedList={products} topRatedBrands={props.topRatedBrands} />
+      <Section4 topRatedList={products} topRatedBrands={brands} />
 
       {/* NEW ARRIVAL LIST */}
       <Section5 newArrivalsList={products} />
