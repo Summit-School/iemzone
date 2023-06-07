@@ -3,6 +3,7 @@ import brandServices from "../../services/admin/brand";
 
 const initialState = {
   brands: [],
+  allBrands: [],
   brand: null,
 };
 
@@ -144,7 +145,7 @@ export const brandSlice = createSlice({
         state.brands = action.payload;
       })
       .addCase(allBrands.fulfilled, (state, action) => {
-        state.brands = action.payload;
+        state.allBrands = action.payload;
       })
       .addCase(singleBrand.fulfilled, (state, action) => {
         state.brand = action.payload;

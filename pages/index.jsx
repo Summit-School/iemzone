@@ -29,8 +29,7 @@ const MarketShop = (props) => {
 
   const marketProductsList = useSelector((state) => state.products.products);
   const products = marketProductsList?.products;
-  const brands = useSelector((state) => state.brands.brands);
-  console.log(brands);
+  const brands = useSelector((state) => state.brands.allBrands);
 
   useEffect(() => {
     dispatch(allProducts())
