@@ -14,17 +14,17 @@ const createProduct = async (data) => {
 
 const allProducts = async () => {
   const products = await axios.get(`${URL}/products`);
-  return products.data
+  return products.data;
 };
 
 const shopProducts = async (shopId) => {
   const products = await axios.get(`${URL}/shop-products/${shopId}`);
-  return products.data
+  return products.data;
 };
 
 const singleProduct = async (prodId) => {
   const product = await axios.get(`${URL}/product/${prodId}`);
-  return product.data
+  return product.data;
 };
 
 const setPublishedProducts = async (prodId) => {
@@ -33,26 +33,40 @@ const setPublishedProducts = async (prodId) => {
 };
 
 const updateProduct = async (data) => {
-  const response = await axios.put(`${URL}/update-product/${data.prodId}`, data.form, {
-    headers: {
-      Accept: "application/json",
-      "Content-Type": "multipart/form-data",
-    },
-  });
+  const response = await axios.put(
+    `${URL}/update-product/${data.prodId}`,
+    data.form,
+    {
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "multipart/form-data",
+      },
+    }
+  );
   return response.data;
 };
 
 const updateImageArray = async (data) => {
-  const response = await axios.put(`${URL}/update-images/${data.prodId}`, data, {
-    headers: {
-      'Content-Type': 'application/json'
+  const response = await axios.put(
+    `${URL}/update-images/${data.prodId}`,
+    data,
+    {
+      headers: {
+        "Content-Type": "application/json",
+      },
     }
-  });
+  );
   return response.data;
 };
 
 const deleteProduct = async (prodId) => {
   const response = await axios.delete(`${URL}/delete-product/${prodId}`);
+  return response.data;
+};
+
+const searchProduct = async (param) => {
+  console.log(`${URL}/search/${param}`);
+  const response = await axios.get(`${URL}/search/${param}`);
   return response.data;
 };
 
@@ -64,7 +78,8 @@ const productServices = {
   deleteProduct,
   singleProduct,
   updateProduct,
-  updateImageArray
+  searchProduct,
+  updateImageArray,
 };
 
 export default productServices;

@@ -18,7 +18,7 @@ const ProductList1 = ({ products }) => {
               regularPrice={item.regularPrice}
               salesPrice={item.salesPrice}
               rating={item.rating}
-              imgUrl={item.thumbnail}
+              imgUrl={item.thumbnail.image}
               discount={item.discount}
               description={item.description}
               category={item.categories}

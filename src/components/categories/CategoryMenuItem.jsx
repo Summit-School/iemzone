@@ -1,7 +1,8 @@
 import Link from "next/link";
-import { Box, MenuItem, styled } from "@mui/material";
+import { Box, MenuItem, styled, Button } from "@mui/material";
 import { ChevronLeft, ChevronRight } from "@mui/icons-material";
 import useSettings from "hooks/useSettings";
+import { useState } from "react";
 
 //styled component
 const Wrapper = styled(Box)(({ theme }) => ({
@@ -37,9 +38,14 @@ const Wrapper = styled(Box)(({ theme }) => ({
 const CategoryMenuItem = (props) => {
   const { href, title, caret, children, ...rest } = props;
   const { settings } = useSettings();
+  const [category, setCategory] = useState("");
+
+  const searchProduct = (param) => {
+    console.log(param);
+  };
   return (
     <Wrapper>
-      <Link href={href}>
+      {/* <Link href={href}>
         <MenuItem className="category-dropdown-link">
           {rest.icon && <rest.icon fontSize="small" color="inherit" />}
           <span className="title">{title}</span>
@@ -50,7 +56,26 @@ const CategoryMenuItem = (props) => {
               <ChevronLeft fontSize="small" />
             ))}
         </MenuItem>
-      </Link>
+      </Link> */}
+      <Button
+        sx={{
+          padding: 0,
+          marginTop: 0,
+          textAlign: "left",
+        }}
+        onClick={() => searchProduct(title)}
+      >
+        <MenuItem className="category-dropdown-link">
+          {rest.icon && <rest.icon fontSize="small" color="inherit" />}
+          <span className="title">{title}</span>
+          {caret &&
+            (settings.direction === "ltr" ? (
+              <ChevronRight fontSize="small" />
+            ) : (
+              <ChevronLeft fontSize="small" />
+            ))}
+        </MenuItem>
+      </Button>
 
       {children}
     </Wrapper>

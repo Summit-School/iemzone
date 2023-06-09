@@ -9,14 +9,14 @@ const ProductList2 = ({ products }) => {
     <Box>
       {products.map((item) => (
         <ProductCard9
-          id={item.id}
+          id={item._id}
           key={item.id}
           slug={item.slug}
           title={item.title}
           price={item.price}
           off={item.discount}
           rating={item.rating}
-          imgUrl={item.thumbnail}
+          imgUrl={item.thumbnail.image}
         />
       ))}
 

@@ -4,6 +4,7 @@ import productServices from "../../services/admin/product";
 const initialState = {
   products: [],
   product: null,
+  searchProducts: [],
 };
 
 export const createProduct = createAsyncThunk(
@@ -150,6 +151,24 @@ export const deleteProduct = createAsyncThunk(
   }
 );
 
+export const searchProduct = createAsyncThunk(
+  "products/searchProduct",
+  async (param, thunkAPI) => {
+    try {
+      return await productServices.searchProduct(param);
+    } catch (error) {
+      const message =
+        (error.response &&
+          error.response.data &&
+          error.response.data.message) ||
+        error.message ||
+        error.toString();
+
+      return thunkAPI.rejectWithValue(message);
+    }
+  }
+);
+
 export const productSlice = createSlice({
   name: "products",
   initialState,
@@ -169,6 +188,10 @@ export const productSlice = createSlice({
       })
       .addCase(allProducts.fulfilled, (state, action) => {
         state.products = action.payload;
+      })
+      .addCase(searchProduct.fulfilled, (state, action) => {
+        console.log(action.payload);
+        state.searchProducts = action.payload;
       });
   },
 });

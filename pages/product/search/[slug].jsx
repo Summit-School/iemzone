@@ -1,4 +1,4 @@
-import { useCallback, useState } from "react";
+import { useCallback, useState, useEffect } from "react";
 import { Apps, FilterList, ViewList } from "@mui/icons-material";
 import {
   Box,
@@ -18,10 +18,38 @@ import ProductList1 from "components/products/ProductList1";
 import ProductList2 from "components/products/ProductList2";
 import ProductFilterCard from "pages-sections/product-details/ProductFilterCard";
 import productDatabase from "data/product-database";
+import { useRouter } from "next/router";
+import { useSnackbar } from "notistack";
+import { useDispatch, useSelector } from "react-redux";
+import { searchProduct } from "../../../redux/reducers/admin/product";
+
 const ProductSearchResult = () => {
   const [view, setView] = useState("grid");
   const downMd = useMediaQuery((theme) => theme.breakpoints.down("md"));
   const toggleView = useCallback((v) => () => setView(v), []);
+  const { query } = useRouter();
+  const searchParam = query?.slug;
+  const { enqueueSnackbar } = useSnackbar();
+  const dispatch = useDispatch();
+
+  const products = useSelector((state) => state.products.searchProducts);
+  console.log(products);
+
+  useEffect(() => {
+    dispatch(searchProduct(searchParam))
+      .then((res) => {
+        console.log(res);
+        if (res.meta.requestStatus === "rejected") {
+          return enqueueSnackbar(res.payload, {
+            variant: "error",
+          });
+        }
+      })
+      .catch((err) => {
+        console.error(err);
+      });
+  }, []);
+
   return (
     <ShopLayout1>
       <Container
@@ -47,8 +75,10 @@ const ProductSearchResult = () => {
           }}
         >
           <Box>
-            <H5>Searching for “ mobile phone ”</H5>
-            <Paragraph color="grey.600">48 results found</Paragraph>
+            <H5>Searching for “ {searchParam} ”</H5>
+            <Paragraph color="grey.600">
+              {products?.length} results found
+            </Paragraph>
           </Box>
 
           <FlexBox
@@ -135,9 +165,20 @@ const ProductSearchResult = () => {
           {/* PRODUCT VIEW AREA */}
           <Grid item md={9} xs={12}>
             {view === "grid" ? (
-              <ProductList1 products={productDatabase.slice(95, 104)} />
+              // <ProductList1 products={productDatabase.slice(95, 104)} />
+              products?.lenth > 0 ? (
+                <ProductList1 products={products} />
+              ) : (
+                <Paragraph color="grey.700" mr={1}>
+                  No Products Found.
+                </Paragraph>
+              )
+            ) : products?.lenth > 0 ? (
+              <ProductList2 products={products} />
             ) : (
-              <ProductList2 products={productDatabase.slice(95, 104)} />
+              <Paragraph color="grey.700" mr={1}>
+                No Products Found.
+              </Paragraph>
             )}
           </Grid>
         </Grid>
