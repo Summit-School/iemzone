@@ -10,7 +10,7 @@ const ProductList1 = ({ products }) => {
     <Fragment>
       <Grid container spacing={3}>
         {products?.map((item) => (
-          <Grid item lg={4} sm={6} xs={12} key={item.id}>
+          <Grid item lg={4} sm={6} xs={12} key={item._id}>
             <ProductCard1
               id={item._id}
               slug={item.slug}
@@ -18,7 +18,7 @@ const ProductList1 = ({ products }) => {
               regularPrice={item.regularPrice}
               salesPrice={item.salesPrice}
               rating={item.rating}
-              imgUrl={item.thumbnail.image}
+              imgUrl={item.thumbnail}
               discount={item.discount}
               description={item.description}
               category={item.categories}

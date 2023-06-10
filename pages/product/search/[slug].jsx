@@ -33,12 +33,10 @@ const ProductSearchResult = () => {
   const dispatch = useDispatch();
 
   const products = useSelector((state) => state.products.searchProducts);
-  console.log(products);
 
   useEffect(() => {
     dispatch(searchProduct(searchParam))
       .then((res) => {
-        console.log(res);
         if (res.meta.requestStatus === "rejected") {
           return enqueueSnackbar(res.payload, {
             variant: "error",
@@ -166,14 +164,14 @@ const ProductSearchResult = () => {
           <Grid item md={9} xs={12}>
             {view === "grid" ? (
               // <ProductList1 products={productDatabase.slice(95, 104)} />
-              products?.lenth > 0 ? (
+              products?.length > 0 ? (
                 <ProductList1 products={products} />
               ) : (
                 <Paragraph color="grey.700" mr={1}>
                   No Products Found.
                 </Paragraph>
               )
-            ) : products?.lenth > 0 ? (
+            ) : products?.length > 0 ? (
               <ProductList2 products={products} />
             ) : (
               <Paragraph color="grey.700" mr={1}>

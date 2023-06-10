@@ -1,9 +1,13 @@
 import Link from "next/link";
-import { Box, Card, Grid } from "@mui/material";
+import { Box, Card, Grid, Button } from "@mui/material";
 import StyledMegaMenu from "./StyledMegaMenu";
 import LazyImage from "components/LazyImage";
 import { FlexBox } from "components/flex-box";
-import { NavLink } from "components/nav-link";
+// import { NavLink } from "components/nav-link";
+import { useRouter } from "next/router";
+import { useSnackbar } from "notistack";
+import { useDispatch } from "react-redux";
+import { searchProduct } from "../../../../redux/reducers/admin/product";
 
 // =========================================================
 
@@ -11,6 +15,25 @@ import { NavLink } from "components/nav-link";
 
 const MegaMenu1 = ({ data, minWidth }) => {
   const { categories, rightImage, bottomImage } = data || {};
+  const router = useRouter();
+  const { enqueueSnackbar } = useSnackbar();
+  const dispatch = useDispatch();
+
+  const searchProductHandler = (param) => {
+    dispatch(searchProduct(param))
+      .then((res) => {
+        router.push(`/product/search/${param}`);
+        if (res.meta.requestStatus === "rejected") {
+          return enqueueSnackbar(res.payload, {
+            variant: "error",
+          });
+        }
+      })
+      .catch((err) => {
+        console.error(err);
+      });
+  };
+
   return categories ? (
     <StyledMegaMenu>
       <Card
@@ -26,17 +49,30 @@ const MegaMenu1 = ({ data, minWidth }) => {
               {categories?.map((item, ind) => (
                 <Grid item md={3} key={ind}>
                   {item.href ? (
-                    <NavLink className="title-link" href={item.href}>
+                    // <NavLink className="title-link" href={item.href}>
+                    //   {item.title}
+                    // </NavLink>
+                    <Button
+                      className="title-link"
+                      onClick={() => searchProductHandler(item.title)}
+                    >
                       {item.title}
-                    </NavLink>
+                    </Button>
                   ) : (
                     <Box className="title-link">{item.title}</Box>
                   )}
 
                   {item.subCategories?.map((sub, ind) => (
-                    <NavLink className="child-link" href={sub.href} key={ind}>
+                    // <NavLink className="child-link" href={sub.href} key={ind}>
+                    //   {sub.title}
+                    // </NavLink>
+                    <Button
+                      className="child-link"
+                      key={ind}
+                      onClick={() => searchProductHandler(sub.title)}
+                    >
                       {sub.title}
-                    </NavLink>
+                    </Button>
                   ))}
                 </Grid>
               ))}

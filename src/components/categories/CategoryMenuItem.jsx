@@ -1,8 +1,11 @@
-import Link from "next/link";
+// import Link from "next/link";
 import { Box, MenuItem, styled, Button } from "@mui/material";
 import { ChevronLeft, ChevronRight } from "@mui/icons-material";
 import useSettings from "hooks/useSettings";
-import { useState } from "react";
+import { useRouter } from "next/router";
+import { useSnackbar } from "notistack";
+import { useDispatch } from "react-redux";
+import { searchProduct } from "../../../redux/reducers/admin/product";
 
 //styled component
 const Wrapper = styled(Box)(({ theme }) => ({
@@ -38,11 +41,25 @@ const Wrapper = styled(Box)(({ theme }) => ({
 const CategoryMenuItem = (props) => {
   const { href, title, caret, children, ...rest } = props;
   const { settings } = useSettings();
-  const [category, setCategory] = useState("");
+  const router = useRouter();
+  const { enqueueSnackbar } = useSnackbar();
+  const dispatch = useDispatch();
 
-  const searchProduct = (param) => {
-    console.log(param);
+  const searchProductHandler = (param) => {
+    dispatch(searchProduct(param))
+      .then((res) => {
+        router.push(`/product/search/${param}`);
+        if (res.meta.requestStatus === "rejected") {
+          return enqueueSnackbar(res.payload, {
+            variant: "error",
+          });
+        }
+      })
+      .catch((err) => {
+        console.error(err);
+      });
   };
+
   return (
     <Wrapper>
       {/* <Link href={href}>
@@ -63,7 +80,7 @@ const CategoryMenuItem = (props) => {
           marginTop: 0,
           textAlign: "left",
         }}
-        onClick={() => searchProduct(title)}
+        onClick={() => searchProductHandler(title)}
       >
         <MenuItem className="category-dropdown-link">
           {rest.icon && <rest.icon fontSize="small" color="inherit" />}
