@@ -9,7 +9,7 @@ module.exports = {
     currency: "USD",
   },
   images: {
-    unoptimized: true
+    unoptimized: true,
   },
 };
 
