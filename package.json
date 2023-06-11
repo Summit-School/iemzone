@@ -62,6 +62,7 @@
     "yup": "^1.0.2"
   },
   "devDependencies": {
+    "@netlify/plugin-nextjs": "^4.37.4",
     "@svgr/webpack": "^7.0.0",
     "@types/node": "^18.15.11",
     "@types/nprogress": "^0.2.0",
