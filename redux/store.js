@@ -7,10 +7,12 @@ import products from "./reducers/admin/product";
 import productReviews from "./reducers/admin/productReview";
 import orders from "./reducers/order";
 import stripePayment from "./reducers/stripe";
+import subscription from "./reducers/emailSubscription";
 
 export const store = configureStore({
   reducer: {
     authentication,
+    subscription,
     shop,
     categories,
     brands,

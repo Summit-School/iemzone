@@ -17,7 +17,7 @@ import ShopLayout1 from "components/layouts/ShopLayout1";
 import ProductList1 from "components/products/ProductList1";
 import ProductList2 from "components/products/ProductList2";
 import ProductFilterCard from "pages-sections/product-details/ProductFilterCard";
-import productDatabase from "data/product-database";
+// import productDatabase from "data/product-database";
 import { useRouter } from "next/router";
 import { useSnackbar } from "notistack";
 import { useDispatch, useSelector } from "react-redux";

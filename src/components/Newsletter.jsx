@@ -12,10 +12,17 @@ import {
   FormControlLabel,
   ClickAwayListener,
 } from "@mui/material";
+import * as yup from "yup";
+import { useFormik } from "formik";
+import BazaarTextField from "components/BazaarTextField";
 import { H1, Paragraph, Span } from "./Typography";
 import { FlexRowCenter } from "./flex-box";
 import Facebook from "./icons/Facebook";
 import { Twitter, Instagram, Google, Clear } from "@mui/icons-material";
+// /==================================================================
+import { useDispatch } from "react-redux";
+import { useSnackbar } from "notistack";
+import { subscribe } from "../../redux/reducers/emailSubscription";
 
 // styled components
 const Wrapper = styled(Box)(({ theme, img }) => ({
@@ -51,10 +58,46 @@ const Wrapper = styled(Box)(({ theme, img }) => ({
 
 const Newsletter = ({ image = "/assets/images/newsletter/bg-1.png" }) => {
   const [open, setOpen] = useState(false);
+  const [loading, setLoading] = useState(false);
   const handleClose = () => setOpen(false);
+
+  const dispatch = useDispatch();
+  const { enqueueSnackbar } = useSnackbar();
+
   useEffect(() => {
     debounce(() => setOpen(true), 2000)();
   }, []);
+
+  const handleEmailSub = ({ resetForm }) => {
+    dispatch(subscribe(values), setLoading(true))
+      .then((res) => {
+        if (res.meta.requestStatus === "fulfilled") {
+          enqueueSnackbar(res.payload, {
+            variant: "success",
+          });
+          setLoading(false);
+          resetForm();
+        }
+        if (res.meta.requestStatus === "rejected") {
+          setLoading(false);
+          enqueueSnackbar(res.payload, {
+            variant: "error",
+          });
+        }
+      })
+      .catch((err) => {
+        console.error(err);
+        setLoading(false);
+      });
+  };
+
+  const { values, errors, touched, handleBlur, handleChange, handleSubmit } =
+    useFormik({
+      initialValues,
+      onSubmit: handleEmailSub,
+      validationSchema: formSchema,
+    });
+
   return (
     <ClickAwayListener onClickAway={handleClose}>
       <Modal
@@ -92,8 +135,9 @@ const Newsletter = ({ image = "/assets/images/newsletter/bg-1.png" }) => {
                   timely updates from your favorite products.
                 </Paragraph>
 
-                <TextField
+                {/* <TextField
                   fullWidth
+                  type="email"
                   placeholder="Enter your email address"
                   sx={{
                     mb: 2,
@@ -105,18 +149,46 @@ const Newsletter = ({ image = "/assets/images/newsletter/bg-1.png" }) => {
                       borderColor: "grey.300",
                     },
                   }}
-                />
+                  onChange={(e) => setEmail(e.target.value)}
+                /> */}
+                <form onSubmit={handleSubmit}>
+                  <BazaarTextField
+                    sx={{
+                      mb: 2,
+                      "& input": {
+                        padding: 2,
+                        textAlign: "center",
+                      },
+                      "& .MuiOutlinedInput-notchedOutline": {
+                        borderColor: "grey.300",
+                      },
+                    }}
+                    fullWidth
+                    name="email"
+                    size="small"
+                    type="email"
+                    variant="outlined"
+                    value={values.email}
+                    onBlur={handleBlur}
+                    onChange={handleChange}
+                    // label="Enter your email address"
+                    placeholder="exmple@mail.com"
+                    error={!!touched.email && !!errors.email}
+                    helperText={touched.email && errors.email}
+                  />
 
-                <Button
-                  variant="contained"
-                  fullWidth
-                  color="primary"
-                  sx={{
-                    p: 1.5,
-                  }}
-                >
-                  SUBMIT
-                </Button>
+                  <Button
+                    variant="contained"
+                    fullWidth
+                    color="primary"
+                    sx={{
+                      p: 1.5,
+                    }}
+                    type="submit"
+                  >
+                    {loading ? "Processing..." : "SUBMIT"}
+                  </Button>
+                </form>
 
                 <FlexRowCenter mt={4} mb={2}>
                   <IconButton>
@@ -183,4 +255,11 @@ const Newsletter = ({ image = "/assets/images/newsletter/bg-1.png" }) => {
     </ClickAwayListener>
   );
 };
+const initialValues = {
+  email: "",
+};
+const formSchema = yup.object().shape({
+  email: yup.string().email("invalid email").required("Email is required"),
+});
+
 export default Newsletter;
