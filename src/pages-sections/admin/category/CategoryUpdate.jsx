@@ -20,7 +20,7 @@ import { useDispatch } from "react-redux";
 import { useSnackbar } from "notistack";
 import category, {
   updateCategory,
-} from "../../../../redux/reducers/admin/category";
+} from "../../../redux/reducers/admin/category";
 import { initial } from "lodash";
 
 // ================================================================

@@ -24,7 +24,10 @@ import {
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useSnackbar } from "notistack";
-import { fetchUserData, updateUser } from "../../redux/reducers/authentication";
+import {
+  fetchUserData,
+  updateUser,
+} from "../../src/redux/reducers/authentication";
 import userId from "utils/userId";
 
 const ProfileEditor = () => {

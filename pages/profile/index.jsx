@@ -22,8 +22,8 @@ import api from "utils/__api__/users";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useSnackbar } from "notistack";
-import { fetchUserData } from "../../redux/reducers/authentication";
-import { getUserOrders } from "../../redux/reducers/order";
+import { fetchUserData } from "../../src/redux/reducers/authentication";
+import { getUserOrders } from "../../src/redux/reducers/order";
 import userId from "utils/userId";
 
 const Profile = () => {

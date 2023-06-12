@@ -9,7 +9,7 @@ import { H3, Small } from "components/Typography";
 import { useRouter } from "next/router";
 import { useSnackbar } from "notistack";
 import { useDispatch } from "react-redux";
-import { searchProduct } from "../../../../redux/reducers/admin/product";
+import { searchProduct } from "../../../redux/reducers/admin/product";
 
 // ====================================================================================
 

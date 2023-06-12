@@ -10,7 +10,7 @@ import VendorDashboardLayout from "components/layouts/vendor-dashboard";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useSnackbar } from "notistack";
-import { singleProduct } from "../../../redux/reducers/admin/product";
+import { singleProduct } from "../../../src/redux/reducers/admin/product";
 
 // =============================================================================
 EditProduct.getLayout = function getLayout(page) {

@@ -17,7 +17,7 @@ import { UploadImageBox, StyledClear } from "../StyledComponents";
 import userId from "utils/userId";
 import { useDispatch } from "react-redux";
 import { useSnackbar } from "notistack";
-import { createBrand } from "../../../../redux/reducers/admin/brand";
+import { createBrand } from "../../../redux/reducers/admin/brand";
 
 // ================================================================
 

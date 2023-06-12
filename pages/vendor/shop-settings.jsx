@@ -20,7 +20,7 @@ import VendorDashboardLayout from "components/layouts/vendor-dashboard";
 import userId from "../../src/utils/userId";
 import { useDispatch, useSelector } from "react-redux";
 import { useSnackbar } from "notistack";
-import { createShop, getShop } from "../../redux/reducers/shop";
+import { createShop, getShop } from "../../src/redux/reducers/shop";
 
 const validationSchema = Yup.object().shape({
   shopName: Yup.string().required("Shop Name is required!"),

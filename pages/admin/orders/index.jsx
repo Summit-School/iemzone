@@ -13,7 +13,7 @@ import { OrderRow } from "pages-sections/admin";
 // ====================================================
 import { useDispatch, useSelector } from "react-redux";
 import { useSnackbar } from "notistack";
-import { getUserOrders } from "../../../redux/reducers/order";
+import { getUserOrders } from "../../../src/redux/reducers/order";
 import userId from "utils/userId";
 
 // ====================================================

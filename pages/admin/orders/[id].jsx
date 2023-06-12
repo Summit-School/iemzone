@@ -8,7 +8,7 @@ import { OrderDetails } from "pages-sections/admin";
 // =============================================================================
 import { useDispatch, useSelector } from "react-redux";
 import { useSnackbar } from "notistack";
-import { getSingleOrder } from "../../../redux/reducers/order";
+import { getSingleOrder } from "../../../src/redux/reducers/order";
 
 // =============================================================================
 OrderEdit.getLayout = function getLayout(page) {

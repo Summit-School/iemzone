@@ -13,7 +13,7 @@ import EyeToggleButton from "./EyeToggleButton";
 import { useDispatch } from "react-redux";
 import { useRouter } from "next/router";
 import { useSnackbar } from "notistack";
-import { register } from "../../../redux/reducers/authentication";
+import { register } from "../../redux/reducers/authentication";
 
 const Signup = () => {
   const [loading, setLoading] = useState(false);
@@ -68,7 +68,8 @@ const Signup = () => {
     <Wrapper elevation={3} passwordVisibility={passwordVisibility}>
       <form onSubmit={handleSubmit}>
         <BazaarImage
-          src="/assets/images/bazaar-black-sm.svg"
+          src="/assets/logo/temzone-black.png"
+          height={35}
           sx={{
             m: "auto",
           }}

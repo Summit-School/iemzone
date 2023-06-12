@@ -21,7 +21,7 @@ import ProductFilterCard from "pages-sections/product-details/ProductFilterCard"
 import { useRouter } from "next/router";
 import { useSnackbar } from "notistack";
 import { useDispatch, useSelector } from "react-redux";
-import { searchProduct } from "../../../redux/reducers/admin/product";
+import { searchProduct } from "../../../src/redux/reducers/admin/product";
 
 const ProductSearchResult = () => {
   const [view, setView] = useState("grid");

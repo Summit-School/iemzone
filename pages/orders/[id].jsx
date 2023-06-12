@@ -29,7 +29,7 @@ import { currency } from "lib";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useSnackbar } from "notistack";
-import { getSingleOrder } from "../../redux/reducers/order";
+import { getSingleOrder } from "../../src/redux/reducers/order";
 
 // styled components
 const StyledFlexbox = styled(FlexBetween)(({ theme }) => ({

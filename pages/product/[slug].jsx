@@ -16,9 +16,9 @@ import {
 import api from "utils/__api__/products";
 // =============================================================================
 import { useDispatch, useSelector } from "react-redux";
-import { singleProduct } from "../../redux/reducers/admin/product";
-import { getProductReviews } from "../../redux/reducers/admin/productReview";
-import { getShop } from "../../redux/reducers/shop";
+import { singleProduct } from "../../src/redux/reducers/admin/product";
+import { getProductReviews } from "../../src/redux/reducers/admin/productReview";
+import { getShop } from "../../src/redux/reducers/shop";
 import userId from "utils/userId";
 // =============================================================================
 

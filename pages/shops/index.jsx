@@ -8,7 +8,7 @@ import ShopLayout1 from "components/layouts/ShopLayout1";
 // ================================================================
 import { useDispatch, useSelector } from "react-redux";
 import { useSnackbar } from "notistack";
-import { getAllShops } from "../../redux/reducers/shop";
+import { getAllShops } from "../../src/redux/reducers/shop";
 
 const ShopList = () => {
   const { enqueueSnackbar } = useSnackbar();

@@ -18,7 +18,7 @@ import { currency } from "lib";
 // ===================================================================
 import { useDispatch } from "react-redux";
 import { useSnackbar } from "notistack";
-import { updateOrderStatus } from "../../../../redux/reducers/order";
+import { updateOrderStatus } from "../../../redux/reducers/order";
 
 // ===================================================================
 

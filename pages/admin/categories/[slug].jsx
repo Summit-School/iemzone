@@ -15,7 +15,7 @@ EditCategory.getLayout = function getLayout(page) {
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useSnackbar } from "notistack";
-import { singleCategory } from "../../../redux/reducers/admin/category";
+import { singleCategory } from "../../../src/redux/reducers/admin/category";
 // =============================================================================
 
 // form field validation schema

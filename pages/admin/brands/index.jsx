@@ -14,7 +14,7 @@ import api from "utils/__api__/dashboard";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useSnackbar } from "notistack";
-import { userBrands } from "../../../redux/reducers/admin/brand";
+import { userBrands } from "../../../src/redux/reducers/admin/brand";
 import userId from "utils/userId";
 
 // TABLE HEADING DATA LIST

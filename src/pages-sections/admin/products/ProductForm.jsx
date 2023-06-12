@@ -10,10 +10,10 @@ import { UploadImageBox, StyledClear } from "../StyledComponents";
 import userId from "utils/userId";
 import { useDispatch, useSelector } from "react-redux";
 import { useSnackbar } from "notistack";
-import { getShop } from "../../../../redux/reducers/shop";
-import { createProduct } from "../../../../redux/reducers/admin/product";
-import { allCategories } from "../../../../redux/reducers/admin/category";
-import { userBrands } from "../../../../redux/reducers/admin/brand";
+import { getShop } from "../../../redux/reducers/shop";
+import { createProduct } from "../../../redux/reducers/admin/product";
+import { allCategories } from "../../../redux/reducers/admin/category";
+import { userBrands } from "../../../redux/reducers/admin/brand";
 
 // ================================================================
 

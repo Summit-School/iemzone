@@ -20,8 +20,8 @@ import api from "utils/__api__/market-1";
 // =============================================================================
 import { useDispatch, useSelector } from "react-redux";
 import { useSnackbar } from "notistack";
-import { allProducts } from "../redux/reducers/admin/product";
-import { allBrands } from "../redux/reducers/admin/brand";
+import { allProducts } from "../src/redux/reducers/admin/product";
+import { allBrands } from "../src/redux/reducers/admin/brand";
 
 const MarketShop = (props) => {
   const { enqueueSnackbar } = useSnackbar();

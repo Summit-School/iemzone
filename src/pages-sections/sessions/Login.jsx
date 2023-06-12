@@ -12,7 +12,7 @@ import { FlexBox, FlexRowCenter } from "components/flex-box";
 import { useDispatch } from "react-redux";
 import { useRouter } from "next/router";
 import { useSnackbar } from "notistack";
-import { login } from "../../../redux/reducers/authentication";
+import { login } from "../../redux/reducers/authentication";
 
 const fbStyle = {
   background: "#3B5998",
@@ -100,7 +100,8 @@ const Login = () => {
     <Wrapper elevation={3} passwordVisibility={passwordVisibility}>
       <form onSubmit={handleSubmit}>
         <BazaarImage
-          src="/assets/images/bazaar-black-sm.svg"
+          src="/assets/logo/temzone-black.png"
+          height={35}
           sx={{
             m: "auto",
           }}

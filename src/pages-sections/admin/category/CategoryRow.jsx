@@ -18,7 +18,7 @@ import {
   deleteCategory,
   userCategories,
   changeFeaturedCategory,
-} from "../../../../redux/reducers/admin/category";
+} from "../../../redux/reducers/admin/category";
 
 // ========================================================================
 

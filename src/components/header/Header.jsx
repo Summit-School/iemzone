@@ -101,9 +101,9 @@ const Header = ({ isFixed, className, searchInput }) => {
             {/* MIDDLE CONTENT - LOGO */}
             <Link href="/">
               <Image
-                height={44}
+                height={35}
                 // src="/assets/images/bazaar-black-sm.svg"
-                src="/assets/images/iemzone-fill.jpeg"
+                src="/assets/logo/temzone-black.png"
                 alt="logo"
               />
             </Link>
@@ -169,8 +169,8 @@ const Header = ({ isFixed, className, searchInput }) => {
           <Link href="/">
             {/* <Image height={44} src="/assets/images/logo2.svg" alt="logo" /> */}
             <Image
-              height={44}
-              src="/assets/images/iemzone-fill.jpeg"
+              height={50}
+              src="/assets/logo/temzone-black.png"
               alt="logo"
             />
           </Link>

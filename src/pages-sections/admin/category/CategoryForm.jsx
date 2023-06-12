@@ -18,7 +18,7 @@ import { UploadImageBox, StyledClear } from "../StyledComponents";
 import userId from "utils/userId";
 import { useDispatch } from "react-redux";
 import { useSnackbar } from "notistack";
-import { createCategory } from "../../../../redux/reducers/admin/category";
+import { createCategory } from "../../../redux/reducers/admin/category";
 
 // ================================================================
 

@@ -14,7 +14,7 @@ import "nprogress/nprogress.css";
 import "simplebar-react/dist/simplebar.min.css";
 import "../src/__server__";
 // redux imports
-import { store } from "../redux/store";
+import { store } from "../src/redux/store";
 import { Provider } from "react-redux";
 
 //Binding events.

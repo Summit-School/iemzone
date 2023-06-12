@@ -36,13 +36,18 @@ const Footer1 = () => {
             <Grid container spacing={3}>
               <Grid item lg={4} md={6} sm={6} xs={12}>
                 <Link href="/">
-                  <Image mb={2.5} src="/assets/images/logo.svg" alt="logo" />
+                  <Image
+                    height={60}
+                    mb={1.5}
+                    src="/assets/logo/temzone.png"
+                    alt="logo"
+                  />
                 </Link>
 
                 <Paragraph mb={2.5} color="grey.500">
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                  Auctor libero id et, in gravida. Sit diam duis mauris nulla
-                  cursus. Erat et lectus vel ut sollicitudin elit at amet.
+                  Shop from the most advanced ecommerce platform in the country
+                  paying for products using your mobile money account, and get
+                  your products delivered to you whereever you are.
                 </Paragraph>
 
                 <AppStore />
@@ -100,15 +105,15 @@ const Footer1 = () => {
                 </Box>
 
                 <Box py={0.6} color="grey.500">
-                  70 Washington Square South, New York, NY 10012, United States
+                  Behind Express Exchange Molyko, Buea, Cameroon
                 </Box>
 
                 <Box py={0.6} color="grey.500">
-                  Email: uilib.help@gmail.com
+                  Email: support@iemzone.com
                 </Box>
 
                 <Box py={0.6} mb={2} color="grey.500">
-                  Phone: +1 1123 456 780
+                  Phone: +237672491296
                 </Box>
 
                 <FlexBox className="flex" mx={-0.625}>

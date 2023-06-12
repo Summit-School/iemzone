@@ -10,8 +10,8 @@ import { H2, H5, Paragraph } from "components/Typography";
 import userId from "utils/userId";
 import { useDispatch, useSelector } from "react-redux";
 import { useSnackbar } from "notistack";
-import { fetchUserData } from "../../../redux/reducers/authentication";
-import { createReview } from "../../../redux/reducers/admin/productReview";
+import { fetchUserData } from "../../redux/reducers/authentication";
+import { createReview } from "../../redux/reducers/admin/productReview";
 
 // ===================================================
 

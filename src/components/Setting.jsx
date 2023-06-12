@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useRouter } from "next/router";
-import { Close, Settings } from "@mui/icons-material";
+import { Close, Settings, WhatsApp } from "@mui/icons-material";
 import {
   Box,
   Avatar,
@@ -15,6 +15,7 @@ import { H6 } from "./Typography";
 import { FlexBox } from "./flex-box";
 import useSettings from "hooks/useSettings";
 import Scrollbar from "./Scrollbar";
+import Link from "next/link";
 
 // custom styled components
 const MainContainer = styled(Box)(({ theme }) => ({
@@ -78,6 +79,7 @@ const StyledAvatar = styled(Avatar)({
     transition: "all 0.3s",
   },
 });
+
 const Setting = () => {
   const { push } = useRouter();
   const { updateSettings, settings } = useSettings();
@@ -85,9 +87,9 @@ const Setting = () => {
   return (
     <ClickAwayListener onClickAway={() => setShowBody(false)}>
       <MainContainer>
-        <Tooltip title="Settings & Demos" placement="left">
+        <Tooltip title="Iemzone Socials" placement="left">
           <StyledIconButton onClick={() => setShowBody((state) => !state)}>
-            {!showBody && <Settings />}
+            {!showBody && <WhatsApp />}
             {showBody && <Close />}
           </StyledIconButton>
         </Tooltip>
@@ -137,17 +139,44 @@ const Setting = () => {
             />
 
             <H6 textAlign="center" mb={2}>
-              Bazaar Demos
+              Iemzone Socials
             </H6>
 
             <FlexBox gap={2} flexWrap="wrap">
-              {demos.map((demo) => (
+              <Button
+                href="https://wa.link/g4gttr"
+                target="_blank"
+                fullWidth
+                color={"success"}
+                variant={"outlined"}
+              >
+                WHATSAPP
+              </Button>
+              <Button
+                href="/#"
+                target="_blank"
+                fullWidth
+                color={"info"}
+                variant={"outlined"}
+              >
+                FACEBOOK
+              </Button>
+              <Button
+                href="/#"
+                target="_blank"
+                fullWidth
+                color={"primary"}
+                variant={"outlined"}
+              >
+                INSTAGRAM
+              </Button>
+              {/* {demos.map((demo) => (
                 <StyledAvatar
                   key={demo.id}
                   src={demo.img}
                   onClick={() => push(demo.path)}
                 />
-              ))}
+              ))} */}
             </FlexBox>
           </Scrollbar>
         </BodyWrapper>

@@ -21,8 +21,8 @@ import {
   shopProducts,
   setPublishedProducts,
   deleteProduct,
-} from "../../../../redux/reducers/admin/product";
-import { getShop } from "../../../../redux/reducers/shop";
+} from "../../../redux/reducers/admin/product";
+import { getShop } from "../../../redux/reducers/shop";
 
 // ========================================================================
 

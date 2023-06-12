@@ -140,9 +140,9 @@ const DashboardSidebar = (props) => {
         <Box p={2} maxHeight={TOP_HEADER_AREA}>
           <Image
             alt="Logo"
-            width={105}
-            height={50}
-            src="/assets/images/logo.svg"
+            width={175}
+            height={40}
+            src="/assets/logo/temzone.png"
             style={{
               marginLeft: 8,
             }}
@@ -166,9 +166,7 @@ const DashboardSidebar = (props) => {
       >
         <Avatar
           src={
-            COMPACT
-              ? "/assets/images/bazaar-white-sm.svg"
-              : "/assets/images/logo.svg"
+            COMPACT ? "/assets/logo/temzone.png" : "/assets/logo/temzone.png"
           }
           sx={{
             borderRadius: 0,

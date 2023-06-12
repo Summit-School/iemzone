@@ -12,8 +12,8 @@ import ProductFilterCard from "pages-sections/product-details/ProductFilterCard"
 // ============================================================
 import { useDispatch, useSelector } from "react-redux";
 import { useSnackbar } from "notistack";
-import { getShopDetails } from "../../redux/reducers/shop";
-import { shopProducts } from "../../redux/reducers/admin/product";
+import { getShopDetails } from "../../src/redux/reducers/shop";
+import { shopProducts } from "../../src/redux/reducers/admin/product";
 // ============================================================
 
 const ShopDetails = () => {

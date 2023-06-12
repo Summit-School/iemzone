@@ -5,7 +5,7 @@ import useSettings from "hooks/useSettings";
 import { useRouter } from "next/router";
 import { useSnackbar } from "notistack";
 import { useDispatch } from "react-redux";
-import { searchProduct } from "../../../redux/reducers/admin/product";
+import { searchProduct } from "../../redux/reducers/admin/product";
 
 //styled component
 const Wrapper = styled(Box)(({ theme }) => ({

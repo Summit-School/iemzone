@@ -22,7 +22,7 @@ import { Twitter, Instagram, Google, Clear } from "@mui/icons-material";
 // /==================================================================
 import { useDispatch } from "react-redux";
 import { useSnackbar } from "notistack";
-import { subscribe } from "../../redux/reducers/emailSubscription";
+import { subscribe } from "../redux/reducers/emailSubscription";
 
 // styled components
 const Wrapper = styled(Box)(({ theme, img }) => ({

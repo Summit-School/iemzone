@@ -15,7 +15,7 @@ import api from "utils/__api__/sales";
 // =============================================================================
 import { useDispatch, useSelector } from "react-redux";
 import { useSnackbar } from "notistack";
-import { allProducts } from "../redux/reducers/admin/product";
+import { allProducts } from "../src/redux/reducers/admin/product";
 
 //  custom styled components
 const CategoryBoxWrapper = styled(FlexRowCenter)(({ selected, theme }) => ({
