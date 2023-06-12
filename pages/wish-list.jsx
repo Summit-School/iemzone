@@ -47,7 +47,7 @@ const WishList = (props) => {
       />
 
       {/* PRODUCT LIST AREA */}
-      <Grid container spacing={3}>
+      {/* <Grid container spacing={3}>
         {products.map((item) => (
           <Grid item lg={4} sm={6} xs={12} key={item.id}>
             <ProductCard1
@@ -61,10 +61,10 @@ const WishList = (props) => {
             />
           </Grid>
         ))}
-      </Grid>
+      </Grid> */}
 
       {/* PAGINATION AREA */}
-      <FlexBox justifyContent="center" mt={5}>
+      {/* <FlexBox justifyContent="center" mt={5}>
         <Pagination
           color="primary"
           variant="outlined"
@@ -72,23 +72,23 @@ const WishList = (props) => {
           count={Math.ceil(totalProducts / 6)}
           onChange={(_, page) => handleChangePage(page)}
         />
-      </FlexBox>
+      </FlexBox> */}
     </CustomerDashboardLayout>
   );
 };
-export const getServerSideProps = async (context) => {
-  const products = productDatabase.slice(0, 30);
-  const PAGE_SIZE = 6;
-  const PAGE_NUMBER = context.query.page ? Number(context.query.page) : 1;
-  const currentProducts = products.slice(
-    (PAGE_NUMBER - 1) * PAGE_SIZE,
-    PAGE_NUMBER * PAGE_SIZE
-  );
-  return {
-    props: {
-      products: currentProducts,
-      totalProducts: products.length,
-    },
-  };
-};
+// export const getServerSideProps = async (context) => {
+//   const products = productDatabase.slice(0, 30);
+//   const PAGE_SIZE = 6;
+//   const PAGE_NUMBER = context.query.page ? Number(context.query.page) : 1;
+//   const currentProducts = products.slice(
+//     (PAGE_NUMBER - 1) * PAGE_SIZE,
+//     PAGE_NUMBER * PAGE_SIZE
+//   );
+//   return {
+//     props: {
+//       products: currentProducts,
+//       totalProducts: products.length,
+//     },
+//   };
+// };
 export default WishList;
