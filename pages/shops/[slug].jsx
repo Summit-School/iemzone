@@ -7,7 +7,7 @@ import ShopLayout1 from "components/layouts/ShopLayout1";
 import ShopIntroCard from "components/shop/ShopIntroCard";
 import ProductList1 from "components/products/ProductList1";
 import ProductFilterCard from "pages-sections/product-details/ProductFilterCard";
-// import api from "utils/__api__/shop";
+import api from "utils/__api__/shop";
 
 // ============================================================
 import { useDispatch, useSelector } from "react-redux";
@@ -117,12 +117,12 @@ export const getStaticPaths = async () => {
   };
 };
 
-// export const getStaticProps = async ({ params }) => {
-//   const shop = await api.getProductsBySlug(String(params.slug));
-//   return {
-//     props: {
-//       shop,
-//     },
-//   };
-// };
+export const getStaticProps = async ({ params }) => {
+  const shop = await api.getProductsBySlug(String(params.slug));
+  return {
+    props: {
+      shop,
+    },
+  };
+};
 export default ShopDetails;

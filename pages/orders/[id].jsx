@@ -24,7 +24,7 @@ import CustomerDashboardLayout from "components/layouts/customer-dashboard";
 import CustomerDashboardNavigation from "components/layouts/customer-dashboard/Navigations";
 import useWindowSize from "hooks/useWindowSize";
 import { currency } from "lib";
-// import api from "utils/__api__/orders";
+import api from "utils/__api__/orders";
 // =============================================================================
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -539,12 +539,12 @@ export const getStaticPaths = async () => {
   };
 };
 
-// export const getStaticProps = async ({ params }) => {
-//   const order = await api.getOrder(String(params.id));
-//   return {
-//     props: {
-//       order,
-//     },
-//   };
-// };
+export const getStaticProps = async ({ params }) => {
+  const order = await api.getOrder(String(params.id));
+  return {
+    props: {
+      order,
+    },
+  };
+};
 export default OrderDetails;
