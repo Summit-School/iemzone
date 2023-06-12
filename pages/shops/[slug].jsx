@@ -108,14 +108,14 @@ const ShopDetails = () => {
     </ShopLayout1>
   );
 };
-// export const getStaticPaths = async () => {
-//   const paths = await api.getSlugs();
-//   return {
-//     paths: paths,
-//     //indicates that no page needs be created at build time
-//     fallback: "blocking", //indicates the type of fallback
-//   };
-// };
+export const getStaticPaths = async () => {
+  const paths = await api.getSlugs();
+  return {
+    paths: paths,
+    //indicates that no page needs be created at build time
+    fallback: "blocking", //indicates the type of fallback
+  };
+};
 
 // export const getStaticProps = async ({ params }) => {
 //   const shop = await api.getProductsBySlug(String(params.slug));

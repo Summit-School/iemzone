@@ -123,14 +123,14 @@ const AddressEditor = ({ address }) => {
     </CustomerDashboardLayout>
   );
 };
-// export const getStaticPaths = async () => {
-//   const paths = await api.getIds();
-//   return {
-//     paths: paths,
-//     //indicates that no page needs be created at build time
-//     fallback: "blocking", //indicates the type of fallback
-//   };
-// };
+export const getStaticPaths = async () => {
+  const paths = await api.getIds();
+  return {
+    paths: paths,
+    //indicates that no page needs be created at build time
+    fallback: "blocking", //indicates the type of fallback
+  };
+};
 
 export const getStaticProps = async ({ params }) => {
   const address = await api.getAddress(String(params.id));

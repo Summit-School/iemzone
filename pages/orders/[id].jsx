@@ -530,14 +530,14 @@ const OrderDetails = () => {
     </CustomerDashboardLayout>
   );
 };
-// export const getStaticPaths = async () => {
-//   const paths = await api.getIds();
-//   return {
-//     paths: paths,
-//     //indicates that no page needs be created at build time
-//     fallback: "blocking", //indicates the type of fallback
-//   };
-// };
+export const getStaticPaths = async () => {
+  const paths = await api.getIds();
+  return {
+    paths: paths,
+    //indicates that no page needs be created at build time
+    fallback: "blocking", //indicates the type of fallback
+  };
+};
 
 // export const getStaticProps = async ({ params }) => {
 //   const order = await api.getOrder(String(params.id));
