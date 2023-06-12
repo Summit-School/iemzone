@@ -311,14 +311,14 @@ const ProfileEditor = () => {
     </CustomerDashboardLayout>
   );
 };
-export const getStaticPaths = async () => {
-  const paths = await api.getUserIds();
-  return {
-    paths: paths,
-    //indicates that no page needs be created at build time
-    fallback: "blocking", //indicates the type of fallback
-  };
-};
+// export const getStaticPaths = async () => {
+//   const paths = await api.getUserIds();
+//   return {
+//     paths: paths,
+//     //indicates that no page needs be created at build time
+//     fallback: "blocking", //indicates the type of fallback
+//   };
+// };
 
 export const getStaticProps = async () => {
   const user = await api.getUser();
