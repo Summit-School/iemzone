@@ -7,7 +7,7 @@ import ShopLayout1 from "components/layouts/ShopLayout1";
 import ShopIntroCard from "components/shop/ShopIntroCard";
 import ProductList1 from "components/products/ProductList1";
 import ProductFilterCard from "pages-sections/product-details/ProductFilterCard";
-import api from "utils/__api__/shop";
+// import api from "utils/__api__/shop";
 
 // ============================================================
 import { useDispatch, useSelector } from "react-redux";
@@ -26,8 +26,8 @@ const ShopDetails = () => {
 
   const shopObject = useSelector((state) => state.shop.shop);
   const shop = shopObject?.shop;
-  const shopProducts = useSelector((state) => state.products.products);
-  const products = shopProducts?.products;
+  const singleShopProducts = useSelector((state) => state.products.products);
+  const products = singleShopProducts?.products;
 
   useEffect(() => {
     dispatch(getShopDetails(query.slug))
@@ -108,21 +108,21 @@ const ShopDetails = () => {
     </ShopLayout1>
   );
 };
-export const getStaticPaths = async () => {
-  const paths = await api.getSlugs();
-  return {
-    paths: paths,
-    //indicates that no page needs be created at build time
-    fallback: "blocking", //indicates the type of fallback
-  };
-};
+// export const getStaticPaths = async () => {
+//   const paths = await api.getSlugs();
+//   return {
+//     paths: paths,
+//     //indicates that no page needs be created at build time
+//     fallback: "blocking", //indicates the type of fallback
+//   };
+// };
 
-export const getStaticProps = async ({ params }) => {
-  const shop = await api.getProductsBySlug(String(params.slug));
-  return {
-    props: {
-      shop,
-    },
-  };
-};
+// export const getStaticProps = async ({ params }) => {
+//   const shop = await api.getProductsBySlug(String(params.slug));
+//   return {
+//     props: {
+//       shop,
+//     },
+//   };
+// };
 export default ShopDetails;
