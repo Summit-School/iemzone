@@ -127,11 +127,11 @@ const Newsletter = ({ image = "/assets/images/newsletter/bg-1.png" }) => {
                 </Paragraph>
 
                 <H1 fontSize={36} fontWeight={700} mb={2}>
-                  Sign up to <Span color="primary.main">IEMZONE</Span>
+                  Sign up to <Span color="primary.main">TEMZONE</Span>
                 </H1>
 
                 <Paragraph color="grey.600" mb={5}>
-                  Subscribe to the IEMZONE eCommerce newsletter to receive
+                  Subscribe to the TEMZONE eCommerce newsletter to receive
                   timely updates from your favorite products.
                 </Paragraph>
 

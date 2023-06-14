@@ -18,7 +18,7 @@ const login = async (data) => {
     },
   });
   if (response.data) {
-    localStorage.setItem("iemzone-user", JSON.stringify(response.data.token));
+    localStorage.setItem("temzone-user", JSON.stringify(response.data.token));
   }
 
   return response.data;

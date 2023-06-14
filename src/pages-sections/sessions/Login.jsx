@@ -108,7 +108,7 @@ const Login = () => {
         />
 
         <H1 textAlign="center" mt={1} mb={4} fontSize={16}>
-          Welcome To Iemzone
+          Welcome To Temzone
         </H1>
 
         <BazaarTextField

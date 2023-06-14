@@ -109,7 +109,7 @@ const Footer1 = () => {
                 </Box>
 
                 <Box py={0.6} color="grey.500">
-                  Email: support@iemzone.com
+                  Email: support@temzone.com
                 </Box>
 
                 <Box py={0.6} mb={2} color="grey.500">

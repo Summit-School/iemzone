@@ -58,7 +58,7 @@ const MarketShop = (props) => {
 
   return (
     <ShopLayout1>
-      <SEO title="Iemzone" description="Multi-vendor Ecommerce Platform" />
+      <SEO title="Temzone" description="Multi-vendor Ecommerce Platform" />
 
       {/* HERO SLIDER SECTION */}
       <Section1 carouselData={props.mainCarouselData} />

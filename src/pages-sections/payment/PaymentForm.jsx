@@ -41,7 +41,7 @@ const PaymentForm = () => {
 
   const handleFormSubmit = async () => {
     const shippingData = JSON.parse(
-      localStorage.getItem("iemzone-shipping-data")
+      localStorage.getItem("temzone-shipping-data")
     );
     const data = {
       userId: id,

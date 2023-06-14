@@ -7,7 +7,7 @@ import Head from "next/head";
 const SEO = ({
   title,
   description,
-  sitename = "Iemzone - Multi-vendor Ecommerce Platform",
+  sitename = "Temzone - Multi-vendor Ecommerce Platform",
 }) => {
   return (
     <Head>

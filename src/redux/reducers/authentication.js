@@ -4,7 +4,7 @@ import authenticationServices from "../services/authentication";
 // Get user from localStorage
 const user =
   typeof window !== "undefined"
-    ? window.localStorage.getItem("iemzone-user")
+    ? window.localStorage.getItem("temzone-user")
     : false;
 
 // user state

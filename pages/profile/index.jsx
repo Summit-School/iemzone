@@ -126,7 +126,7 @@ const Profile = () => {
                   </div>
 
                   <Typography color="grey.600" letterSpacing="0.2em">
-                    IEMZONE USER
+                    TEMZONE USER
                   </Typography>
                 </FlexBetween>
               </Box>

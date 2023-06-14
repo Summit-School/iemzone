@@ -14,7 +14,7 @@ const CheckoutForm = () => {
   const [sameAsShipping, setSameAsShipping] = useState(false);
 
   const handleFormSubmit = async (values) => {
-    localStorage.setItem("iemzone-shipping-data", JSON.stringify(values));
+    localStorage.setItem("temzone-shipping-data", JSON.stringify(values));
     router.push("/payment");
   };
 

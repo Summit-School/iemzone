@@ -87,7 +87,7 @@ const Setting = () => {
   return (
     <ClickAwayListener onClickAway={() => setShowBody(false)}>
       <MainContainer>
-        <Tooltip title="Iemzone Socials" placement="left">
+        <Tooltip title="Temzone Socials" placement="left">
           <StyledIconButton onClick={() => setShowBody((state) => !state)}>
             {!showBody && <WhatsApp />}
             {showBody && <Close />}
@@ -139,7 +139,7 @@ const Setting = () => {
             />
 
             <H6 textAlign="center" mb={2}>
-              Iemzone Socials
+              Temzone Socials
             </H6>
 
             <FlexBox gap={2} flexWrap="wrap">

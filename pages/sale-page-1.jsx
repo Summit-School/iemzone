@@ -99,7 +99,7 @@ const SalePage1 = () => {
   }, [page]);
   return (
     <SaleLayout>
-      <SEO title="Market - Iemzone" />
+      <SEO title="Market - Temzone" />
 
       <Container
         sx={{

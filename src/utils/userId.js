@@ -3,7 +3,7 @@ import { isExpired, decodeToken } from "react-jwt";
 const useId = () => {
   const userToken =
     typeof window !== "undefined"
-      ? window.localStorage.getItem("iemzone-user")
+      ? window.localStorage.getItem("temzone-user")
       : false;
   if (userToken) {
     const isTokenExpired = isExpired(userToken);
