@@ -1,10 +1,10 @@
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { Fragment, useState } from "react";
+import { Fragment, useEffect, useState } from "react";
 import { Box, Button, Divider, Grid, Radio, TextField } from "@mui/material";
 import FormControlLabel from "@mui/material/FormControlLabel";
-import * as yup from "yup";
-import { Formik } from "formik";
+// import * as yup from "yup";
+// import { Formik } from "formik";
 import Card1 from "components/Card1";
 // import { FlexBox } from "components/flex-box";
 import { Paragraph } from "components/Typography";
@@ -15,8 +15,9 @@ import userId from "utils/userId";
 import { useDispatch, useSelector } from "react-redux";
 import { useSnackbar } from "notistack";
 import { placeOrder } from "../../redux/reducers/order";
-import { stripePayment } from "../../redux/reducers/stripe";
+// import { stripePayment } from "../../redux/reducers/stripe";
 import { campayPayment } from "../../redux/reducers/campay";
+import { io } from "socket.io-client";
 
 const PaymentForm = () => {
   const { state } = useAppContext();
@@ -32,7 +33,11 @@ const PaymentForm = () => {
   const id = userId();
   const dispatch = useDispatch();
   const { enqueueSnackbar } = useSnackbar();
-  const totalPrice = getTotalPrice();
+  const totalPrice = Math.ceil(getTotalPrice());
+
+  const socket = io(process.env.NEXT_PUBLIC_ENDPOINT, {
+    autoConnect: false,
+  });
 
   const handleFormSubmit = async () => {
     const shippingData = JSON.parse(
@@ -71,28 +76,36 @@ const PaymentForm = () => {
           console.error(err);
         });
     } else {
+      socket.connect();
+      socket.emit("join", "room");
       const momoData = {
         amount: `${totalPrice}`,
         from: phoneNumber,
       };
       dispatch(campayPayment(momoData), setLoading(true))
         .then((res) => {
-          console.log(res);
-          if (res.payload.status === "SUCCESSFUL") {
-            enqueueSnackbar("Processing...", {
-              variant: "success",
+          socket
+            .on("status", (status) => {
+              console.log(status);
+              if (status.status === "SUCCESSFUL") {
+                enqueueSnackbar("Processing...", {
+                  variant: "success",
+                });
+                dispatch(placeOrder(data)).then(() => {
+                  setLoading(false);
+                  router.push("/order-confirmation");
+                });
+              }
+              if (status.status === "FAILED") {
+                enqueueSnackbar("Transaction Incomplete", {
+                  variant: "error",
+                });
+                setLoading(false);
+              }
+            })
+            .then(() => {
+              socket.disconnect();
             });
-            dispatch(placeOrder(data)).then(() => {
-              setLoading(false);
-              router.push("/order-confirmation");
-            });
-          }
-          if (res.payload.status === "FAILED") {
-            enqueueSnackbar("Transaction Incomplete", {
-              variant: "error",
-            });
-            setLoading(false);
-          }
         })
         .catch((err) => {
           console.error(err);
