@@ -6,7 +6,7 @@ import FormControlLabel from "@mui/material/FormControlLabel";
 import * as yup from "yup";
 import { Formik } from "formik";
 import Card1 from "components/Card1";
-import { FlexBox } from "components/flex-box";
+// import { FlexBox } from "components/flex-box";
 import { Paragraph } from "components/Typography";
 import useWindowSize from "hooks/useWindowSize";
 import { useAppContext } from "contexts/AppContext";
@@ -16,23 +16,25 @@ import { useDispatch, useSelector } from "react-redux";
 import { useSnackbar } from "notistack";
 import { placeOrder } from "../../redux/reducers/order";
 import { stripePayment } from "../../redux/reducers/stripe";
+import { campayPayment } from "../../redux/reducers/campay";
 
 const PaymentForm = () => {
   const { state } = useAppContext();
   const cartList = state.cart;
   const getTotalPrice = () =>
     cartList.reduce((accum, item) => accum + item.price * item.qty, 0);
-  const [paymentMethod, setPaymentMethod] = useState("credit-card");
+  const [paymentMethod, setPaymentMethod] = useState("mobile-money");
+  const [phoneNumber, setPhoneNumber] = useState(237);
   const [loading, setLoading] = useState(false);
   const width = useWindowSize();
   const router = useRouter();
-  // const isMobile = width < 769;
+  const isMobile = width < 769;
   const id = userId();
   const dispatch = useDispatch();
   const { enqueueSnackbar } = useSnackbar();
   const totalPrice = getTotalPrice();
 
-  const handleFormSubmit = async (values) => {
+  const handleFormSubmit = async () => {
     const shippingData = JSON.parse(
       localStorage.getItem("iemzone-shipping-data")
     );
@@ -68,26 +70,54 @@ const PaymentForm = () => {
         .catch((err) => {
           console.error(err);
         });
+    } else {
+      const momoData = {
+        amount: `${totalPrice}`,
+        from: phoneNumber,
+      };
+      dispatch(campayPayment(momoData), setLoading(true))
+        .then((res) => {
+          console.log(res);
+          if (res.payload.status === "SUCCESSFUL") {
+            enqueueSnackbar("Processing...", {
+              variant: "success",
+            });
+            dispatch(placeOrder(data)).then(() => {
+              setLoading(false);
+              router.push("/order-confirmation");
+            });
+          }
+          if (res.payload.status === "FAILED") {
+            enqueueSnackbar("Transaction Incomplete", {
+              variant: "error",
+            });
+            setLoading(false);
+          }
+        })
+        .catch((err) => {
+          console.error(err);
+        });
     }
-    dispatch(stripePayment(data), setLoading(true))
-      .then((res) => {
-        if (res.meta.requestStatus === "fulfilled") {
-          enqueueSnackbar("Processing...", {
-            variant: "success",
-          });
-          setLoading(false);
-          window.location.href = res.payload.url;
-        }
-        if (res.meta.requestStatus === "rejected") {
-          enqueueSnackbar(res.payload, {
-            variant: "error",
-          });
-          setLoading(false);
-        }
-      })
-      .catch((err) => {
-        console.error(err);
-      });
+
+    // dispatch(stripePayment(data), setLoading(true))
+    //   .then((res) => {
+    //     if (res.meta.requestStatus === "fulfilled") {
+    //       enqueueSnackbar("Processing...", {
+    //         variant: "success",
+    //       });
+    //       setLoading(false);
+    //       window.location.href = res.payload.url;
+    //     }
+    //     if (res.meta.requestStatus === "rejected") {
+    //       enqueueSnackbar(res.payload, {
+    //         variant: "error",
+    //       });
+    //       setLoading(false);
+    //     }
+    //   })
+    //   .catch((err) => {
+    //     console.error(err);
+    //   });
   };
 
   const handlePaymentMethodChange = ({ target: { name } }) => {
@@ -102,6 +132,75 @@ const PaymentForm = () => {
         }}
       >
         <FormControlLabel
+          sx={{
+            mb: 3,
+          }}
+          name="mobile-money"
+          onChange={handlePaymentMethodChange}
+          label={<Paragraph fontWeight={600}>Mobile Money Payment</Paragraph>}
+          control={
+            <Radio
+              checked={paymentMethod === "mobile-money"}
+              color="primary"
+              size="small"
+            />
+          }
+        />
+
+        <Divider
+          sx={{
+            mb: 3,
+            mx: -4,
+          }}
+        />
+
+        {paymentMethod === "mobile-money" && (
+          <form>
+            <Box mb={3}>
+              <Grid container spacing={3}>
+                <Grid item sm={6} xs={12}>
+                  <TextField
+                    fullWidth
+                    type="number"
+                    name="phoneNumber"
+                    label="Phone Number"
+                    onChange={(e) => setPhoneNumber(e.target.value)}
+                    value={phoneNumber}
+                  />
+                </Grid>
+              </Grid>
+            </Box>
+
+            <Button
+              onClick={handleFormSubmit}
+              variant="contained"
+              color="primary"
+              sx={{
+                mb: 4,
+              }}
+            >
+              {loading ? "Processing..." : "Place Order"}
+            </Button>
+            {loading ? (
+              <Paragraph>
+                Please make sure you have your phone with you to confirm this
+                transaction. If you do not get any notification, dial *126# to
+                view the transaction.
+              </Paragraph>
+            ) : (
+              ""
+            )}
+
+            <Divider
+              sx={{
+                mb: 3,
+                mx: -4,
+              }}
+            />
+          </form>
+        )}
+
+        {/* <FormControlLabel
           sx={{
             mb: 3,
           }}
@@ -124,7 +223,7 @@ const PaymentForm = () => {
           }}
         />
 
-        {/* {paymentMethod === "credit-card" && (
+        {paymentMethod === "credit-card" && (
           <Formik
             onSubmit={handleFormSubmit}
             initialValues={initialValues}
@@ -288,52 +387,56 @@ const PaymentForm = () => {
         </Grid>
 
         <Grid item sm={6} xs={12}>
-          <Button
-            variant="contained"
-            color="primary"
-            type="submit"
-            onClick={handleFormSubmit}
-            fullWidth
-          >
-            {loading ? "Loading..." : "Place Order"}
-          </Button>
+          {paymentMethod === "cod" ? (
+            <Button
+              variant="contained"
+              color="primary"
+              type="submit"
+              onClick={handleFormSubmit}
+              fullWidth
+            >
+              {loading ? "Loading..." : "Place Order"}
+            </Button>
+          ) : (
+            ""
+          )}
         </Grid>
       </Grid>
     </Fragment>
   );
 };
-const initialValues = {
-  card_no: "",
-  name: "",
-  exp_date: "",
-  cvc: "",
-  shipping_zip: "",
-  shipping_country: "",
-  shipping_address1: "",
-  shipping_address2: "",
-  billing_name: "",
-  billing_email: "",
-  billing_contact: "",
-  billing_company: "",
-  billing_zip: "",
-  billing_country: "",
-  billing_address1: "",
-  billing_address2: "",
-};
-const checkoutSchema = yup.object().shape({
-  card_no: yup.string().required("required"),
-  name: yup.string().required("required"),
-  exp_date: yup.string().required("required"),
-  cvc: yup.string().required("required"),
-  // shipping_zip: yup.string().required("required"),
-  // shipping_country: yup.object().required("required"),
-  // shipping_address1: yup.string().required("required"),
-  // billing_name: yup.string().required("required"),
-  // billing_email: yup.string().required("required"),
-  // billing_contact: yup.string().required("required"),
-  // billing_zip: yup.string().required("required"),
-  // billing_country: yup.string().required("required"),
-  // billing_address1: yup.string().required("required"),
-});
+// const initialValues = {
+//   phoneNumber: "",
+//   name: "",
+//   exp_date: "",
+//   cvc: "",
+//   shipping_zip: "",
+//   shipping_country: "",
+//   shipping_address1: "",
+//   shipping_address2: "",
+//   billing_name: "",
+//   billing_email: "",
+//   billing_contact: "",
+//   billing_company: "",
+//   billing_zip: "",
+//   billing_country: "",
+//   billing_address1: "",
+//   billing_address2: "",
+// };
+// const checkoutSchema = yup.object().shape({
+//   phoneNumber: yup.string().required("required"),
+//   name: yup.string().required("required"),
+//   exp_date: yup.string().required("required"),
+//   cvc: yup.string().required("required"),
+//   // shipping_zip: yup.string().required("required"),
+//   // shipping_country: yup.object().required("required"),
+//   // shipping_address1: yup.string().required("required"),
+//   // billing_name: yup.string().required("required"),
+//   // billing_email: yup.string().required("required"),
+//   // billing_contact: yup.string().required("required"),
+//   // billing_zip: yup.string().required("required"),
+//   // billing_country: yup.string().required("required"),
+//   // billing_address1: yup.string().required("required"),
+// });
 
 export default PaymentForm;
