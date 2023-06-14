@@ -57,11 +57,12 @@ const Section13 = ({ bigDiscountList }) => {
 
                     <FlexBox gap={1}>
                       <H4 fontWeight="600" fontSize="14px" color="primary.main">
-                        {calculateDiscount(regularPrice, discount)}
+                        {calculateDiscount(regularPrice, discount)} XAF
                       </H4>
 
                       <H4 fontWeight="600" fontSize="14px" color="grey.600">
-                        <del>{currency(regularPrice)}</del>
+                        {/* <del>{currency(regularPrice)}</del> */}
+                        <del>{regularPrice} XAF</del>
                       </H4>
                     </FlexBox>
                   </Link>

@@ -1,7 +1,7 @@
 import { Button, Divider, TextField, Typography } from "@mui/material";
 import Card1 from "components/Card1";
 import { FlexBetween } from "components/flex-box";
-import { currency } from "lib";
+import { currency, formatMoney } from "lib";
 import { useAppContext } from "contexts/AppContext";
 
 const CheckoutSummary = () => {
@@ -18,28 +18,28 @@ const CheckoutSummary = () => {
       <FlexBetween mb={1}>
         <Typography color="grey.600">Subtotal:</Typography>
         <Typography fontSize="18px" fontWeight="600" lineHeight="1">
-          {currency(getTotalPrice())}
+          {formatMoney(getTotalPrice())} XAF
         </Typography>
       </FlexBetween>
 
       <FlexBetween mb={1}>
         <Typography color="grey.600">Shipping:</Typography>
         <Typography fontSize="18px" fontWeight="600" lineHeight="1">
-          {currency(shippingFee)}
+          {formatMoney(shippingFee)} XAF
         </Typography>
       </FlexBetween>
 
       <FlexBetween mb={1}>
         <Typography color="grey.600">Tax:</Typography>
         <Typography fontSize="18px" fontWeight="600" lineHeight="1">
-          {currency(0)}
+          {formatMoney(0)} XAF
         </Typography>
       </FlexBetween>
 
       <FlexBetween mb={2}>
         <Typography color="grey.600">Discount:</Typography>
         <Typography fontSize="18px" fontWeight="600" lineHeight="1">
-          {currency(0)}
+          {formatMoney(0)} XAF
         </Typography>
       </FlexBetween>
 
@@ -56,7 +56,7 @@ const CheckoutSummary = () => {
         textAlign="right"
         mb={3}
       >
-        {currency(totalPrice)}
+        {formatMoney(totalPrice)} XAF
       </Typography>
 
       <TextField

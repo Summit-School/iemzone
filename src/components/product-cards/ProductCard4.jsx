@@ -36,7 +36,8 @@ const ProductCard4 = ({ title, salesPrice, imgUrl, rating, reviewCount }) => {
       </H4>
 
       <H4 fontSize={14} textAlign="center" color="primary.main">
-        {currency(salesPrice)}
+        {/* {currency(salesPrice)} */}
+        {salesPrice} XAF
       </H4>
     </Box>
   );

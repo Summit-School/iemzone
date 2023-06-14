@@ -14,7 +14,7 @@ import { FlexBetween, FlexBox } from "components/flex-box";
 import { H5, Paragraph, Tiny } from "components/Typography";
 import CartBag from "components/icons/CartBag";
 import { useAppContext } from "contexts/AppContext";
-import { currency } from "lib";
+// import { currency } from "lib";
 
 // =========================================================
 
@@ -156,7 +156,7 @@ const MiniCart = ({ toggleSidenav }) => {
               </Link>
 
               <Tiny color="grey.600">
-                {currency(item.price)} x {item.qty}
+                {item.price} XAF x {item.qty}
               </Tiny>
 
               <Box
@@ -165,7 +165,7 @@ const MiniCart = ({ toggleSidenav }) => {
                 color="primary.main"
                 mt={0.5}
               >
-                {currency(item.qty * item.price)}
+                {item.qty * item.price} XAF
               </Box>
             </Box>
 
@@ -194,7 +194,7 @@ const MiniCart = ({ toggleSidenav }) => {
             }}
             onClick={handleNavigate("/checkout")}
           >
-            Checkout Now ({currency(getTotalPrice())})
+            Checkout Now ({getTotalPrice()} XAF)
           </Button>
 
           <Button

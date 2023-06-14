@@ -45,7 +45,7 @@ const Cart = () => {
               <Span color="grey.600">Total:</Span>
 
               <Span fontSize={18} fontWeight={600} lineHeight="1">
-                {currency(getTotalPrice())}
+                {getTotalPrice()} XAF
               </Span>
             </FlexBetween>
 

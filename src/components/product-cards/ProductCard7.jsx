@@ -5,7 +5,7 @@ import Image from "components/BazaarImage";
 import { Span } from "components/Typography";
 import { FlexBox } from "components/flex-box";
 import { useAppContext } from "contexts/AppContext";
-import { currency } from "lib";
+// import { currency } from "lib";
 
 // styled components
 const Wrapper = styled(Card)(({ theme }) => ({
@@ -77,11 +77,11 @@ const ProductCard7 = ({ id, name, qty, price, imgUrl, slug }) => {
 
         <FlexBox gap={1} flexWrap="wrap" alignItems="center">
           <Span color="grey.600">
-            {currency(price)} x {qty}
+            {price} XAF x {qty}
           </Span>
 
           <Span fontWeight={600} color="primary.main">
-            {currency(price * qty)}
+            {price * qty} XAF
           </Span>
         </FlexBox>
 

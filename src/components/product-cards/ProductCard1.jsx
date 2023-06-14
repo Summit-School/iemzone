@@ -188,12 +188,13 @@ const ProductCard1 = ({
 
             <FlexBox alignItems="center" gap={1} mt={0.5}>
               <Box fontWeight="600" color="primary.main">
-                {calculateDiscount(regularPrice, discount)}
+                {calculateDiscount(regularPrice, discount)} XAF
               </Box>
 
               {!!discount && (
                 <Box color="grey.600" fontWeight="600">
-                  <del>{currency(regularPrice)}</del>
+                  {/* <del>{currency(regularPrice)}</del> */}
+                  <del>{regularPrice} XAF</del>
                 </Box>
               )}
             </FlexBox>

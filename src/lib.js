@@ -46,9 +46,13 @@ function renderProductCount(page, perPageProduct, totalProduct) {
  * @returns - RETURN NEW PRICE
  */
 
+// function calculateDiscount(price, discount) {
+//   const afterDiscount = Number((price - price * (discount / 100)).toFixed(2));
+//   return currency(afterDiscount);
+// }
 function calculateDiscount(price, discount) {
   const afterDiscount = Number((price - price * (discount / 100)).toFixed(2));
-  return currency(afterDiscount);
+  return afterDiscount;
 }
 
 /**
@@ -75,4 +79,15 @@ function currency(price, fraction = 2) {
   // return formatCurrency.format(price);
 }
 
-export { renderProductCount, calculateDiscount, currency, getDateDifference };
+const formatMoney = (amount) => {
+  let dollarUSLocale = Intl.NumberFormat("en-US");
+  return dollarUSLocale.format(amount);
+};
+
+export {
+  renderProductCount,
+  calculateDiscount,
+  currency,
+  getDateDifference,
+  formatMoney,
+};

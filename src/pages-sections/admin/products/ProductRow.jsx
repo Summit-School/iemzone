@@ -5,7 +5,8 @@ import { Avatar, Box } from "@mui/material";
 import { FlexBox } from "components/flex-box";
 import BazaarSwitch from "components/BazaarSwitch";
 import { Paragraph, Small } from "components/Typography";
-import { currency } from "lib";
+import { currency, formatMoney } from "lib";
+
 import {
   StyledTableRow,
   CategoryWrapper,
@@ -131,7 +132,7 @@ const ProductRow = ({ product }) => {
       </StyledTableCell> */}
       <StyledTableCell align="left">{brand}</StyledTableCell>
 
-      <StyledTableCell align="left">{currency(price)}</StyledTableCell>
+      <StyledTableCell align="left">{formatMoney(price)} XAF</StyledTableCell>
 
       <StyledTableCell align="left" onClick={setPublishedProductHandler}>
         <BazaarSwitch
