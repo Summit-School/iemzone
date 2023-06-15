@@ -73,10 +73,10 @@ export default function ShopSettings() {
     shopPhone: shop?.phone || "",
     shopEmail: shop?.email || "",
     shopAddress: shop?.address || "",
-    shopFacebookLink: shop?.socialLinks.facebook || "",
-    shopTwitterLink: shop?.socialLinks.twitter || "",
-    shopYoutubeLink: shop?.socialLinks.youtube || "",
-    shopInstagramLink: shop?.socialLinks.instagram || "",
+    shopFacebookLink: shop?.facebook || "",
+    shopTwitterLink: shop?.twitter || "",
+    shopYoutubeLink: shop?.youtube || "",
+    shopInstagramLink: shop?.instagram || "",
   };
 
   useEffect(() => {
@@ -348,6 +348,8 @@ export default function ShopSettings() {
                   color="info"
                   size="medium"
                   label="Facebook"
+                  name="shopFacebookLink"
+                  value={values.shopFacebookLink}
                   onBlur={handleBlur}
                   onChange={handleChange}
                   placeholder="https://www.facebook.com"
@@ -357,6 +359,8 @@ export default function ShopSettings() {
                   color="info"
                   size="medium"
                   label="Twitter"
+                  name="shopTwitterLink"
+                  value={values.shopTwitterLink}
                   onBlur={handleBlur}
                   onChange={handleChange}
                   placeholder="https://www.twitter.com"
@@ -366,6 +370,8 @@ export default function ShopSettings() {
                   color="info"
                   size="medium"
                   label="Youtube"
+                  name="shopYoutubeLink"
+                  value={values.shopYoutubeLink}
                   onBlur={handleBlur}
                   onChange={handleChange}
                   placeholder="https://www.youtube.com"
@@ -375,6 +381,8 @@ export default function ShopSettings() {
                   color="info"
                   size="medium"
                   label="Instagram"
+                  name="shopInstagramLink"
+                  value={values.shopInstagramLink}
                   onBlur={handleBlur}
                   onChange={handleChange}
                   placeholder="https://www.instagram.com"

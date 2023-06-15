@@ -18,11 +18,14 @@ const ShopIntroCard = (props) => {
     address,
     coverPicture,
     profilePicture,
-    socialLinks,
     email,
+    facebook,
+    instagram,
+    twitter,
+    youtube,
   } = props;
 
-  const img = `${coverPicture}`;
+  console.log("Links", facebook);
 
   return (
     <Card
@@ -42,7 +45,9 @@ const ShopIntroCard = (props) => {
       <Box
         height="202px"
         sx={{
-          background: `url(${"/assets/images/banners/cycle.png"}) center/cover`,
+          background: `url(${
+            coverPicture || "/assets/images/banners/cycle.png"
+          }) center/cover`,
         }}
       />
 
@@ -81,44 +86,28 @@ const ShopIntroCard = (props) => {
             </Box>
 
             <FlexBox my={1} gap={1.5}>
-              <a
-                href={socialLinks?.facebook}
-                target="_blank"
-                rel="noreferrer noopener"
-              >
+              <a href={facebook} target="_blank" rel="noreferrer noopener">
                 <FacebookFilled
                   sx={{
                     fontSize: 27,
                   }}
                 />
               </a>
-              <a
-                href={socialLinks?.instagram}
-                target="_blank"
-                rel="noreferrer noopener"
-              >
+              <a href={instagram} target="_blank" rel="noreferrer noopener">
                 <InstagramFilled
                   sx={{
                     fontSize: 27,
                   }}
                 />
               </a>
-              <a
-                href={socialLinks?.twitter}
-                target="_blank"
-                rel="noreferrer noopener"
-              >
+              <a href={twitter} target="_blank" rel="noreferrer noopener">
                 <TwitterFilled
                   sx={{
                     fontSize: 27,
                   }}
                 />
               </a>
-              <a
-                href={socialLinks?.youtube}
-                target="_blank"
-                rel="noreferrer noopener"
-              >
+              <a href={youtube} target="_blank" rel="noreferrer noopener">
                 <YoutubeFilled
                   sx={{
                     fontSize: 27,

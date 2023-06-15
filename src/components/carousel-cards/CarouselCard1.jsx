@@ -86,7 +86,7 @@ const CarouselCard1 = ({
             alt="apple-watch-1"
             sx={{
               mx: "auto",
-              maxHeight: 400,
+              maxHeight: 500,
               display: "block",
               maxWidth: "100%",
             }}

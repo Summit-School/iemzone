@@ -72,6 +72,14 @@ const MarketShop = (props) => {
       {/* TOP RATED PRODUCTS */}
       <Section4 topRatedList={products} topRatedBrands={brands} />
 
+      {/* PROMO BANNERS */}
+      <Section8
+        img1={"/assets/images/banners/banner-new-1.jpg"}
+        img2={"/assets/images/banners/banner-new.jpg"}
+        md1={5}
+        md2={7}
+      />
+
       {/* NEW ARRIVAL LIST */}
       <Section5 newArrivalsList={products} />
 
@@ -90,7 +98,12 @@ const MarketShop = (props) => {
       />
 
       {/* PROMO BANNERS */}
-      <Section8 />
+      <Section8
+        img1={"/assets/images/banners/banner-new-2.jpeg"}
+        img2={"/assets/images/banners/banner-new-3.png"}
+        md1={6}
+        md2={6}
+      />
 
       {/* OPTICS / WATCH */}
       <Section7

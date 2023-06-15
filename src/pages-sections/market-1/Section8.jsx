@@ -1,7 +1,7 @@
 import Link from "next/link";
 import LazyImage from "components/LazyImage";
 import { Container, Grid } from "@mui/material";
-const Section8 = () => {
+const Section8 = ({ img1, img2, md1, md2 }) => {
   return (
     <Container
       sx={{
@@ -9,25 +9,15 @@ const Section8 = () => {
       }}
     >
       <Grid container spacing={3}>
-        <Grid item xs={12} md={4}>
+        <Grid item xs={12} md={md1}>
           <Link href="/">
-            <LazyImage
-              width={385}
-              height={342}
-              alt="banner"
-              src="/assets/images/banners/banner-1.png"
-            />
+            <LazyImage width={385} height={342} alt="banner" src={img1} />
           </Link>
         </Grid>
 
-        <Grid item xs={12} md={8}>
+        <Grid item xs={12} md={md2}>
           <Link href="/">
-            <LazyImage
-              width={790}
-              height={342}
-              alt="banner"
-              src="/assets/images/banners/banner-2.png"
-            />
+            <LazyImage width={590} height={342} alt="banner" src={img2} />
           </Link>
         </Grid>
       </Grid>

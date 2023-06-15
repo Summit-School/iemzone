@@ -28,6 +28,7 @@ const ShopDetails = () => {
   const shop = shopObject?.shop;
   const singleShopProducts = useSelector((state) => state.products.products);
   const products = singleShopProducts?.products;
+  console.log(shop);
 
   useEffect(() => {
     dispatch(getShopDetails(query.slug))
@@ -73,7 +74,10 @@ const ShopDetails = () => {
           email={shop?.email}
           coverPicture={shop?.coverPicture}
           profilePicture={shop?.profilePicture}
-          socialLinks={shop?.socialLinks}
+          facebook={shop?.facebook}
+          instagram={shop?.instagram}
+          twitter={shop?.twitter}
+          youtube={shop?.youtube}
         />
 
         <Grid container spacing={3}>
