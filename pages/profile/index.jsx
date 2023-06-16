@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { format } from "date-fns";
+// import { format } from "date-fns";
 import { Person } from "@mui/icons-material";
 import {
   Avatar,
@@ -16,7 +16,7 @@ import { FlexBetween, FlexBox } from "components/flex-box";
 import UserDashboardHeader from "components/header/UserDashboardHeader";
 import CustomerDashboardLayout from "components/layouts/customer-dashboard";
 import CustomerDashboardNavigation from "components/layouts/customer-dashboard/Navigations";
-import { currency } from "lib";
+import { currency, formatMoney } from "lib";
 import api from "utils/__api__/users";
 // ============================================================
 import { useEffect } from "react";
@@ -25,9 +25,11 @@ import { useSnackbar } from "notistack";
 import { fetchUserData } from "../../src/redux/reducers/authentication";
 import { getUserOrders } from "../../src/redux/reducers/order";
 import userId from "utils/userId";
+import { useRouter } from "next/router";
 
 const Profile = () => {
   const downMd = useMediaQuery((theme) => theme.breakpoints.down("md"));
+  const router = useRouter();
 
   const user = useSelector((state) => state.authentication.userData);
   const userOrders = useSelector((state) => state.orders.orders);
@@ -37,6 +39,7 @@ const Profile = () => {
 
   useEffect(() => {
     const id = userId();
+    if (!id) router.push("/login");
     dispatch(fetchUserData(id))
       .then((res) => {
         if (res.meta.requestStatus === "rejected") {
@@ -120,7 +123,7 @@ const Profile = () => {
                     <FlexBox alignItems="center">
                       <Typography color="grey.600">Balance:</Typography>
                       <Typography ml={0.5} color="primary.main">
-                        {currency(500)}
+                        {formatMoney(500)} XAF
                       </Typography>
                     </FlexBox>
                   </div>

@@ -14,16 +14,13 @@ import { useAppContext } from "contexts/AppContext";
 import userId from "utils/userId";
 import { useDispatch, useSelector } from "react-redux";
 import { useSnackbar } from "notistack";
+import { getShippingFee } from "redux/reducers/shipping";
 import { placeOrder } from "../../redux/reducers/order";
 // import { stripePayment } from "../../redux/reducers/stripe";
 import { campayPayment } from "../../redux/reducers/campay";
 import { io } from "socket.io-client";
 
 const PaymentForm = () => {
-  const { state } = useAppContext();
-  const cartList = state.cart;
-  const getTotalPrice = () =>
-    cartList.reduce((accum, item) => accum + item.price * item.qty, 0);
   const [paymentMethod, setPaymentMethod] = useState("mobile-money");
   const [phoneNumber, setPhoneNumber] = useState(237);
   const [loading, setLoading] = useState(false);
@@ -33,7 +30,22 @@ const PaymentForm = () => {
   const id = userId();
   const dispatch = useDispatch();
   const { enqueueSnackbar } = useSnackbar();
-  const totalPrice = Math.ceil(getTotalPrice());
+
+  const { state } = useAppContext();
+  const cartList = state.cart;
+  const getTotalPrice = () =>
+    cartList.reduce((accum, item) => accum + item.price * item.qty, 0);
+
+  const shippingFee = useSelector((state) => state.shipping.shippingFee);
+  const fee = shippingFee && shippingFee[0].shippingFee;
+  const tax = 0;
+  const discount = 0;
+
+  const totalPrice = Math.ceil(getTotalPrice()) + fee + tax + discount;
+
+  useEffect(() => {
+    dispatch(getShippingFee());
+  }, []);
 
   const socket = io(process.env.NEXT_PUBLIC_ENDPOINT, {
     autoConnect: false,

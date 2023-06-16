@@ -8,9 +8,10 @@ const useId = () => {
   if (userToken) {
     const isTokenExpired = isExpired(userToken);
     if (isTokenExpired === true) {
-      return typeof window !== "undefined"
+      typeof window !== "undefined"
         ? window.alert("Session Expired. Please login to continue")
         : false;
+      return;
     }
     const decodedToken = decodeToken(userToken);
     const id = decodedToken.userId;

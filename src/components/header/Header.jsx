@@ -143,7 +143,7 @@ const Header = ({ isFixed, className, searchInput }) => {
               }}
             >
               <FlexBetween mb={1}>
-                <Paragraph>Search to Bazaar</Paragraph>
+                <Paragraph>Search to Temzone</Paragraph>
 
                 <IconButton onClick={toggleSearchBar}>
                   <Clear />

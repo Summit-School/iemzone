@@ -7,10 +7,13 @@ const SearchInput = () => {
   const parentRef = useRef();
   const [_, startTransition] = useTransition();
   const [resultList, setResultList] = useState([]);
+
   const getProducts = async (searchText) => {
-    const data = await api.searchProducts(searchText);
-    setResultList(data);
+    // const data = await api.searchProducts(searchText);
+    // setResultList(data);
+    setResultList([searchText]);
   };
+
   const handleSearch = (e) => {
     startTransition(() => {
       const value = e.target?.value;
@@ -18,6 +21,7 @@ const SearchInput = () => {
       else getProducts(value);
     });
   };
+
   const handleDocumentClick = () => setResultList([]);
   useEffect(() => {
     window.addEventListener("click", handleDocumentClick);

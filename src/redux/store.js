@@ -8,6 +8,7 @@ import productReviews from "./reducers/admin/productReview";
 import orders from "./reducers/order";
 import stripePayment from "./reducers/stripe";
 import subscription from "./reducers/emailSubscription";
+import shipping from "./reducers/shipping";
 
 export const store = configureStore({
   reducer: {
@@ -20,5 +21,6 @@ export const store = configureStore({
     productReviews,
     stripePayment,
     orders,
+    shipping,
   },
 });

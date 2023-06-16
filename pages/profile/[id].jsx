@@ -154,7 +154,7 @@ const ProfileEditor = () => {
       <Card1>
         <FlexBox alignItems="flex-end" mb={3}>
           <Avatar
-            src={`${user?.avatar}` || "/assets/images/bazaar-black-sm.svg"}
+            src={`${user?.avatar}` || "/assets/images/logo/temzone-black.png"}
             sx={{
               height: 64,
               width: 64,

@@ -6,7 +6,7 @@ import TouchRipple from "@mui/material/ButtonBase";
 import BazaarMenu from "components/BazaarMenu";
 import { FlexBox } from "components/flex-box";
 import { SearchOutlinedIcon, SearchResultCard } from "./styled";
-import api from "utils/__api__/products";
+// import api from "utils/__api__/products";
 const DropDownHandler = styled(FlexBox)(({ theme }) => ({
   whiteSpace: "pre",
   borderTopRightRadius: 300,
@@ -32,9 +32,11 @@ const SearchInputWithCategory = () => {
 
   // FETCH PRODUCTS VIA API
   const getProducts = async (searchText, category) => {
-    const data = await api.searchProducts(searchText, category);
-    setResultList(data);
+    // const data = await api.searchProducts(searchText, category);
+    // setResultList(data);
+    setResultList([searchText]);
   };
+
   const handleSearch = (e) => {
     startTransition(() => {
       const value = e.target?.value;
@@ -43,6 +45,7 @@ const SearchInputWithCategory = () => {
       else getProducts(value);
     });
   };
+
   const handleDocumentClick = () => setResultList([]);
   useEffect(() => {
     window.addEventListener("click", handleDocumentClick);

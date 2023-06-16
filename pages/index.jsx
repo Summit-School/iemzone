@@ -35,7 +35,7 @@ const MarketShop = (props) => {
     dispatch(allProducts())
       .then((res) => {
         if (res.meta.requestStatus === "rejected") {
-          return enqueueSnackbar(res.payload, {
+          return enqueueSnackbar("Network error", {
             variant: "error",
           });
         }
@@ -46,7 +46,7 @@ const MarketShop = (props) => {
     dispatch(allBrands())
       .then((res) => {
         if (res.meta.requestStatus === "rejected") {
-          return enqueueSnackbar(res.payload, {
+          return enqueueSnackbar("Network error", {
             variant: "error",
           });
         }

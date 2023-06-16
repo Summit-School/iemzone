@@ -1,7 +1,7 @@
 // carousel-data
 export const mainCarouselData = [
   {
-    title: "50% Off For Your First Shopping",
+    title: "Get Up To 50% Discount On All Shopping",
     imgUrl: "/assets/images/products/hiclipart.com (14).png",
     description: `Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quis lobortis consequat eu, quam etiam at quis ut convalliss.`,
     buttonText: "Shop Now",
