@@ -14,7 +14,7 @@ const ProductComment = (props) => {
     <Box mb={4} maxWidth="600px">
       <FlexBox alignItems="center" mb={2}>
         <Avatar
-          src={`${imgUrl.image}`}
+          src={`${imgUrl}`}
           sx={{
             width: 48,
             height: 48,

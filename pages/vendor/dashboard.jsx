@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import { Box, Grid } from "@mui/material";
 import Card1 from "pages-sections/dashboard/Card1";
 import Section3 from "pages-sections/dashboard/Section3";
@@ -13,11 +14,22 @@ VendorDashboard.getLayout = function getLayout(page) {
   return <VendorDashboardLayout>{page}</VendorDashboardLayout>;
 };
 // =============================================================================
-
+import userId from "utils/userId";
+import { useRouter } from "next/router";
 // =============================================================================
 
 export default function VendorDashboard(props) {
   const { cardList, recentPurchase, stockOutProducts } = props;
+  const router = useRouter();
+
+  useEffect(() => {
+    const id = userId();
+    if (!id) {
+      // window.location.href = "/";
+      router.push("/");
+    }
+  }, []);
+
   return (
     <Box py={4}>
       <Grid container spacing={3}>

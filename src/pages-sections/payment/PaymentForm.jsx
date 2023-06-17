@@ -76,6 +76,7 @@ const PaymentForm = () => {
             });
             setLoading(false);
             router.push("/order-confirmation");
+            // window.location.href = "/order-confirmation";
           }
           if (res.meta.requestStatus === "rejected") {
             enqueueSnackbar(res.payload, {
@@ -106,6 +107,7 @@ const PaymentForm = () => {
                 dispatch(placeOrder(data)).then(() => {
                   setLoading(false);
                   router.push("/order-confirmation");
+                  // window.location.href = "/order-confirmation";
                 });
               }
               if (status.status === "FAILED") {

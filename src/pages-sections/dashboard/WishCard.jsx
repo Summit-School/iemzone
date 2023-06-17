@@ -2,7 +2,13 @@ import NextImage from "next/image";
 import { Box, Card } from "@mui/material";
 import { H3, H5, Paragraph } from "components/Typography";
 import { currency } from "lib";
+// ####################################################
+import { useDispatch, useSelector } from "react-redux";
+
 const WishCard = () => {
+  const user = useSelector((state) => state.authentication.userData);
+  const username = user && user.name;
+
   return (
     <Card
       sx={{
@@ -15,7 +21,7 @@ const WishCard = () => {
       }}
     >
       <H5 color="info.main" mb={0.5}>
-        Good Morning, Maruf!
+        Hello, {username.firstName}!
       </H5>
       <Paragraph color="grey.600">
         Here’s what happening with your store today!

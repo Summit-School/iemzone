@@ -23,12 +23,13 @@ import UserDashboardHeader from "components/header/UserDashboardHeader";
 import CustomerDashboardLayout from "components/layouts/customer-dashboard";
 import CustomerDashboardNavigation from "components/layouts/customer-dashboard/Navigations";
 import useWindowSize from "hooks/useWindowSize";
-import { currency } from "lib";
-import api from "utils/__api__/orders";
+import { currency, formatMoney } from "lib";
+// import api from "utils/__api__/orders";
 // =============================================================================
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useSnackbar } from "notistack";
+import { getShippingFee } from "redux/reducers/shipping";
 import { getSingleOrder } from "../../src/redux/reducers/order";
 
 // styled components
@@ -67,6 +68,8 @@ const OrderDetails = () => {
 
   const orderResponse = useSelector((state) => state.orders.order);
   const order = orderResponse?.order;
+  const shippingFee = useSelector((state) => state.shipping.shippingFee);
+  const fee = shippingFee && shippingFee[0].shippingFee;
 
   useEffect(() => {
     dispatch(getSingleOrder(query.id))
@@ -80,6 +83,7 @@ const OrderDetails = () => {
       .catch((err) => {
         console.error(err);
       });
+    dispatch(getShippingFee());
   }, [query.id]);
 
   // SECTION TITLE HEADER
@@ -237,7 +241,7 @@ const OrderDetails = () => {
             >
               <FlexBox flex="2 2 260px" m={0.75} alignItems="center">
                 <Avatar
-                  src={`${process.env.NEXT_PUBLIC_ENDPOINT}/${item.imgUrl}`}
+                  src={`${item.imgUrl.image}`}
                   sx={{
                     height: 64,
                     width: 64,
@@ -247,7 +251,7 @@ const OrderDetails = () => {
                   <H6 my="0px">{item.name}</H6>
 
                   <Typography fontSize="14px" color="grey.600">
-                    {currency(item.price)} x {item.qty}
+                    {formatMoney(item.price)} XAF x {item.qty}
                   </Typography>
                 </Box>
               </FlexBox>
@@ -485,7 +489,7 @@ const OrderDetails = () => {
                 Subtotal:
               </Typography>
 
-              <H6 my="0px">{currency(order?.totalPrice)}</H6>
+              <H6 my="0px">{formatMoney(order?.totalPrice)} XAF</H6>
             </FlexBetween>
 
             <FlexBetween mb={1}>
@@ -493,7 +497,7 @@ const OrderDetails = () => {
                 Shipping fee:
               </Typography>
 
-              <H6 my="0px">{currency(1000)}</H6>
+              <H6 my="0px">(INCLUDED) {formatMoney(fee)} XAF</H6>
             </FlexBetween>
 
             <FlexBetween mb={1}>
@@ -501,7 +505,7 @@ const OrderDetails = () => {
                 Discount:
               </Typography>
 
-              <H6 my="0px">{currency(order?.discount)}</H6>
+              <H6 my="0px">(INCLUDED) {formatMoney(order?.discount)} XAF</H6>
             </FlexBetween>
 
             <Divider
@@ -512,7 +516,7 @@ const OrderDetails = () => {
 
             <FlexBetween mb={2}>
               <H6 my="0px">Total</H6>
-              <H6 my="0px">{currency(order?.totalPrice)}</H6>
+              <H6 my="0px">{formatMoney(order?.totalPrice)} XAF</H6>
             </FlexBetween>
 
             <FlexBetween mb={2}>
@@ -530,21 +534,21 @@ const OrderDetails = () => {
     </CustomerDashboardLayout>
   );
 };
-export const getStaticPaths = async () => {
-  const paths = await api.getIds();
-  return {
-    paths: paths,
-    //indicates that no page needs be created at build time
-    fallback: "blocking", //indicates the type of fallback
-  };
-};
+// export const getStaticPaths = async () => {
+//   const paths = await api.getIds();
+//   return {
+//     paths: paths,
+//     //indicates that no page needs be created at build time
+//     fallback: "blocking", //indicates the type of fallback
+//   };
+// };
 
-export const getStaticProps = async ({ params }) => {
-  const order = await api.getOrder(String(params.id));
-  return {
-    props: {
-      order,
-    },
-  };
-};
+// export const getStaticProps = async ({ params }) => {
+//   const order = await api.getOrder(String(params.id));
+//   return {
+//     props: {
+//       order,
+//     },
+//   };
+// };
 export default OrderDetails;

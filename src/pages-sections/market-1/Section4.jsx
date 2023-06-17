@@ -60,13 +60,15 @@ const Section4 = ({ topRatedBrands, topRatedList }) => {
             >
               <Grid container spacing={3}>
                 {topRatedBrands &&
-                  topRatedBrands?.map(({ _id, name, image, slug }) => (
-                    <Grid item sm={6} xs={12} key={_id}>
-                      <Link href={`/product/search/${slug}`}>
-                        <ProductCard5 title={name} imgUrl={image} />
-                      </Link>
-                    </Grid>
-                  ))}
+                  topRatedBrands
+                    ?.slice(0, 4)
+                    .map(({ _id, name, image, slug }) => (
+                      <Grid item sm={6} xs={12} key={_id}>
+                        <Link href={`/product/search/${slug}`}>
+                          <ProductCard5 title={name} imgUrl={image} />
+                        </Link>
+                      </Grid>
+                    ))}
               </Grid>
             </BazaarCard>
           </Grid>

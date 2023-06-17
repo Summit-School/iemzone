@@ -25,8 +25,6 @@ const ShopIntroCard = (props) => {
     youtube,
   } = props;
 
-  console.log("Links", facebook);
-
   return (
     <Card
       sx={{

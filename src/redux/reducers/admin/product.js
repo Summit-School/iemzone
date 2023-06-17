@@ -154,6 +154,7 @@ export const deleteProduct = createAsyncThunk(
 export const searchProduct = createAsyncThunk(
   "products/searchProduct",
   async (param, thunkAPI) => {
+    console.log(param);
     try {
       return await productServices.searchProduct(param);
     } catch (error) {

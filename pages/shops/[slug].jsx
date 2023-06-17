@@ -28,7 +28,6 @@ const ShopDetails = () => {
   const shop = shopObject?.shop;
   const singleShopProducts = useSelector((state) => state.products.products);
   const products = singleShopProducts?.products;
-  console.log(shop);
 
   useEffect(() => {
     dispatch(getShopDetails(query.slug))

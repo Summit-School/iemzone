@@ -34,6 +34,10 @@ const Profile = () => {
   const user = useSelector((state) => state.authentication.userData);
   const userOrders = useSelector((state) => state.orders.orders);
   const orders = userOrders?.orders;
+  const pending = orders?.filter((order) => order.status === "Pending");
+  const processing = orders?.filter((order) => order.status === "Processing");
+  const completed = orders?.filter((order) => order.status === "Delivered");
+  const cancelled = orders?.filter((order) => order.status === "Cancelled");
   const { enqueueSnackbar } = useSnackbar();
   const dispatch = useDispatch();
 
@@ -69,21 +73,25 @@ const Profile = () => {
     </Button>
   );
   const infoList = [
+    // {
+    //   title: `${orders && orders.length}`,
+    //   subtitle: "All Orders",
+    // },
     {
-      title: `${orders && orders.length}`,
-      subtitle: "All Orders",
+      title: `${pending && pending.length}`,
+      subtitle: "Pending orders",
     },
     {
-      title: "02",
-      subtitle: "Awaiting Payments",
+      title: `${processing && processing.length}`,
+      subtitle: "Processing orders",
     },
     {
-      title: "00",
-      subtitle: "Awaiting Shipment",
+      title: `${completed && completed.length}`,
+      subtitle: "Completed orders",
     },
     {
-      title: "01",
-      subtitle: "Awaiting Delivery",
+      title: `${cancelled && cancelled.length}`,
+      subtitle: "Cancelled orders",
     },
   ];
   return (
@@ -150,7 +158,7 @@ const Profile = () => {
                     }}
                   >
                     <H3 color="primary.main" my={0} fontWeight={600}>
-                      {item.title}
+                      {item.title || 0}
                     </H3>
 
                     <Small color="grey.600" textAlign="center">

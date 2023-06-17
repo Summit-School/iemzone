@@ -7,7 +7,7 @@ import BazaarRating from "components/BazaarRating";
 import { H1, H2, H3, H6 } from "components/Typography";
 import { useAppContext } from "contexts/AppContext";
 import { FlexBox, FlexRowCenter } from "../../components/flex-box";
-import { currency } from "lib";
+import { currency, formatMoney } from "lib";
 // import productVariants from "data/product-variants";
 
 // ================================================================
@@ -16,8 +16,20 @@ import { useSelector } from "react-redux";
 // ================================================================
 
 const ProductIntro = ({ product }) => {
-  const { id, salesPrice, title, images, slug, thumbnail, brand, rating } =
-    product;
+  const {
+    id,
+    salesPrice,
+    regularPrice,
+    title,
+    images,
+    slug,
+    thumbnail,
+    brand,
+    rating,
+    categories,
+    size,
+    colors,
+  } = product;
   const { state, dispatch } = useAppContext();
   const [selectedImage, setSelectedImage] = useState(0);
   // const [selectVariants, setSelectVariants] = useState({
@@ -112,8 +124,20 @@ const ProductIntro = ({ product }) => {
           <H1 mb={1}>{title}</H1>
 
           <FlexBox alignItems="center" mb={1}>
-            <Box>Brand:</Box>
-            <H6>{brand}</H6>
+            <Box>Brand: </Box>
+            <H6 ml={1}>{brand}</H6>
+          </FlexBox>
+          <FlexBox alignItems="center" mb={1}>
+            <Box>Category: </Box>
+            <H6 ml={1}> {categories}</H6>
+          </FlexBox>
+          <FlexBox alignItems="center" mb={1}>
+            <Box>Size: </Box>
+            <H6 ml={1}> {size}</H6>
+          </FlexBox>
+          <FlexBox alignItems="center" mb={1}>
+            <Box>Color: </Box>
+            <H6 ml={1}> {colors}</H6>
           </FlexBox>
 
           <FlexBox alignItems="center" mb={2}>
@@ -154,9 +178,14 @@ const ProductIntro = ({ product }) => {
           ))} */}
 
           <Box pt={1} mb={3}>
-            <H2 color="primary.main" mb={0.5} lineHeight="1">
-              {currency(price)}
-            </H2>
+            <FlexBox>
+              <H2 color="secondary.main" mb={0.5} lineHeight="1">
+                <del>{formatMoney(regularPrice)} XAF</del>
+              </H2>
+              <H2 color="primary.main" mb={0.5} lineHeight="1" ml={1}>
+                {formatMoney(price)} XAF
+              </H2>
+            </FlexBox>
             <Box color="inherit">Stock Available</Box>
           </Box>
 

@@ -42,6 +42,24 @@ export const getUserOrders = createAsyncThunk(
   }
 );
 
+// export const getShopOrders = createAsyncThunk(
+//   "orders/getShopOrders",
+//   async (shopId, thunkAPI) => {
+//     try {
+//       return await orderServices.getShopOrders(shopId);
+//     } catch (error) {
+//       const message =
+//         (error.response &&
+//           error.response.data &&
+//           error.response.data.message) ||
+//         error.message ||
+//         error.toString();
+
+//       return thunkAPI.rejectWithValue(message);
+//     }
+//   }
+// );
+
 export const getSingleOrder = createAsyncThunk(
   "orders/getSingleOrder",
   async (prodId, thunkAPI) => {

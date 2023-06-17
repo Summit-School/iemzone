@@ -4,7 +4,7 @@ import { East } from "@mui/icons-material";
 import { Box, Chip, IconButton, Typography } from "@mui/material";
 import TableRow from "components/TableRow";
 import { H5 } from "components/Typography";
-import { currency } from "lib";
+import { currency, formatMoney } from "lib";
 // =================================================
 
 const OrderRow = ({ order }) => {
@@ -13,7 +13,7 @@ const OrderRow = ({ order }) => {
       case "Pending":
         return "secondary";
       case "Processing":
-        return "secondary";
+        return "warning";
       case "Delivered":
         return "success";
       case "Cancelled":
@@ -56,7 +56,7 @@ const OrderRow = ({ order }) => {
         </Typography>
 
         <Typography m={0.75} textAlign="left">
-          {currency(order.totalPrice)}
+          {formatMoney(order.totalPrice)} XAF
         </Typography>
 
         <Typography

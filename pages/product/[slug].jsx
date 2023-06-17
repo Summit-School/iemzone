@@ -9,14 +9,18 @@ import AvailableShops from "pages-sections/product-details/AvailableShops";
 import RelatedProducts from "pages-sections/product-details/RelatedProducts";
 // import FrequentlyBought from "pages-sections/product-details/FrequentlyBought";
 import ProductDescription from "pages-sections/product-details/ProductDescription";
-import {
-  // getFrequentlyBought,
-  getRelatedProducts,
-} from "utils/__api__/related-products";
-import api from "utils/__api__/products";
+// import {
+//   // getFrequentlyBought,
+//   getRelatedProducts,
+// } from "utils/__api__/related-products";
+// import api from "utils/__api__/products";
 // =============================================================================
 import { useDispatch, useSelector } from "react-redux";
-import { singleProduct } from "../../src/redux/reducers/admin/product";
+import { useSnackbar } from "notistack";
+import {
+  singleProduct,
+  searchProduct,
+} from "../../src/redux/reducers/admin/product";
 import { getProductReviews } from "../../src/redux/reducers/admin/productReview";
 import { getShop } from "../../src/redux/reducers/shop";
 import userId from "utils/userId";
@@ -36,21 +40,25 @@ const StyledTabs = styled(Tabs)(({ theme }) => ({
 }));
 
 const ProductDetails = (props) => {
-  const { frequentlyBought, relatedProducts } = props;
+  // const { frequentlyBought, relatedProducts } = props;
   const router = useRouter();
   const { query } = useRouter();
   const [selectedOption, setSelectedOption] = useState(0);
   const handleOptionClick = (_, value) => setSelectedOption(value);
 
+  const { enqueueSnackbar } = useSnackbar();
   const dispatch = useDispatch();
 
   const getProduct = useSelector((state) => state.products.product);
   const product = getProduct?.product;
+  const relatedProducts = useSelector((state) => state.products.searchProducts);
 
   useEffect(() => {
     const id = userId();
     dispatch(singleProduct(query.slug))
       .then((res) => {
+        const prodt = res.payload.product;
+        const param = prodt?.title.slice(0, 10);
         if (res.meta.requestStatus === "rejected") {
           return enqueueSnackbar(res.payload, {
             variant: "error",
@@ -69,6 +77,18 @@ const ProductDetails = (props) => {
             console.error(err);
           });
         dispatch(getShop(id))
+          .then((res) => {
+            if (res.meta.requestStatus === "rejected") {
+              return enqueueSnackbar(res.payload, {
+                variant: "error",
+              });
+            }
+          })
+          .catch((err) => {
+            console.error(err);
+          });
+
+        dispatch(searchProduct(param))
           .then((res) => {
             if (res.meta.requestStatus === "rejected") {
               return enqueueSnackbar(res.payload, {
@@ -121,33 +141,37 @@ const ProductDetails = (props) => {
           <FrequentlyBought productsData={frequentlyBought} />
         )} */}
 
-        <AvailableShops />
+        {/* <AvailableShops /> */}
 
-        {relatedProducts && <RelatedProducts productsData={relatedProducts} />}
+        {relatedProducts.length > 0 ? (
+          <RelatedProducts productsData={relatedProducts} />
+        ) : (
+          <H2>No Related Product Found</H2>
+        )}
       </Container>
     </ShopLayout1>
   );
 };
 
-export const getStaticPaths = async () => {
-  const paths = await api.getSlugs();
-  return {
-    paths: paths,
-    //indicates that no page needs be created at build time
-    fallback: "blocking", //indicates the type of fallback
-  };
-};
+// export const getStaticPaths = async () => {
+//   const paths = await api.getSlugs();
+//   return {
+//     paths: paths,
+//     //indicates that no page needs be created at build time
+//     fallback: "blocking", //indicates the type of fallback
+//   };
+// };
 
-export const getStaticProps = async ({ params }) => {
-  const relatedProducts = await getRelatedProducts();
-  // const frequentlyBought = await getFrequentlyBought();
-  // const product = await api.getProduct(params.slug);
-  return {
-    props: {
-      // frequentlyBought,
-      relatedProducts,
-      // product,
-    },
-  };
-};
+// export const getStaticProps = async ({ params }) => {
+//   const relatedProducts = await getRelatedProducts();
+//   // const frequentlyBought = await getFrequentlyBought();
+//   // const product = await api.getProduct(params.slug);
+//   return {
+//     props: {
+//       // frequentlyBought,
+//       relatedProducts,
+//       // product,
+//     },
+//   };
+// };
 export default ProductDetails;
