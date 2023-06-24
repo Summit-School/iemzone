@@ -47,7 +47,7 @@ const Section3 = () => {
   return (
     <Grid container spacing={3}>
       <Grid item xs={12} sm={7} md={7}>
-        <Link href="/sale-page-1">
+        <Link href="/market">
           <LeftContentBox>
             <RightContent px="20px">
               <H6>Holiday’s Offer!</H6>
@@ -80,7 +80,7 @@ const Section3 = () => {
           },
         }}
       >
-        <Link href="/sale-page-1">
+        <Link href="/market">
           <RightContentBox
             sx={{
               p: "20px",

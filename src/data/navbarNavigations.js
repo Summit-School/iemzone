@@ -135,7 +135,7 @@ const megaMenus = [
       child: [
         {
           title: "Sales Version 1",
-          url: "/sale-page-1",
+          url: "/market",
         },
         {
           title: "Sales Version 2",
@@ -187,7 +187,7 @@ const navbarNavigations = [
     megaMenu: false,
     megaMenuWithSub: false,
     title: "Market",
-    url: "/sale-page-1",
+    url: "/market",
   },
   {
     megaMenu: false,
@@ -227,7 +227,7 @@ const navbarNavigations = [
   //   child: [
   //     {
   //       title: "Market",
-  //       url: "/sale-page-1",
+  //       url: "/market",
   //     },
   //     {
   //       title: "All vendors",

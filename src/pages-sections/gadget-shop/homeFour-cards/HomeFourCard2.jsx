@@ -21,7 +21,7 @@ const StyledCard = styled(BazaarCard)(({ theme }) => ({
 
 const HomeFourCard2 = ({ imgUrl, title, headingStyle }) => {
   return (
-    <Link href="/sale-page-1">
+    <Link href="/market">
       <StyledCard>
         <LazyImage alt={title} src={imgUrl} width={527} height={532} />
         <H5

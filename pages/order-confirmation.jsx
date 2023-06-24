@@ -58,7 +58,7 @@ const OrderConfirmation = () => {
             variant="contained"
             className="button-link"
             LinkComponent={Link}
-            href="/sale-page-1"
+            href="/market"
           >
             Browse products
           </StyledButton>

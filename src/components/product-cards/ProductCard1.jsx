@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { Fragment, useCallback, useState } from "react";
+import { Fragment, useCallback, useEffect, useState } from "react";
 import { Add, Favorite, Remove, RemoveRedEye } from "@mui/icons-material";
 import { Box, Button, Chip, IconButton, styled } from "@mui/material";
 import { useSnackbar } from "notistack";
@@ -12,6 +12,13 @@ import { useAppContext } from "contexts/AppContext";
 import ProductViewDialog from "components/products/ProductViewDialog";
 import { FlexBox } from "../flex-box";
 import { calculateDiscount, currency } from "lib";
+// =================================================================
+import { useDispatch } from "react-redux";
+import userId from "utils/userId";
+import {
+  addToWishlist,
+  removeFromWishlist,
+} from "redux/reducers/authentication";
 
 // styled components
 const StyledBazaarCard = styled(BazaarCard)({
@@ -86,6 +93,7 @@ const ProductCard1 = ({
   showProductSize,
   description,
   category,
+  isFavoriteBtn,
 }) => {
   const { enqueueSnackbar } = useSnackbar();
   const { state, dispatch } = useAppContext();
@@ -94,6 +102,63 @@ const ProductCard1 = ({
   const toggleIsFavorite = () => setIsFavorite((fav) => !fav);
   const toggleDialog = useCallback(() => setOpenModal((open) => !open), []);
   const cartItem = state.cart?.find((item) => item.slug === slug);
+  const userID = userId();
+
+  const reduxDispatch = useDispatch();
+
+  const wishlistHandler = async (param) => {
+    const item = {
+      id,
+      imgUrl,
+      name: title,
+      regularPrice,
+      salesPrice,
+      slug,
+      rating,
+      discount,
+    };
+    const data = {
+      userId: userID,
+      item,
+    };
+    if (isFavoriteBtn) {
+      reduxDispatch(removeFromWishlist(data))
+        .then((res) => {
+          if (res.meta.requestStatus === "rejected") {
+            enqueueSnackbar(res.payload, {
+              variant: "error",
+            });
+          }
+          if (res.meta.requestStatus === "fullfilled") {
+            enqueueSnackbar(res.payload, {
+              variant: "success",
+            });
+          }
+        })
+        .catch((err) => {
+          console.error(err);
+        });
+    } else {
+      if (!param === true) {
+        reduxDispatch(addToWishlist(data))
+          .then((res) => {
+            if (res.meta.requestStatus === "rejected") {
+              enqueueSnackbar(res.payload, {
+                variant: "error",
+              });
+            }
+            if (res.meta.requestStatus === "fullfilled") {
+              enqueueSnackbar(res.payload, {
+                variant: "success",
+              });
+            }
+          })
+          .catch((err) => {
+            console.error(err);
+          });
+      }
+    }
+  };
 
   const handleCartAmountChange = (product, type) => () => {
     dispatch({
@@ -125,8 +190,14 @@ const ProductCard1 = ({
             <RemoveRedEye color="disabled" fontSize="small" />
           </IconButton>
 
-          <IconButton onClick={toggleIsFavorite}>
-            {isFavorite ? (
+          <IconButton
+            onClick={() => {
+              toggleIsFavorite(), wishlistHandler(isFavorite);
+            }}
+          >
+            {isFavoriteBtn ? (
+              <Favorite color="primary" fontSize="small" />
+            ) : isFavorite ? (
               <Favorite color="primary" fontSize="small" />
             ) : (
               <FavoriteBorder fontSize="small" color="disabled" />

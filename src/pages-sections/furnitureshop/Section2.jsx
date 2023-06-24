@@ -61,7 +61,7 @@ const Section2 = () => {
     <Fragment>
       <Grid container spacing={3}>
         <Grid item xs={12} sm={7} md={7}>
-          <Link href="/sale-page-1">
+          <Link href="/market">
             <LeftContentBox
               imgUrl={product1}
               sx={{
@@ -74,7 +74,7 @@ const Section2 = () => {
                   Big Sale
                 </H1>
                 <H3 fontSize={23}>UP TO 50% OFF</H3>
-                <StyledButton onClick={() => router.push("/sale-page-1")}>
+                <StyledButton onClick={() => router.push("/market")}>
                   Shop Now
                 </StyledButton>
               </RightContent>
@@ -85,7 +85,7 @@ const Section2 = () => {
         </Grid>
 
         <Grid item xs={12} sm={5} md={5}>
-          <Link href="/sale-page-1">
+          <Link href="/market">
             <RightContentBox
               imgUrl={product2}
               sx={{
@@ -97,7 +97,7 @@ const Section2 = () => {
                 <H3 fontSize={23} color="primary.main">
                   UP TO 60% OFF
                 </H3>
-                <StyledButton onClick={() => router.push("/sale-page-1")}>
+                <StyledButton onClick={() => router.push("/market")}>
                   Shop Now
                 </StyledButton>
               </Box>
@@ -121,7 +121,7 @@ const Section2 = () => {
         }}
       >
         <Grid item xs={12} sm={7} md={7}>
-          <Link href="/sale-page-1">
+          <Link href="/market">
             <RightContentBox
               imgUrl={product4}
               sx={{
@@ -139,7 +139,7 @@ const Section2 = () => {
                   50% OFF
                 </H1>
                 <H6>All Kind of Furniture Items</H6>
-                <StyledButton onClick={() => router.push("/sale-page-1")}>
+                <StyledButton onClick={() => router.push("/market")}>
                   Shop Now
                 </StyledButton>
               </Box>
@@ -150,7 +150,7 @@ const Section2 = () => {
         </Grid>
 
         <Grid item xs={12} sm={5} md={5}>
-          <Link href="/sale-page-1">
+          <Link href="/market">
             <LeftContentBox
               imgUrl={product5}
               sx={{
@@ -163,7 +163,7 @@ const Section2 = () => {
                 <H3 fontSize={20} color="primary.main">
                   Chair Collection
                 </H3>
-                <StyledButton onClick={() => router.push("/sale-page-1")}>
+                <StyledButton onClick={() => router.push("/market")}>
                   Shop Now
                 </StyledButton>
               </RightContent>
@@ -172,7 +172,7 @@ const Section2 = () => {
             </LeftContentBox>
           </Link>
 
-          <Link href="/sale-page-1">
+          <Link href="/market">
             <LeftContentBox
               imgUrl={product3}
               sx={{
@@ -186,7 +186,7 @@ const Section2 = () => {
                 <H3 fontSize={20} color="primary.main">
                   Sofa Chair
                 </H3>
-                <StyledButton onClick={() => router.push("/sale-page-1")}>
+                <StyledButton onClick={() => router.push("/market")}>
                   Shop Now
                 </StyledButton>
               </RightContent>

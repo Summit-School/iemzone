@@ -88,7 +88,7 @@ const SalePage1 = () => {
     dispatch(allProducts())
       .then((res) => {
         if (res.meta.requestStatus === "rejected") {
-          return enqueueSnackbar(res.payload, {
+          return enqueueSnackbar("Network Error", {
             variant: "error",
           });
         }
@@ -192,7 +192,7 @@ const SalePage1 = () => {
             color="primary"
             variant="outlined"
             onChange={handlePageChange}
-            count={Math.ceil(products?.length / PRODUCT_PER_PAGE)}
+            count={Math.ceil(products?.length / PRODUCT_PER_PAGE) || 0}
           />
         </FlexBetween>
       </Container>

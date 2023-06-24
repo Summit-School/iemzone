@@ -1,20 +1,44 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
 import { Favorite } from "@mui/icons-material";
 import { Button, Grid, Pagination } from "@mui/material";
 import SEO from "components/SEO";
+import { useSnackbar } from "notistack";
 import { FlexBox } from "components/flex-box";
+import { Paragraph } from "components/Typography";
 import ProductCard1 from "components/product-cards/ProductCard1";
 import UserDashboardHeader from "components/header/UserDashboardHeader";
 import CustomerDashboardLayout from "components/layouts/customer-dashboard";
 import CustomerDashboardNavigation from "components/layouts/customer-dashboard/Navigations";
-import productDatabase from "data/product-database";
+// import productDatabase from "data/product-database";
 // ==================================================================
+import { useDispatch, useSelector } from "react-redux";
+import userId from "utils/userId";
+import { getWishlist } from "redux/reducers/authentication";
 
 const WishList = (props) => {
-  const { totalProducts, products } = props;
+  const { enqueueSnackbar } = useSnackbar();
   const router = useRouter();
   const [currentPage, setCurrentPage] = useState(1);
+
+  const allProducts = useSelector((state) => state.authentication.wishlist);
+  const products = allProducts?.wishlist;
+  const dispatch = useDispatch();
+  const userID = userId();
+
+  useEffect(() => {
+    dispatch(getWishlist(userID))
+      .then((res) => {
+        if (res.meta.requestStatus === "rejected") {
+          enqueueSnackbar(res.payload, {
+            variant: "error",
+          });
+        }
+      })
+      .catch((err) => {
+        console.error(err);
+      });
+  }, []);
 
   // HANDLE CHANGE PAGINATION
   const handleChangePage = (page) => {
@@ -47,32 +71,40 @@ const WishList = (props) => {
       />
 
       {/* PRODUCT LIST AREA */}
-      {/* <Grid container spacing={3}>
-        {products.map((item) => (
-          <Grid item lg={4} sm={6} xs={12} key={item.id}>
-            <ProductCard1
-              id={item.id}
-              slug={item.slug}
-              title={item.title}
-              price={item.price}
-              rating={item.rating}
-              imgUrl={item.thumbnail}
-              discount={item.discount}
-            />
-          </Grid>
-        ))}
-      </Grid> */}
+      <Grid container spacing={3}>
+        {products.length > 0 ? (
+          products.map((item) => (
+            <Grid item lg={4} sm={6} xs={12} key={item.id}>
+              <ProductCard1
+                id={item.id}
+                slug={item.slug}
+                title={item.name}
+                regularPrice={item.regularPrice}
+                salesPrice={item.salesPrice}
+                rating={item.rating}
+                imgUrl={item.imgUrl}
+                discount={item.discount}
+                isFavoriteBtn={true}
+              />
+            </Grid>
+          ))
+        ) : (
+          <Paragraph color="grey.800" mt="0.3rem" ml="3rem">
+            No Product Found
+          </Paragraph>
+        )}
+      </Grid>
 
       {/* PAGINATION AREA */}
-      {/* <FlexBox justifyContent="center" mt={5}>
+      <FlexBox justifyContent="center" mt={5}>
         <Pagination
           color="primary"
           variant="outlined"
           page={currentPage}
-          count={Math.ceil(totalProducts / 6)}
+          count={Math.ceil(products?.length / 6) || 0}
           onChange={(_, page) => handleChangePage(page)}
         />
-      </FlexBox> */}
+      </FlexBox>
     </CustomerDashboardLayout>
   );
 };

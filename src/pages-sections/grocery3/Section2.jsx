@@ -29,7 +29,7 @@ const Section2 = ({ offers }) => {
     <Grid container spacing={3}>
       {offers.map((item, ind) => (
         <Grid key={ind} item md={6} sm={12} xs={12}>
-          <Link href="/sale-page-1">
+          <Link href="/market">
             <StyledCard>
               <Box width="60%">
                 <Paragraph fontWeight={600}>{item.title}</Paragraph>
@@ -42,7 +42,7 @@ const Section2 = ({ offers }) => {
                   }}
                   color="primary"
                   variant="outlined"
-                  onClick={() => router.push("/sale-page-1")}
+                  onClick={() => router.push("/market")}
                 >
                   {item.buttonText}
                 </Button>

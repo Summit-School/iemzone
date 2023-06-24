@@ -32,7 +32,7 @@ const Wrapper = styled(Box)(({ theme }) => ({
 
 const HomeFourCard3 = ({ body, title, color, imgUrl, bgColor }) => {
   return (
-    <Link href="/sale-page-1">
+    <Link href="/market">
       <Wrapper
         sx={{
           backgroundColor: bgColor,

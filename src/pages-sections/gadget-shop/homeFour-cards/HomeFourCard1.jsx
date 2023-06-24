@@ -23,7 +23,7 @@ const StyledGrid = styled(Grid)(({ theme }) => ({
 
 const HomeFourCard1 = ({ title, body, imgUrl }) => {
   return (
-    <Link href="/sale-page-1">
+    <Link href="/market">
       <StyledGrid container>
         <Grid item sm={6} xs={6}>
           <BazaarImage

@@ -11,6 +11,7 @@ const user =
 const initialState = {
   user: user ? user : null,
   userData: {},
+  wishlist: [],
 };
 
 // register user function
@@ -86,6 +87,60 @@ export const updateUser = createAsyncThunk(
   }
 );
 
+export const addToWishlist = createAsyncThunk(
+  "authentication/addToWishlist",
+  async (data, thunkAPI) => {
+    try {
+      return await authenticationServices.addToWishlist(data);
+    } catch (error) {
+      const message =
+        (error.response &&
+          error.response.data &&
+          error.response.data.message) ||
+        error.message ||
+        error.toString();
+
+      return thunkAPI.rejectWithValue(message);
+    }
+  }
+);
+
+export const removeFromWishlist = createAsyncThunk(
+  "authentication/removeFromWishlist",
+  async (data, thunkAPI) => {
+    try {
+      return await authenticationServices.removeFromWishlist(data);
+    } catch (error) {
+      const message =
+        (error.response &&
+          error.response.data &&
+          error.response.data.message) ||
+        error.message ||
+        error.toString();
+
+      return thunkAPI.rejectWithValue(message);
+    }
+  }
+);
+
+export const getWishlist = createAsyncThunk(
+  "authentication/getWishlist",
+  async (userID, thunkAPI) => {
+    try {
+      return await authenticationServices.getWishlist(userID);
+    } catch (error) {
+      const message =
+        (error.response &&
+          error.response.data &&
+          error.response.data.message) ||
+        error.message ||
+        error.toString();
+
+      return thunkAPI.rejectWithValue(message);
+    }
+  }
+);
+
 export const authenticationSlice = createSlice({
   name: "authentication",
   initialState,
@@ -105,6 +160,9 @@ export const authenticationSlice = createSlice({
       })
       .addCase(updateUser.fulfilled, (state, action) => {
         state.user = action.payload.user;
+      })
+      .addCase(getWishlist.fulfilled, (state, action) => {
+        state.wishlist = action.payload;
       });
   },
 });

@@ -5,14 +5,14 @@ export const mainCarouselData = [
     imgUrl: "/assets/images/products/hiclipart.com (14).png",
     description: `Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quis lobortis consequat eu, quam etiam at quis ut convalliss.`,
     buttonText: "Shop Now",
-    buttonLik: "/sale-page-1",
+    buttonLik: "/market",
   },
   {
     title: "50% Off For Your First Shopping",
     imgUrl: "/assets/images/products/hiclipart.com (15).png",
     description: `Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quis lobortis consequat eu, quam etiam at quis ut convalliss.`,
     buttonText: "Shop Now",
-    buttonLik: "/sale-page-1",
+    buttonLik: "/market",
   },
 ];
 export const categories = [

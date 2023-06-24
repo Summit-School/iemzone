@@ -11,6 +11,7 @@ const useId = () => {
       typeof window !== "undefined"
         ? window.alert("Session Expired. Please login to continue")
         : false;
+      window.location.href = "/";
       return;
     }
     const decodedToken = decodeToken(userToken);

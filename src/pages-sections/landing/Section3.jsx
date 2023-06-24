@@ -242,8 +242,8 @@ const demoPageList = [
 ];
 const shopPageList = [
   {
-    imgUrl: "/assets/images/landing/shop/sale-page-1.jpg",
-    previewUrl: "/sale-page-1",
+    imgUrl: "/assets/images/landing/shop/market.jpg",
+    previewUrl: "/market",
     title: "Sale Page",
     page: "shop",
   },
