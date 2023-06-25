@@ -43,6 +43,24 @@ const updateUser = async (data) => {
   return response.data;
 };
 
+const forgotPassword = async (data) => {
+  const response = await axios.post(`${URL}/forgot-password`, data, {
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
+  return response.data;
+};
+
+const newPassword = async (data) => {
+  const response = await axios.put(`${URL}/new-password/${data.userId}`, data, {
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
+  return response.data;
+};
+
 const addToWishlist = async (data) => {
   const response = await axios.put(
     `${URL}/add-to-wishlist/${data.userId}`,
@@ -81,11 +99,9 @@ const authenticationServices = {
   updateUser,
   addToWishlist,
   getWishlist,
+  newPassword,
+  forgotPassword,
   removeFromWishlist,
 };
 
 export default authenticationServices;
-
-// router.put("/add-to-wishlist/:id", authentication.addToWishlist);
-// router.put("/remove-item-from-wishlist/:id", authentication.removeFromWishlist);
-// router.get("/wishlist/:id", authentication.getWishlist);

@@ -25,8 +25,8 @@ export const register = createAsyncThunk(
         (error.response &&
           error.response.data &&
           error.response.data.message) ||
-        error.message ||
-        error.toString();
+        p;
+      error.message || error.toString();
 
       return thunkAPI.rejectWithValue(message);
     }
@@ -74,6 +74,42 @@ export const updateUser = createAsyncThunk(
   async (data, thunkAPI) => {
     try {
       return await authenticationServices.updateUser(data);
+    } catch (error) {
+      const message =
+        (error.response &&
+          error.response.data &&
+          error.response.data.message) ||
+        error.message ||
+        error.toString();
+
+      return thunkAPI.rejectWithValue(message);
+    }
+  }
+);
+
+export const forgotPassword = createAsyncThunk(
+  "authentication/forgotPassword",
+  async (data, thunkAPI) => {
+    try {
+      return await authenticationServices.forgotPassword(data);
+    } catch (error) {
+      const message =
+        (error.response &&
+          error.response.data &&
+          error.response.data.message) ||
+        error.message ||
+        error.toString();
+
+      return thunkAPI.rejectWithValue(message);
+    }
+  }
+);
+
+export const newPassword = createAsyncThunk(
+  "authentication/newPassword",
+  async (data, thunkAPI) => {
+    try {
+      return await authenticationServices.newPassword(data);
     } catch (error) {
       const message =
         (error.response &&

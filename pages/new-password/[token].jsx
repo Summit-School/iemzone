@@ -1,32 +1,55 @@
-import { useCallback, useState } from "react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import SEO from "components/SEO";
 import { Box, Button, Card, TextField } from "@mui/material";
 import { H1, H6 } from "components/Typography";
 import { FlexBox, FlexRowCenter } from "components/flex-box";
 // ===========================================================
+import { isExpired, decodeToken } from "react-jwt";
 import { useDispatch } from "react-redux";
+import { useRouter } from "next/router";
 import { useSnackbar } from "notistack";
-import { forgotPassword } from "redux/reducers/authentication";
+import { newPassword } from "redux/reducers/authentication";
 
-const ResetPassword = () => {
-  const [email, setEmail] = useState("");
+const NewPassword = () => {
+  const [password, setPassword] = useState("");
+  const [userId, setUserId] = useState("");
   const [loading, setLoading] = useState(false);
+  const router = useRouter();
+  const { query } = useRouter();
+  const token = query?.token;
   const dispatch = useDispatch();
   const { enqueueSnackbar } = useSnackbar();
 
-  const handleForgetPassword = () => {
-    if (email) {
+  useEffect(() => {
+    const isTokenExpired = isExpired(token);
+    if (isTokenExpired === true) {
+      typeof window !== "undefined"
+        ? window.alert("Link Expired. Please enter email to create a new link.")
+        : false;
+      router.push("/reset-password");
+      return;
+    }
+    const decodedToken = decodeToken(userToken);
+    const id = decodedToken.userId;
+    setUserId(id);
+    return;
+  }, []);
+
+  const handleNewPassword = () => {
+    if (newPassword) {
       const data = {
-        email,
+        userId,
+        newPassword: password,
       };
-      dispatch(forgotPassword(data), setLoading(true))
+      dispatch(newPassword(data), setLoading(true))
         .then((res) => {
           if (res.meta.requestStatus === "fulfilled") {
             enqueueSnackbar(res.payload, {
               variant: "success",
             });
             setLoading(false);
+            router.push("/");
           }
           if (res.meta.requestStatus === "rejected") {
             setLoading(false);
@@ -40,7 +63,7 @@ const ResetPassword = () => {
           setLoading(false);
         });
     } else {
-      return enqueueSnackbar("Email is required", {
+      return enqueueSnackbar("Password is required", {
         variant: "error",
       });
     }
@@ -59,7 +82,7 @@ const ResetPassword = () => {
         }}
       >
         <H1 fontSize={20} fontWeight={700} mb={4} textAlign="center">
-          Reset your password
+          New password
         </H1>
 
         <FlexBox justifyContent="space-between" flexWrap="wrap" my={2}>
@@ -70,12 +93,12 @@ const ResetPassword = () => {
           >
             <TextField
               fullWidth
-              name="email"
-              type="email"
-              label="Email"
+              name="password"
+              type="password"
+              label="New Password"
               // onBlur={handleBlur}
               // value={values.email}
-              onChange={(e) => setEmail(e.target.value)}
+              onChange={(e) => setPassword(e.target.value)}
               // error={Boolean(touched.email && errors.email)}
               // helperText={touched.email && errors.email}
             />
@@ -87,12 +110,11 @@ const ResetPassword = () => {
             >
               <Button
                 fullWidth
-                // type="submit"
-                onClick={handleForgetPassword}
+                onClick={handleNewPassword}
                 color="primary"
                 variant="contained"
               >
-                {loading ? "Loading..." : "Reset"}
+                {loading ? "Loading..." : "Update"}
               </Button>
             </Box>
           </form>
@@ -110,4 +132,4 @@ const ResetPassword = () => {
     </FlexRowCenter>
   );
 };
-export default ResetPassword;
+export default NewPassword;
