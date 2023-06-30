@@ -154,7 +154,6 @@ export const deleteProduct = createAsyncThunk(
 export const searchProduct = createAsyncThunk(
   "products/searchProduct",
   async (param, thunkAPI) => {
-    console.log(param);
     try {
       return await productServices.searchProduct(param);
     } catch (error) {
@@ -191,7 +190,6 @@ export const productSlice = createSlice({
         state.products = action.payload;
       })
       .addCase(searchProduct.fulfilled, (state, action) => {
-        console.log(action.payload);
         state.searchProducts = action.payload;
       });
   },

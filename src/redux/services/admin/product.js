@@ -65,7 +65,6 @@ const deleteProduct = async (prodId) => {
 };
 
 const searchProduct = async (param) => {
-  console.log(`${URL}/search/${param}`);
   const response = await axios.get(`${URL}/search/${param}`);
   return response.data;
 };

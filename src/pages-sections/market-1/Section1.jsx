@@ -13,10 +13,10 @@ const Section1 = ({ carouselData }) => {
       >
         <Carousel
           spacing="0px"
-          totalSlides={2}
+          totalSlides={5}
           infinite={true}
           showDots={true}
-          autoPlay={false}
+          autoPlay={true}
           visibleSlides={1}
           showArrow={false}
         >

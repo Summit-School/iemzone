@@ -14,11 +14,12 @@ import { FlexBox } from "../flex-box";
 import { calculateDiscount, currency } from "lib";
 // =================================================================
 import { useDispatch } from "react-redux";
-import userId from "utils/userId";
+// import userId from "utils/userId";
 import {
   addToWishlist,
   removeFromWishlist,
 } from "redux/reducers/authentication";
+import { isExpired, decodeToken } from "react-jwt";
 
 // styled components
 const StyledBazaarCard = styled(BazaarCard)({
@@ -102,11 +103,32 @@ const ProductCard1 = ({
   const toggleIsFavorite = () => setIsFavorite((fav) => !fav);
   const toggleDialog = useCallback(() => setOpenModal((open) => !open), []);
   const cartItem = state.cart?.find((item) => item.slug === slug);
-  const userID = userId();
+  const [userId, setUserId] = useState("");
 
   const reduxDispatch = useDispatch();
 
+  useEffect(() => {
+    const userToken =
+      typeof window !== "undefined"
+        ? window.localStorage.getItem("temzone-user")
+        : false;
+    if (userToken) {
+      const isTokenExpired = isExpired(userToken);
+      if (isTokenExpired === true) {
+        return;
+      }
+      const decodedToken = decodeToken(userToken);
+      const id = decodedToken.userId;
+      setUserId(id);
+      return;
+    }
+  }, []);
+
   const wishlistHandler = async (param) => {
+    if (userId === "") {
+      window.alert("Please login to add to wishlist");
+      return;
+    }
     const item = {
       id,
       imgUrl,
@@ -118,7 +140,7 @@ const ProductCard1 = ({
       discount,
     };
     const data = {
-      userId: userID,
+      userId,
       item,
     };
     if (isFavoriteBtn) {

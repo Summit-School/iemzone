@@ -11,7 +11,32 @@ import Accordion from "components/accordion/Accordion";
 import { FlexBetween, FlexBox } from "components/flex-box";
 import { H5, H6, Paragraph, Span } from "components/Typography";
 import AccordionHeader from "components/accordion/AccordionHeader";
-const ProductFilterCard = () => {
+// ============================================================================
+import { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { useSnackbar } from "notistack";
+import { allCategories } from "redux/reducers/admin/category";
+
+const ProductFilterCard = ({ categoryFilter }) => {
+  const { enqueueSnackbar } = useSnackbar();
+  const dispatch = useDispatch();
+
+  const categories = useSelector((state) => state.categories.categories);
+
+  useEffect(() => {
+    dispatch(allCategories())
+      .then((res) => {
+        if (res.meta.requestStatus === "rejected") {
+          enqueueSnackbar(res.payload, {
+            variant: "error",
+          });
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }, []);
+
   return (
     <Card
       sx={{
@@ -23,7 +48,7 @@ const ProductFilterCard = () => {
       {/* CATEGORY VARIANT FILTER */}
       <H6 mb={1.25}>Categories</H6>
 
-      {categoryList.map((item) =>
+      {categories.map((item) =>
         item.subCategories ? (
           <Accordion key={item.title} expanded>
             <AccordionHeader px={0} py={0.75} color="grey.600">
@@ -57,10 +82,14 @@ const ProductFilterCard = () => {
             py={0.75}
             fontSize="14px"
             color="grey.600"
-            key={item.title}
+            key={item.name}
             className="cursor-pointer"
+            sx={{
+              cursor: "pointer",
+            }}
+            onClick={() => categoryFilter(item.name)}
           >
-            {item.title}
+            {item.name}
           </Paragraph>
         )
       )}

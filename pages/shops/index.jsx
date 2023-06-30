@@ -4,6 +4,7 @@ import { H2, Span } from "components/Typography";
 import ShopCard1 from "components/shop/ShopCard1";
 import { FlexBetween } from "components/flex-box";
 import ShopLayout1 from "components/layouts/ShopLayout1";
+import { useRouter } from "next/router";
 // import api from "utils/__api__/shop";
 // ================================================================
 import { useDispatch, useSelector } from "react-redux";
@@ -11,6 +12,7 @@ import { useSnackbar } from "notistack";
 import { getAllShops } from "../../src/redux/reducers/shop";
 
 const ShopList = () => {
+  const router = useRouter();
   const { enqueueSnackbar } = useSnackbar();
   const dispatch = useDispatch();
 
@@ -29,6 +31,11 @@ const ShopList = () => {
         console.error(err);
       });
   }, []);
+
+  // Show a loading state when the fallback is rendered
+  if (router.isFallback) {
+    return <h1>Loading Shops...</h1>;
+  }
 
   return (
     <ShopLayout1>
@@ -60,7 +67,9 @@ const ShopList = () => {
 
         {/* PAGINTAION AREA */}
         <FlexBetween flexWrap="wrap" mt={4}>
-          <Span color="grey.600">Showing 1-9 of {shopList?.length} Shops</Span>
+          <Span color="grey.600">
+            Showing 1-{shopList?.length} of {shopList?.length} Shops
+          </Span>
           {/* <Pagination
             count={shopList?.length}
             variant="outlined"

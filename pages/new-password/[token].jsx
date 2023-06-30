@@ -16,24 +16,31 @@ const NewPassword = () => {
   const [userId, setUserId] = useState("");
   const [loading, setLoading] = useState(false);
   const router = useRouter();
-  const { query } = useRouter();
-  const token = query?.token;
   const dispatch = useDispatch();
   const { enqueueSnackbar } = useSnackbar();
 
+  const token =
+    typeof window !== "undefined"
+      ? window.location.pathname.split("/").pop()
+      : false;
+
   useEffect(() => {
     const isTokenExpired = isExpired(token);
-    if (isTokenExpired === true) {
-      typeof window !== "undefined"
-        ? window.alert("Link Expired. Please enter email to create a new link.")
-        : false;
-      router.push("/reset-password");
+    if (token !== "undefined") {
+      if (isTokenExpired === true) {
+        typeof window !== "undefined"
+          ? window.alert(
+              "Link Expired. Please enter email to create a new link."
+            )
+          : false;
+        router.push("/reset-password");
+        return;
+      }
+      const decodedToken = decodeToken(token);
+      const id = decodedToken.userId;
+      setUserId(id);
       return;
     }
-    const decodedToken = decodeToken(userToken);
-    const id = decodedToken.userId;
-    setUserId(id);
-    return;
   }, []);
 
   const handleNewPassword = () => {

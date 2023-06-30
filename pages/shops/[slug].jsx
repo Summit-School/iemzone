@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import { Container, Grid, IconButton, useMediaQuery } from "@mui/material";
 import FilterList from "@mui/icons-material/FilterList";
@@ -12,11 +12,13 @@ import ProductFilterCard from "pages-sections/product-details/ProductFilterCard"
 // ============================================================
 import { useDispatch, useSelector } from "react-redux";
 import { useSnackbar } from "notistack";
-import { getShopDetails } from "../../src/redux/reducers/shop";
-import { shopProducts } from "../../src/redux/reducers/admin/product";
+import { getShopDetails } from "redux/reducers/shop";
+import { shopProducts, searchProduct } from "redux/reducers/admin/product";
 // ============================================================
 
 const ShopDetails = () => {
+  const [products, setProducts] = useState([]);
+  const [categoryName, setCategoryName] = useState("");
   const router = useRouter();
   const { query } = useRouter();
   const isDownMd = useMediaQuery((theme) => theme.breakpoints.down("md"));
@@ -26,8 +28,8 @@ const ShopDetails = () => {
 
   const shopObject = useSelector((state) => state.shop.shop);
   const shop = shopObject?.shop;
-  const singleShopProducts = useSelector((state) => state.products.products);
-  const products = singleShopProducts?.products;
+  // const singleShopProducts = useSelector((state) => state.products.products);
+  // const products = singleShopProducts?.products;
 
   useEffect(() => {
     dispatch(getShopDetails(query.slug))
@@ -37,12 +39,31 @@ const ShopDetails = () => {
             variant: "error",
           });
         }
-        dispatch(shopProducts(query.slug));
+        dispatch(shopProducts(query.slug)).then((res) => {
+          const shopProducts = res.payload.products;
+          setProducts(shopProducts);
+        });
       })
       .catch((err) => {
         console.error(err);
       });
   }, []);
+
+  const categoryFilter = (value) => {
+    dispatch(searchProduct(value))
+      .then((res) => {
+        if (res.meta.requestStatus === "rejected") {
+          return enqueueSnackbar(res.payload, {
+            variant: "error",
+          });
+        }
+        setProducts(res.payload);
+        setCategoryName(value);
+      })
+      .catch((err) => {
+        console.error(err);
+      });
+  };
 
   // Show a loading state when the fallback is rendered
   if (router.isFallback) {
@@ -92,7 +113,7 @@ const ShopDetails = () => {
               },
             }}
           >
-            <ProductFilterCard />
+            <ProductFilterCard categoryFilter={categoryFilter} />
           </Grid>
 
           <Grid item md={9} xs={12}>
@@ -104,7 +125,11 @@ const ShopDetails = () => {
             )}
 
             {/* PRODUCT LIST AREA */}
-            <ProductList1 products={products?.slice(0, 9)} />
+            {products.length > 0 ? (
+              <ProductList1 products={products?.slice(0, 9)} />
+            ) : (
+              `No Products Found for ${categoryName}`
+            )}
           </Grid>
         </Grid>
       </Container>

@@ -14,6 +14,27 @@ export const mainCarouselData = [
     buttonText: "Shop Now",
     buttonLik: "/market",
   },
+  {
+    title: "50% Off For Your First Shopping",
+    imgUrl: "/assets/images/products/hiclipart.com (16).png",
+    description: `Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quis lobortis consequat eu, quam etiam at quis ut convalliss.`,
+    buttonText: "Shop Now",
+    buttonLik: "/market",
+  },
+  {
+    title: "50% Off For Your First Shopping",
+    imgUrl: "/assets/images/products/hiclipart.com (18).png",
+    description: `Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quis lobortis consequat eu, quam etiam at quis ut convalliss.`,
+    buttonText: "Shop Now",
+    buttonLik: "/market",
+  },
+  {
+    title: "50% Off For Your First Shopping",
+    imgUrl: "/assets/images/products/apple-watch-0.png",
+    description: `Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quis lobortis consequat eu, quam etiam at quis ut convalliss.`,
+    buttonText: "Shop Now",
+    buttonLik: "/market",
+  },
 ];
 export const categories = [
   {

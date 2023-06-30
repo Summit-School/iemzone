@@ -1,6 +1,6 @@
 import { isExpired, decodeToken } from "react-jwt";
 
-const useId = () => {
+const userId = () => {
   const userToken =
     typeof window !== "undefined"
       ? window.localStorage.getItem("temzone-user")
@@ -11,7 +11,7 @@ const useId = () => {
       typeof window !== "undefined"
         ? window.alert("Session Expired. Please login to continue")
         : false;
-      window.location.href = "/";
+      window.location.href = "/login";
       return;
     }
     const decodedToken = decodeToken(userToken);
@@ -24,4 +24,4 @@ const useId = () => {
     : false;
 };
 
-export default useId;
+export default userId;
