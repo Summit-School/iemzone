@@ -3,6 +3,7 @@ import productServices from "../../services/admin/product";
 
 const initialState = {
   products: [],
+  shopProducts: [],
   product: null,
   searchProducts: [],
 };
@@ -184,7 +185,7 @@ export const productSlice = createSlice({
         state.product = action.payload;
       })
       .addCase(shopProducts.fulfilled, (state, action) => {
-        state.products = action.payload;
+        state.shopProducts = action.payload;
       })
       .addCase(allProducts.fulfilled, (state, action) => {
         state.products = action.payload;

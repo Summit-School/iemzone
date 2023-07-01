@@ -13,12 +13,12 @@ import ProductFilterCard from "pages-sections/product-details/ProductFilterCard"
 import { useDispatch, useSelector } from "react-redux";
 import { useSnackbar } from "notistack";
 import { getShopDetails } from "redux/reducers/shop";
-import { shopProducts, searchProduct } from "redux/reducers/admin/product";
+import { shopProducts } from "redux/reducers/admin/product";
 // ============================================================
 
 const ShopDetails = () => {
   const [products, setProducts] = useState([]);
-  const [categoryName, setCategoryName] = useState("");
+  const [notFoundMsg, setNotFoundMsg] = useState("");
   const router = useRouter();
   const { query } = useRouter();
   const isDownMd = useMediaQuery((theme) => theme.breakpoints.down("md"));
@@ -28,8 +28,10 @@ const ShopDetails = () => {
 
   const shopObject = useSelector((state) => state.shop.shop);
   const shop = shopObject?.shop;
-  // const singleShopProducts = useSelector((state) => state.products.products);
-  // const products = singleShopProducts?.products;
+  const singleShopProducts = useSelector(
+    (state) => state.products.shopProducts
+  );
+  const allShopProducts = singleShopProducts?.products;
 
   useEffect(() => {
     dispatch(getShopDetails(query.slug))
@@ -50,19 +52,56 @@ const ShopDetails = () => {
   }, []);
 
   const categoryFilter = (value) => {
-    dispatch(searchProduct(value))
-      .then((res) => {
-        if (res.meta.requestStatus === "rejected") {
-          return enqueueSnackbar(res.payload, {
-            variant: "error",
-          });
-        }
-        setProducts(res.payload);
-        setCategoryName(value);
-      })
-      .catch((err) => {
-        console.error(err);
-      });
+    const catFiltered = allShopProducts.filter((product) =>
+      product.categories.includes(value)
+    );
+    setProducts(catFiltered);
+    setNotFoundMsg(value);
+  };
+
+  const brandFilter = (value) => {
+    if (value.isChecked === true) {
+      const brandFiltered = allShopProducts.filter((product) =>
+        product.brand.includes(value.brandName)
+      );
+      setProducts(brandFiltered);
+      setNotFoundMsg(value.brandName);
+    }
+  };
+
+  const ratingFilter = (value) => {
+    if (value.isChecked === true) {
+      const rateFiltered = allShopProducts.filter(
+        (product) => product.rating === value.rating
+      );
+      setProducts(rateFiltered);
+      setNotFoundMsg(value.rating + " star rating");
+    }
+  };
+
+  const colorFilter = (value) => {
+    const colorFiltered = allShopProducts.filter((product) =>
+      product.colors.includes(value)
+    );
+    setProducts(colorFiltered);
+    setNotFoundMsg(value + " color");
+  };
+
+  const priceFilter = (min, max) => {
+    if (max === 0) {
+      const priceFiltered = allShopProducts.filter(
+        (product) => product.salesPrice >= min
+      );
+      setProducts(priceFiltered);
+      setNotFoundMsg("price range");
+    }
+    if (min < max && max !== 0) {
+      const priceFiltered = allShopProducts.filter(
+        (product) => product.salesPrice >= min && product.salesPrice <= max
+      );
+      setProducts(priceFiltered);
+      setNotFoundMsg("price range");
+    }
   };
 
   // Show a loading state when the fallback is rendered
@@ -113,7 +152,13 @@ const ShopDetails = () => {
               },
             }}
           >
-            <ProductFilterCard categoryFilter={categoryFilter} />
+            <ProductFilterCard
+              categoryFilter={categoryFilter}
+              brandFilter={brandFilter}
+              ratingFilter={ratingFilter}
+              colorFilter={colorFilter}
+              priceFilter={priceFilter}
+            />
           </Grid>
 
           <Grid item md={9} xs={12}>
@@ -128,7 +173,7 @@ const ShopDetails = () => {
             {products.length > 0 ? (
               <ProductList1 products={products?.slice(0, 9)} />
             ) : (
-              `No Products Found for ${categoryName}`
+              `No Products Found for ${notFoundMsg}`
             )}
           </Grid>
         </Grid>
