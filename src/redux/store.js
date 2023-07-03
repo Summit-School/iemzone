@@ -9,6 +9,7 @@ import orders from "./reducers/order";
 import stripePayment from "./reducers/stripe";
 import subscription from "./reducers/emailSubscription";
 import shipping from "./reducers/shipping";
+import supportTicket from "./reducers/supportTicket";
 
 export const store = configureStore({
   reducer: {
@@ -22,5 +23,6 @@ export const store = configureStore({
     stripePayment,
     orders,
     shipping,
+    supportTicket,
   },
 });

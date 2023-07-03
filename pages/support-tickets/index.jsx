@@ -5,6 +5,7 @@ import {
   IconButton,
   Pagination,
   styled,
+  Button,
   Typography,
 } from "@mui/material";
 import { East } from "@mui/icons-material";
@@ -28,6 +29,21 @@ const StyledChip = styled(Chip)(({ theme, green }) => ({
     : theme.palette.primary.light,
 }));
 
+// SECTION TITLE HEADER LINK
+const HEADER_LINK = (
+  <Button
+    color="primary"
+    LinkComponent={Link}
+    href="/support-tickets/create-ticket"
+    sx={{
+      px: 4,
+      bgcolor: "primary.light",
+    }}
+  >
+    Create New Ticket
+  </Button>
+);
+
 // =============================================
 
 // =============================================
@@ -37,6 +53,7 @@ const TicketList = ({ ticketList }) => {
     <CustomerDashboardLayout>
       {/* TITLE HEADER AREA */}
       <UserDashboardHeader
+        button={HEADER_LINK}
         title="Support Ticket"
         icon={CustomerService}
         navigation={<CustomerDashboardNavigation />}
