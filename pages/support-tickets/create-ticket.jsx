@@ -17,7 +17,11 @@ import CustomerDashboardNavigation from "components/layouts/customer-dashboard/N
 import api from "utils/__api__/ticket";
 // ################################################################
 import { useState, useEffect } from "react";
+import { createTicket } from "redux/reducers/supportTicket";
+import { useDispatch } from "react-redux";
 import { useSnackbar } from "notistack";
+import { useRouter } from "next/router";
+import userID from "utils/userId";
 
 // styled components
 const StyledChip = styled(Chip)(({ theme, green }) => ({
@@ -35,6 +39,8 @@ const StyledChip = styled(Chip)(({ theme, green }) => ({
 // =============================================
 
 const CreateTicket = () => {
+  const navigate = useRouter();
+  const dispatch = useDispatch();
   const { enqueueSnackbar } = useSnackbar();
   const [loading, setLoading] = useState(false);
   const [subject, setSubject] = useState("");
@@ -43,7 +49,34 @@ const CreateTicket = () => {
 
   const handleFormSubmit = () => {
     if (subject && priorityState && message) {
-      console.log("called");
+      const userId = userID();
+      const data = {
+        userId,
+        subject,
+        message,
+        priority: priorityState,
+        sender: userId,
+        date: Date.now(),
+      };
+      dispatch(createTicket(data), setLoading(true))
+        .then((res) => {
+          if (res.meta.requestStatus === "fulfilled") {
+            enqueueSnackbar("Ticket Created", {
+              variant: "success",
+            });
+            setLoading(false);
+            navigate.push("/support-tickets");
+          }
+          if (res.meta.requestStatus === "rejected") {
+            setLoading(false);
+            enqueueSnackbar("Failed", {
+              variant: "error",
+            });
+          }
+        })
+        .catch((err) => {
+          console.error(err);
+        });
     } else {
       enqueueSnackbar("All fields are required", {
         variant: "error",

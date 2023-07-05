@@ -26,9 +26,9 @@ export const createTicket = createAsyncThunk(
 
 export const getAllTickets = createAsyncThunk(
   "ticket/getAllTickets",
-  async (thunkAPI) => {
+  async (data, thunkAPI) => {
     try {
-      return await supportTicketServices.getAllTickets();
+      return await supportTicketServices.getAllTickets(data);
     } catch (error) {
       const message =
         (error.response &&
@@ -103,7 +103,10 @@ export const supportTicketSlice = createSlice({
     reset: (state) => {},
   },
   extraReducers: (builder) => {
-    builder.addCase(createTicket.fulfilled, (state, action) => {
+    builder.addCase(getAllTickets.fulfilled, (state, action) => {
+      state.tickets = action.payload;
+    });
+    builder.addCase(getSingleTicket.fulfilled, (state, action) => {
       state.ticket = action.payload;
     });
   },
